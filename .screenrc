@@ -17,3 +17,5 @@ logfile /home/yukgoto/.log/screen-%Y%m%d.%n.log
 log on
 deflog on
 
+# emacs like keybind
+bind o focus
