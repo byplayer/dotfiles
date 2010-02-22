@@ -134,3 +134,8 @@ alias ls="ls -CF --color=auto"
 if [ -f ~/.zsh_local ]; then
   . ~/.zsh_local
 fi
+
+# run screen
+if [ $SHLVL = 1 ];then
+  screen
+fi
