@@ -17,11 +17,16 @@ logfile /home/yukgoto/.log/screen-%Y%m%d.%n.log
 log on
 deflog on
 
-# emacs like keybind
-bind -c REGION o focus
-bind -c REGION 2 split
-bind -c REGION 3 split -v
-bind x command -c REGION
+# emacs like keybind prefix version
+# bind -c REGION o focus
+# bind -c REGION 2 split
+# bind -c REGION 3 split -v
+# bind x command -c REGION
+
+# emacs like keybind no prefix version
+bind o focus
+bind 2 split
+bind 3 split -v
 
 # startup screen
 screen 0
