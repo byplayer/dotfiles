@@ -18,4 +18,14 @@ log on
 deflog on
 
 # emacs like keybind
-bind o focus
+bind -c REGION o focus
+bind -c REGION 2 split
+bind -c REGION 3 split -v
+bind x command -c REGION
+
+# startup screen
+screen 0
+split -v
+focus
+screen 1
+focus
