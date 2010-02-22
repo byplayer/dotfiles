@@ -139,3 +139,13 @@ fi
 if [ $SHLVL = 1 ];then
   screen
 fi
+
+# screen caption update
+case "${TERM}" in screen)
+    preexec() {
+        echo -ne "\ek#${1%% *}\e\\"
+    }
+    precmd() {
+        echo -ne "\ek$(basename $(pwd))\e\\"
+    }
+esac
