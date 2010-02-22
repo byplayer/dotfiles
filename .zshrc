@@ -84,6 +84,10 @@ setopt hist_ignore_dups
 # ヒストリを呼び出してから実行する間に一旦編集可能
 setopt hist_verify
 
+# 補完時にヒストリを自動的に展開する。
+setopt hist_expand
+
+
 # cdでpushdする。
 setopt auto_pushd
 
