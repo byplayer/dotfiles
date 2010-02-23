@@ -16,11 +16,11 @@ vbell off
 caption always "%{=r dd} %-w%{= dd} %n %t %{-}%+w %="
 
 # log config
-logfile /home/yukgoto/.log/screen-%Y%m%d.%n.log
+logfile /home/yukgoto/.screen_log/screen-%Y%m%d.%n.log
 log on
 deflog on
 
-hardcopydir /home/yukgoto/.log
+hardcopydir /home/yukgoto/.screen_log
 hardcopy_append on
 
 # emacs like keybind prefix version
@@ -33,6 +33,10 @@ hardcopy_append on
 bind o focus
 bind 2 split
 bind 3 split -v
+
+# synchronize clipboard
+bufferfile /home/yukgoto/.screen_log/buffile
+bindkey -m ' ' eval 'stuff \040' writebuf "exec !!! sh -c 'xsel -i -b < /home/yukgoto/.screen_log/buffile'"
 
 # startup screen
 screen 0
