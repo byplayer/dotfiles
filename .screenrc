@@ -20,6 +20,9 @@ logfile /home/yukgoto/.log/screen-%Y%m%d.%n.log
 log on
 deflog on
 
+hardcopydir /home/yukgoto/.log
+hardcopy_append on
+
 # emacs like keybind prefix version
 # bind -c REGION o focus
 # bind -c REGION 2 split
