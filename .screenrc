@@ -17,8 +17,8 @@ caption always "%{=r dd} %-w%{= dd} %n %t %{-}%+w %="
 
 # log config
 logfile ${HOME}/.screen_log/screen-%Y%m%d.%n.log
-log on
-deflog on
+# log on
+# deflog on
 
 hardcopydir ${HOME}/.screen_log
 hardcopy_append on
