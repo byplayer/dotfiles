@@ -46,3 +46,7 @@ split -v
 focus
 screen 1
 focus
+
+# change encoding
+# encoding euc
+# encoding utf8
