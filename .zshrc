@@ -8,10 +8,14 @@ colors
 autoload -Uz vcs_info
 zstyle ':vcs_info:*' formats ':%b'
 zstyle ':vcs_info:*' actionformats ':%b|%a'
-precmd () {
+vcs_console () {
   psvar=()
   LANG=en_US.UTF-8 vcs_info
   [[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_"
+}
+
+precmd () {
+  vcs_console;
 }
 
 # prompt
@@ -147,5 +151,6 @@ case "${TERM}" in screen)
     }
     precmd() {
         echo -ne "\ek$(basename $(pwd))\e\\"
+        vcs_console
     }
 esac
