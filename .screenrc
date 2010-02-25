@@ -38,6 +38,8 @@ bind 3 split -v
 bufferfile ${HOME}/.screen_log/buffile
 bindkey -m ' ' eval 'stuff \040' writebuf "exec !!! sh -c 'xsel -i -b < ${HOME}/.screen_log/buffile'"
 
+markkeys h=^b:l=^f:$=^e:^d=^v
+
 # startup screen
 screen 0
 split -v
