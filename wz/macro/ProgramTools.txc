@@ -1,0 +1,461 @@
+//---------------------------------------------------------
+// プログラム関連便利マクロ達 Ver. 0.02 copyright (c) byplayer
+//---------------------------------------------------------
+#include <windows.h>
+
+#pragma TXM+
+
+//---------------------------------------------------------
+//## maclistから便利に使えるように
+typedef struct {
+	BOOL	fExecutable;	//このマクロから実行可能かどうか。引数の数と意味を解析するのは困難
+	mchar	*szFuncName;	//関数名
+	mchar	*szComment;		//表示するコメント
+} COMMENTTABLE,*PCOMMENTTABLE;
+
+COMMENTTABLE	_____Comment_____[] = {
+				{FALSE,"txSeparateLine","区切りコメント"},
+				{FALSE, "txWriteJavaDocComment", ""},
+				{FALSE, "txWriteQtDocComment", ""},
+				{FALSE, "txWriteDocComment", ""},
+				{FALSE, "txWriteJavaDocCommentLine", ""},
+				{FALSE, "txWriteQtDocCommentLine", ""},
+				{FALSE, "txWriteDocCommentLine", ""},
+				{FALSE, "classNameDialog", "クラス名入力ダイアログ表示"},
+				{FALSE, "txHeaderModel", "ヘッダ雛形作成"},
+				{FALSE, "txCppModel", "ソース雛形作成"},
+				{FALSE, "saveAndOpen", "ファイルへ保存して開く(classWizard用)"},
+				{TRUE, "classWizard", "新規クラス作成(C++)"},
+				{TRUE, "classWizardCPUT", "新規クラス作成(C++)CppUnit"},
+				{FALSE, "", ""}
+};
+
+//---------------------------------------------------------
+const txstr SEPARATE_LINE 
+	="//---------------------------------------------------------";
+
+//---------------------------------------------------------
+//## 便利関数たち
+//区切りコメントを入れる
+void txSeparateLine(TX* text)
+{
+	txInsert(text, SEPARATE_LINE);
+}
+
+//ドキュメント生成用
+BOOL txWriteJavaDocComment(TX* text)
+{
+	if(text->fOverWrite) return FALSE;
+	
+	txInsert(text, "/**");
+	txWriteReturn(text);
+	txInsert(text, " * ");
+	txWriteReturn(text);
+	txInsert(text, "*/");
+	txUp(text);
+	
+	return TRUE;
+}
+
+//ドキュメント生成用
+BOOL txWriteQtDocComment(TX* text)
+{
+	if(text->fOverWrite) return FALSE;
+	
+	txInsert(text, "/*!");
+	txWriteReturn(text);
+	txInsert(text, " * ");
+	txWriteReturn(text);
+	txInsert(text, "*/");
+	txUp(text);
+	
+	return TRUE;
+}
+
+///ドキュメント用コメント生成
+BOOL txWriteDocComment(TX* text)
+{
+	if(text->fOverWrite) return FALSE;
+	
+	if(pathIsExt(text->szfilename, ".java"))
+	{
+		return txWriteJavaDocComment(text);
+	}
+	else
+	{
+		return txWriteQtDocComment(text);
+	}
+}
+
+//---------------------------------------------------------
+//JavaDoc用コメント１行版
+BOOL txWriteJavaDocCommentLine(TX* text)
+{
+	if(text->fOverWrite) return FALSE;
+	
+	txInsert(text, "/**  */");
+	txLeft(text);
+	txLeft(text);
+	txLeft(text);
+	return TRUE;
+}
+
+//Qtスタイルコメント
+BOOL txWriteQtDocCommentLine(TX* text)
+{
+	if(text->fOverWrite) return FALSE;
+	txInsert(text, "/// ");
+	return TRUE;
+}
+
+///ドキュメント用コメント生成 １行版
+BOOL txWriteDocCommentLine(TX* text)
+{
+	if(text->fOverWrite) return FALSE;
+	
+	if(pathIsExt(text->szfilename, ".java"))
+	{
+		return txWriteJavaDocCommentLine(text);
+	}
+	else
+	{
+		return txWriteQtDocCommentLine(text);
+	}
+}
+
+
+//---------------------------------------------------------
+//## クラス新規作成用
+#define TYPE_HEADER	1
+#define TYPE_CPP	2
+
+/// クラスタイプノーマル
+#define CT_NORMAL	0
+/// クラスタイプCppUnit
+#define CT_CPPUNIT	1
+
+//クラス名を入力させるダイアログ表示
+BOOL classNameDialog(txstr className)
+{
+	HDIALOG hd = dialog("クラスの新規作成");
+	dialogTxstr(hd,"クラス名(&C):",10 , className, 20);
+	
+	if(dialogOpen(hd))
+	{
+		return TRUE;
+	}
+	else
+	{
+		return FALSE;
+	}
+}
+
+//ヘッダ雛形
+void txHeaderModel(TX* text, txstr className)
+{
+	//ifdef _$(CLASSNAME)_H_ を作る
+	txstr headerDefine = className;
+	strupr(headerDefine);
+	headerDefine = "INCLUDE_" + headerDefine + "_HPP";
+	
+	txInsert(text, SEPARATE_LINE + "\n");
+	txInsert(text, "/*!\n");
+	txInsert(text, " * \\file " + className + ".h\n");
+	txInsert(text, " * \\brief \n");
+	txInsert(text, " *\n");
+	txInsert(text, " * $Revision::                        $\n");
+	txInsert(text, " * $Author::                          $\n");
+ 	txInsert(text, " * $Date::                            $\n");
+	txInsert(text, " */\n");
+	txInsert(text, "\n");
+	txInsert(text, "\n");
+	txInsert(text, SEPARATE_LINE + "\n");
+	txInsert(text, "//プリプロセッサ\n");
+	txInsert(text, "#ifndef " + headerDefine + "\n");
+	txInsert(text, "#define " + headerDefine + "\n");
+	txInsert(text, "\n");
+	txInsert(text, SEPARATE_LINE + "\n");
+	txInsert(text, "//利用するクラス\n");
+	txInsert(text, "\n");
+	txInsert(text, "\n");
+	txInsert(text, SEPARATE_LINE + "\n");
+	txInsert(text, "//インクルードファイル\n");
+	txInsert(text, "\n");
+	txInsert(text, "\n");
+	txInsert(text, SEPARATE_LINE + "\n");
+	txInsert(text, "/// \n");
+	txInsert(text, "class " + className + "\n");
+	txInsert(text, "{\n");
+	txInsert(text, "public:\n");
+	txInsert(text, "\t/// コンストラクタ\n");
+	txInsert(text, "\t" + className + "();\n");
+	txInsert(text, "\t/// デストラクタ\n");
+	txInsert(text, "\tvirtual ~" + className + "();\n");
+	txInsert(text, "\n");
+	txInsert(text, "private:\n");
+	txInsert(text, "\t/// コピーコンストラクタ禁止\n");
+	txInsert(text, "\t" + className + "(const " + className + "& other);\n");
+	txInsert(text, "\t/// 代入演算子禁止\n");
+	txInsert(text, "\t" + className + "& operator=(const " + className + "& rhs);\n");
+	txInsert(text, "};\n");
+	txInsert(text, "\n");
+	txInsert(text, SEPARATE_LINE + "\n");
+	txInsert(text, "//インラインメソッド\n");
+	txInsert(text, "\n");
+	txInsert(text, "\n");
+	txInsert(text, "#endif // " + headerDefine + "\n");
+}
+
+//ヘッダ雛形
+void txHeaderModelCppUnit(TX* text, txstr className)
+{
+	//ifdef _$(CLASSNAME)_H_ を作る
+	txstr headerDefine = className;
+	strupr(headerDefine);
+	headerDefine = "INCLUDE_" + headerDefine + "_HPP";
+	
+	txInsert(text,	SEPARATE_LINE + "\n");
+	txInsert(text, "/*!\n");
+	txInsert(text, " * \\file " + className + ".h\n");
+	txInsert(text, " * \\brief \n");
+	txInsert(text, " *\n");
+	txInsert(text, " * $Revision::                        $\n");
+	txInsert(text, " * $Author::                          $\n");
+	txInsert(text, " * $Date::                            $\n");
+	txInsert(text, " */\n");
+	txInsert(text, "\n");
+	txInsert(text, "\n");
+	txInsert(text, SEPARATE_LINE + "\n");
+	txInsert(text, "//プリプロセッサ\n");
+	txInsert(text, "#ifndef " + headerDefine + "\n");
+	txInsert(text, "#define " + headerDefine + "\n");
+	txInsert(text, "\n");
+	txInsert(text, SEPARATE_LINE + "\n");
+	txInsert(text, "//利用するクラス\n");
+	txInsert(text, "\n");
+	txInsert(text, "\n");
+	txInsert(text, SEPARATE_LINE + "\n");
+	txInsert(text, "//インクルードファイル\n");
+	txInsert(text, "#include <cppunit/extensions/HelperMacros.h>\n");
+	txInsert(text, "\n");
+	txInsert(text, "\n");
+	txInsert(text, SEPARATE_LINE + "\n");
+	txInsert(text, "/// \n");
+	txInsert(text, "class " + className + " : public CppUnit::TestFixture\n");
+	txInsert(text, "{\n");
+	txInsert(text, "\tCPPUNIT_TEST_SUITE(" + className + ");\n");
+	txInsert(text, "\tCPPUNIT_TEST_SUITE_END();\n");
+	txInsert(text, "\n");
+	txInsert(text, "public:\n");
+	txInsert(text, "\t/// コンストラクタ\n");
+	txInsert(text, "\t" + className + "();\n");
+	txInsert(text, "\t/// デストラクタ\n");
+	txInsert(text, "\t~" + className + "();\n");
+	txInsert(text, "\n");
+	txInsert(text, "\tvoid setUp();\n");
+	txInsert(text, "\tvoid tearDown();\n");
+	txInsert(text, "};\n");
+	txInsert(text, "\n");
+	txInsert(text, SEPARATE_LINE + "\n");
+	txInsert(text, "//インラインメソッド\n");
+	txInsert(text, "\n");
+	txInsert(text, "\n");
+	txInsert(text, "#endif // " + headerDefine + "\n");
+}
+
+//cppファイルの雛形
+void txCppModel(TX* text, txstr className)
+{
+	txInsert(text, SEPARATE_LINE + "\n");
+	txInsert(text, "// ファイル名	: " + className + ".cpp\n");
+	txInsert(text, "// $Revision::                        $\n");
+	txInsert(text, "// $Author::                          $\n");
+	txInsert(text, "// $Date::                            $\n");
+	txInsert(text, "\n");
+	txInsert(text, SEPARATE_LINE + "\n");
+	txInsert(text, "//インクルードファイル\n");
+	txInsert(text, "#include \"stdafx.h\"\n");
+	txInsert(text, "#include \"" + className + ".hpp\"\n");
+	txInsert(text, "\n");
+	txInsert(text, SEPARATE_LINE + "\n");
+	txInsert(text, "//プリプロセッサ\n");
+//	txInsert(text, "#ifdef _DEBUG\n");
+//	txInsert(text, "#define new DEBUG_NEW\n");
+//	txInsert(text, "#undef THIS_FILE\n");
+//	txInsert(text, "static char THIS_FILE[] = __FILE__;\n");
+//	txInsert(text, "#endif\n");
+	txInsert(text, "\n");
+	txInsert(text, SEPARATE_LINE + "\n");
+	txInsert(text, "//satic メンバ変数の初期化\n");
+	txInsert(text, "\n");
+	txInsert(text, SEPARATE_LINE + "\n");
+	txInsert(text, "/// コンストラクタ\n");
+	txInsert(text, className + "::" + className + "()\n");
+	txInsert(text, "{\n");
+	txInsert(text, "}\n");
+	txInsert(text, "\n");
+	txInsert(text, "/// デストラクタ\n");
+	txInsert(text, className + "::~" + className + "()\n");
+	txInsert(text, "{\n");
+	txInsert(text, "}\n");
+	txInsert(text, "\n");
+	txInsert(text, SEPARATE_LINE + "\n");
+}
+
+//cppファイルの雛形
+void txCppModelCppUnit(TX* text, txstr className)
+{
+	txInsert(text, SEPARATE_LINE + "\n");
+	txInsert(text, "// ファイル名	: " + className + ".cpp\n");
+	txInsert(text, "// $Revision::                        $\n");
+	txInsert(text, "// $Author::                          $\n");
+	txInsert(text, "// $Date::                            $\n");
+	txInsert(text, "\n");
+	txInsert(text, SEPARATE_LINE + "\n");
+	txInsert(text, "//インクルードファイル\n");
+	txInsert(text, "#include \"stdafx.h\"\n");
+	txInsert(text, "#include \"" + className + ".hpp\"\n");
+	txInsert(text, "\n");
+	txInsert(text, SEPARATE_LINE + "\n");
+	txInsert(text, "//プリプロセッサ\n");
+//	txInsert(text, "#ifdef _DEBUG\n");
+//	txInsert(text, "#define new DEBUG_NEW\n");
+//	txInsert(text, "#undef THIS_FILE\n");
+//	txInsert(text, "static char THIS_FILE[] = __FILE__;\n");
+//	txInsert(text, "#endif\n");
+	txInsert(text, "\n");
+	txInsert(text, "/// テスト登録\n");
+	txInsert(text, "CPPUNIT_TEST_SUITE_REGISTRATION(" + className + ");\n");
+	txInsert(text, "\n");
+	txInsert(text, SEPARATE_LINE + "\n");
+	txInsert(text, "//satic メンバ変数の初期化\n");
+	txInsert(text, "\n");
+	txInsert(text, SEPARATE_LINE + "\n");
+	txInsert(text, "/// コンストラクタ\n");
+	txInsert(text, className + "::" + className + "()\n");
+	txInsert(text, "{\n");
+	txInsert(text, "}\n");
+	txInsert(text, "\n");
+	txInsert(text, "/// デストラクタ\n");
+	txInsert(text, className + "::~" + className + "()\n");
+	txInsert(text, "{\n");
+	txInsert(text, "}\n");
+	txInsert(text, "\n");
+	txInsert(text, SEPARATE_LINE + "\n");
+	txInsert(text, "void " + className + "::setUp()\n");
+	txInsert(text, "{\n");
+	txInsert(text, "}\n");
+	txInsert(text, "\n");
+	txInsert(text, "void " + className + "::tearDown()\n");
+	txInsert(text, "{\n");
+	txInsert(text, "}\n");
+	txInsert(text, "\n");
+	txInsert(text, SEPARATE_LINE + "\n");
+}
+
+//新規textを作ってマクロを実行
+//textの内容をファイルに保存し、それを開く
+//保存先ファイルが存在する場合は、エラーを出し保存しない
+void saveAndOpen(txstr className, int type, int classType)
+{
+	txstr fileName;
+	switch(type)
+	{
+	case TYPE_HEADER:
+		fileName = className + ".hpp";
+		break;
+	
+	case TYPE_CPP:
+		fileName = className + ".cpp";
+		break;
+	
+	default:
+		attention("サポートされていないタイプ(%d)です\n(saveAndOpen)", type);
+		return;
+	}
+	
+	//ファイルチェック
+	if(fileIsExist(fileName))
+	{
+		attention("%sがすでに存在するため作成できませんでした", fileName);
+		return;
+	}
+	
+	//テキストを作ってマクロを実行
+	TX* text = textnew();
+	switch(type)
+	{
+	case TYPE_HEADER:
+		if(classType == CT_CPPUNIT)
+		{
+			txHeaderModelCppUnit(text, className);
+		}
+		else
+		{
+			txHeaderModel(text, className);
+		}
+		break;
+	
+	case TYPE_CPP:
+		if(classType == CT_CPPUNIT)
+		{
+			txCppModelCppUnit(text, className);
+		}
+		else
+		{
+			txCppModel(text, className);
+		}
+		break;
+	
+	default:
+		attention("サポートされていないタイプ(%d)です\n(saveAndOpen)", type);
+		return;
+	}
+	
+	txSaveTo(text, fileName);
+	textclose(text);
+	wzexec(fileName);
+}
+
+//クラス新規作成ウイザード
+//マクロ一覧から実行出来るように
+//引数にダミーを付けている
+void classWizard(TX* dummy)
+{
+	txstr className;
+	if(TRUE == classNameDialog(className))
+	{
+		mchar currentDir[256];
+		GetCurrentDirectory(256, currentDir);
+		
+		txstr saveDir = currentDir;
+		uiSelectFolder(saveDir, "保存先フォルダを選択してください");
+		SetCurrentDirectory(saveDir);
+		
+		//ヘッダを作って開く
+		saveAndOpen(className, TYPE_HEADER, CT_NORMAL);
+		
+		//cppを作って開く
+		saveAndOpen(className, TYPE_CPP, CT_NORMAL);
+	}
+}
+
+void classWizardCPUT(TX* dummy)
+{
+	txstr className;
+	if(TRUE == classNameDialog(className))
+	{
+		mchar currentDir[256];
+		GetCurrentDirectory(256, currentDir);
+		
+		txstr saveDir = currentDir;
+		uiSelectFolder(saveDir, "保存先フォルダを選択してください");
+		SetCurrentDirectory(saveDir);
+		
+		//ヘッダを作って開く
+		saveAndOpen(className, TYPE_HEADER, CT_CPPUNIT);
+		
+		//cppを作って開く
+		saveAndOpen(className, TYPE_CPP, CT_CPPUNIT);
+	}
+}
