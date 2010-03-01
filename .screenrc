@@ -16,11 +16,11 @@ vbell off
 caption always "%{=r dd} %-w%{= dd} %n %t %{-}%+w %="
 
 # log config
-logfile /home/yukgoto/.screen_log/screen-%Y%m%d.%n.log
-log on
-deflog on
+logfile ${HOME}/.screen_log/screen-%Y%m%d.%n.log
+# log on
+# deflog on
 
-hardcopydir /home/yukgoto/.screen_log
+hardcopydir ${HOME}/.screen_log
 hardcopy_append on
 
 # emacs like keybind prefix version
@@ -35,8 +35,10 @@ bind 2 split
 bind 3 split -v
 
 # synchronize clipboard
-bufferfile /home/yukgoto/.screen_log/buffile
-bindkey -m ' ' eval 'stuff \040' writebuf "exec !!! sh -c 'xsel -i -b < /home/yukgoto/.screen_log/buffile'"
+bufferfile ${HOME}/.screen_log/buffile
+bindkey -m ' ' eval 'stuff \040' writebuf "exec !!! sh -c 'xsel -i -b < ${HOME}/.screen_log/buffile'"
+
+markkeys h=^b:l=^f:$=^e:^d=^v
 
 # startup screen
 screen 0
@@ -44,3 +46,7 @@ split -v
 focus
 screen 1
 focus
+
+# change encoding
+# encoding euc
+# encoding utf8
