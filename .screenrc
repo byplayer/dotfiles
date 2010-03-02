@@ -41,11 +41,7 @@ bindkey -m ' ' eval 'stuff \040' writebuf "exec !!! sh -c 'xsel -i -b < ${HOME}/
 markkeys h=^b:l=^f:$=^e:^d=^v
 
 # startup screen
-screen 0
-split -v
-focus
-screen 1
-focus
+eval "screen 0" "split -v" focus "screen 1" focus
 
 # change encoding
 # encoding euc
