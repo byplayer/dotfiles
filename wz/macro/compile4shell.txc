@@ -1,0 +1,1016 @@
+//---------------------------------------------------------------------------
+// shellモードプラグインを使ったコンパイル支援マクロ copyright (c) byplayer
+// mailto: byplayer@zoo.email.ne.jp
+//---------------------------------------------------------------------------
+// 
+// 
+//
+// 本マクロとプラグインに登録する前に、添付されているマニュアルに軽く目を
+// 通す事をお勧めします。
+
+//---------------------------------------------------------------------------
+#include <windows.h>
+
+#pragma TXM+
+
+//---------------------------------------------------------------------------
+//maclistから便利に使えるように
+typedef struct {
+	BOOL	fExecutable;	//このマクロから実行可能かどうか。引数の数と意味を解析するのは困難
+	mchar	*szFuncName;	//関数名
+	mchar	*szComment;		//表示するコメント
+} COMMENTTABLE,*PCOMMENTTABLE;
+
+COMMENTTABLE	_____Comment_____[] = {
+	{FALSE, "__pluginGetProperty", ""},
+	{FALSE, "__pluginHelp", ""},
+	{TRUE, "__pluginConfig", "プラグインの設定"},
+	{FALSE, "__on_txFrameNew", ""},
+	{TRUE, "sendCompileCommandMsg", "コンパイル"},
+	{TRUE, "sendRunCommandMsg", "実行"},
+	{TRUE, "sendErrorJumpMsg", "エラージャンプ"},
+	{FALSE, "baseTxHook", ""},
+	{FALSE, "runCommandInShell", ""},
+	{FALSE, "onCompileCommand", ""},
+	{FALSE, "onRunCommand", ""},
+	{FALSE, "jumpLikeTag", ""},
+	{FALSE, "onErrorJump", ""},
+	{FALSE, "getShellHwnd", ""},
+	{FALSE, "isShell", ""},
+	{FALSE, "setAbsoluteForegroundWindow", ""},
+	{FALSE, "setConfig", ""},
+	{FALSE, "readConfig", ""},
+	{FALSE, "checkCommandInfo", ""},
+	{FALSE, "getFileDir", ""},
+	{FALSE, "getFileName", ""},
+	{FALSE, "removeLastWhiteSpace", ""},
+	{FALSE, "getOptionFlag", ""},
+	{FALSE, "", ""}
+};
+
+//---------------------------------------------------------------------------
+//終了時に自動でparamanent変数を保存しないように
+#define __prmSave DummyFunctionName
+int __prmSave(void);
+
+#define __APPNAME__	"コンパイル支援プラグイン"
+#define __VERSION__	"0.02"
+#define __AUTHOR__	"byplayer"
+
+//---------------------------------------------------------------------------
+//他と重ならないように300にしてみた
+#define WM_COMPILE4SHELL		(WM_TXUSER	+ 300)
+
+//コマンドの種類
+#define IDCOMP_COMPILE			1
+#define IDCOMP_RUN				2
+#define IDCOMP_ERROR_JUMP		3
+
+//---------------------------------------------------------------------------
+//ターゲットコンパイラ 本当は保存する必要のない値だけど・・・
+permanent int g_targetCompiler = 0;
+
+#define JAVAC		0
+#define BCC			1
+#define ANT			2
+#define OTHER		3
+
+#define JAVAC_ERROR_SEARCH			"^.*[\\s\\t:]+.*"
+#define JAVAC_ERROR_FILE_SEARCH		"^...[^\\s\\t:]+"
+#define JAVAC_ERROR_LINE_SEARCH		"[0-9]+"
+
+#define BCC_ERROR_SEARCH			"^エラー.+"
+#define BCC_ERROR_FILE_SEARCH		"<[^\\s]+\\.[^\\s]+>"
+#define BCC_ERROR_LINE_SEARCH		"[0-9]+"
+
+#define ANT_ERROR_SEARCH			"^\\s+\\[javac\\] "
+#define ANT_ERROR_FILE_SEARCH		"<[a-zA-Z]:\\\\[^:]+>"
+#define ANT_ERROR_LINE_SEARCH		"[0-9]+"
+
+//エラー行を見つける条件
+permanent txstr g_errorSearch = JAVAC_ERROR_SEARCH;
+//エラー行からファイル名抽出条件
+permanent txstr g_errorFileSearch = JAVAC_ERROR_FILE_SEARCH;
+//エラー行抽出条件
+permanent txstr g_errorLineSearch = JAVAC_ERROR_LINE_SEARCH;
+
+//---------------------------------------------------------------------------
+//##設定ファイル関連
+//設定ファイル名
+#define CONFIG_FILE		"compile4shell.txt"
+//コンパイルコマンド
+#define CONF_COMPILE_COMMAND	"COMPILE_COMMAND[\\s\\t]*=[\\s\\t]*"
+//コンパイルオプション
+#define CONF_COMPILE_OPTION		"COMPILE_OPTION[\\s\\t]*=[\\s\\t]*"
+//コンパイルディレクトリ
+#define CONF_COMPILE_DIR		"COMPILE_DIR[\\s\\t]*=[\\s\\t]*"
+
+//実行コマンド
+#define CONF_RUN_COMMAND		"RUN_COMMAND[\\s\\t]*=[\\s\\t]*"
+//実行オプション
+#define CONF_RUN_OPTION			"RUN_OPTION[\\s\\t]*=[\\s\\t]*"
+//実行ディレクトリ
+#define CONF_RUN_DIR			"RUN_DIR[\\s\\t]*=[\\s\\t]*"
+
+//コマンド実行ディレクトリをファイルディレクトリへ
+#define FILE_DIR		"$(FILE_DIR)"
+
+//---------------------------------------------------------------------------
+//##設定用変数
+//shellのタイトル
+permanent txstr g_shellTitle				= "NUL";
+//デフォルトコンパイルコマンド
+permanent txstr g_defaultCompileCommand	= "make";
+//デフォルト実行コマンド
+permanent txstr g_defaultRunCommand				= "make run";
+
+//ファイルを保存するときに確認するか
+#define ASK_CALL_FILE_SAVE			0x01
+//コマンド実行前にshellをクリアするか
+#define CLEAR_SHELL_BEFORE_COMMAND	0x02
+//shell呼び出し時にshellをアクティブにするか
+#define SHELL_ACTIVE_AT_CALL		0x04
+//コンパイルコマンド呼び出しもとファイルを再びアクティブにするか
+#define SHELL_CALL_WINDOW_ACTIVE	0x08
+
+permanent unsigned int g_optionFlag = 0xFF;
+
+//---------------------------------------------------------------------------
+//##コンパイル情報管理
+permanent txstr g_baseDir;
+
+permanent txstr g_compileCommand;
+permanent txstr g_compileOption;
+permanent txstr g_compileDir;
+
+permanent txstr g_runCommand;
+permanent txstr g_runOption;
+permanent txstr g_runDir;
+
+permanent txstr g_filePath;
+
+//---------------------------------------------------------------------------
+//##設定ダイアログ用
+#define IDC_TARGET_COMPILER		1001
+#define IDC_ERROR_SEARCH		1002
+#define IDC_ERROR_FILE_SEARCH	1003
+#define IDC_ERROR_LINE_SEARCH	1004
+
+//---------------------------------------------------------------------------
+//##デバグ用フラグ
+//#define _SET_CONFIG_DEBUG
+//#define _READ_CONFIG_DEBUG
+//#define _CHECK_COMMAND_INFO_DEBUG
+//#define _RUN_COMMAND_IN_SHELL_DEBUG
+//#define _JUMP_LIKE_TAG_DEBUG
+
+//---------------------------------------------------------------------------
+//##ツール関数の宣言
+//メッセージフック関数
+HOOKRESULT CALLBACK baseTxHook(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam);
+
+//コンパイルコマンドメッセージ処理関数
+void onCompileCommand(TX* text, HWND callHwnd);
+
+//実行コマンドメッセージ処理関数
+void onRunCommand(TX* text, HWND callHwnd);
+
+//エラージャンプメッセージ処理関数
+void onErrorJump(TX* text, HWND callHwnd);
+
+//shellにメッセージを送る関数
+//shellが起動していないときに作るときはmodeCreateにTRUEをセットする事
+//それ以外の引数はSendMessageに渡すパラメータです
+void sendMsg2Shell(UINT msg, WPARAM wParam, LPARAM lParam, 
+					const BOOL modeCreate, TX* text);
+
+//引数のtextがshellか
+BOOL isShell(TX* text);
+
+//ウインドウを必ずアクティブにする関数
+void setAbsoluteForegroundWindow(HWND hWnd);
+
+//コマンドインフォをチェック
+void checkCommandInfo(TX* text);
+
+//ファイルのフルパスからファイルディレクトリ取得
+void getFileDir(const mchar* filePath, txstr fileDir);
+
+//ファイルのフルパスからファイル名取得
+void getFileName(const mchar* filePath, txstr fileName);
+
+//末尾の空白、タブを削除
+void removeLastWhiteSpace(txstr string);
+
+//---------------------------------------------------------------------------
+//##プラグイン用関数群
+//プラグインのプロパティ取得
+void __pluginGetProperty(mchar* prop,txstr res)
+{
+	if (!stricmp(prop,"name")) res =  __APPNAME__;
+	if (!stricmp(prop,"author")) res =  __AUTHOR__;
+	if (!stricmp(prop,"version")) res =  __VERSION__;
+}
+
+//プラグ引用ヘルプメッセージ
+void __pluginHelp(TX* text)
+{
+  information("shellモードプラグイン用コンパイル支援マクロです");
+}
+
+//オプションフラグが立っているか取得
+BOOL getOptionFlag(unsigned int target)
+{
+	return (0 == (g_optionFlag & target) ? FALSE : TRUE);
+}
+
+//オプションフラグを設定
+void setOptionFlag(unsigned int target, BOOL setFlag)
+{
+	if(TRUE == setFlag)
+	{
+		g_optionFlag |= target;
+	}
+	else
+	{
+		g_optionFlag &= ~target;
+	}
+}
+
+//エラージャンプ用設定項目の使用可・不可を変更
+void setErrorJumpDCEnabled(HWND hDlg, BOOL enabled)
+{
+	EnableDlgItem(hDlg, IDC_ERROR_SEARCH, enabled);
+	EnableDlgItem(hDlg, IDC_ERROR_FILE_SEARCH, enabled);
+	EnableDlgItem(hDlg, IDC_ERROR_LINE_SEARCH, enabled);
+}
+
+//エラージャンプ用設定項目にデータを反映
+void updateErrorJumpDC(HWND hDlg, mchar* errorSearch,
+						mchar* errorFileSearch, mchar* errorLineSearch)
+{
+	g_errorSearch = errorSearch;
+	g_errorFileSearch = errorFileSearch;
+	g_errorLineSearch = errorLineSearch;
+	
+	SendMessage(GetDlgItem(hDlg, IDC_ERROR_SEARCH), WM_SETTEXT, 
+				0, (LPARAM)g_errorSearch);
+	SendMessage(GetDlgItem(hDlg, IDC_ERROR_FILE_SEARCH), WM_SETTEXT, 
+				0, (LPARAM)g_errorFileSearch);
+	SendMessage(GetDlgItem(hDlg, IDC_ERROR_LINE_SEARCH), WM_SETTEXT, 
+				0, (LPARAM)g_errorLineSearch);
+}
+
+BOOL CALLBACK dlgprocPluginConfig(HWND hDlg,UINT message,WPARAM wParam,
+									LPARAM lParam)
+{
+	switch(message)
+	{
+	case WM_COMMAND:
+		switch(LOWORD(wParam))
+		{
+		case IDC_TARGET_COMPILER:
+			if(CBN_SELCHANGE == HIWORD(wParam))
+			{
+				int	sel = SendMessage((HWND)lParam,CB_GETCURSEL,0,0);
+				if (sel != CB_ERR)
+				{
+					switch(sel)
+					{
+					case JAVAC:
+						setErrorJumpDCEnabled(hDlg, FALSE);
+						updateErrorJumpDC(hDlg, JAVAC_ERROR_SEARCH,
+							JAVAC_ERROR_FILE_SEARCH, JAVAC_ERROR_LINE_SEARCH);
+						break;
+					
+					case BCC:
+						setErrorJumpDCEnabled(hDlg, FALSE);
+						updateErrorJumpDC(hDlg, BCC_ERROR_SEARCH,
+							BCC_ERROR_FILE_SEARCH, BCC_ERROR_LINE_SEARCH);
+						break;
+					
+					case ANT:
+						setErrorJumpDCEnabled(hDlg, FALSE);
+						updateErrorJumpDC(hDlg, ANT_ERROR_SEARCH,
+							ANT_ERROR_FILE_SEARCH, ANT_ERROR_LINE_SEARCH);
+						break;
+					
+					default:
+						setErrorJumpDCEnabled(hDlg, TRUE);
+						break;
+					}
+				}
+			}
+			break;
+		}
+		break;
+	}
+	return FALSE;
+}
+
+//プラグインの設定
+void __pluginConfig(TX* text)
+{
+	const int labelWidth = 18;
+	const int editWidth = 20;
+	const int headlineWidth = 50;
+	
+	HDIALOG hDialog = dialog(__APPNAME__ "の設定");
+	dialogSetDlgprocTxpcode(hDialog, dlgprocPluginConfig);
+	
+	//基本設定タブ
+	HDIALOG hBasicPage = dialog("基本設定");
+	
+	dialogHeadline(hBasicPage, "shell関連の設定", headlineWidth);
+	
+	dialogTxstr(hBasicPage, "shell タイトル", labelWidth, 
+				g_shellTitle, editWidth);
+	
+	dialogHeadline(hBasicPage, "デフォルトのコマンド設定", headlineWidth);
+	dialogTxstr(hBasicPage, "コンパイルコマンド", labelWidth, 
+			 g_defaultCompileCommand, editWidth);
+	dialogTxstr(hBasicPage, "実行コマンド", labelWidth, 
+				g_defaultRunCommand, editWidth);
+	dialogAddPage(hDialog, hBasicPage);
+	
+	int option[4];
+	
+	option[0] = getOptionFlag(ASK_CALL_FILE_SAVE);
+	option[1] = getOptionFlag(CLEAR_SHELL_BEFORE_COMMAND);
+	option[2] = getOptionFlag(SHELL_ACTIVE_AT_CALL);
+	option[3] = getOptionFlag(SHELL_CALL_WINDOW_ACTIVE);
+	
+	//オプションタブ
+	HDIALOG hOptionPage = dialog("オプション");
+	dialogCheck(hOptionPage, "ファイル保存の前に確認をする", 
+		&option[0]);
+	dialogCheck(hOptionPage, "コマンド実行前にshellをクリアする",
+		&option[1]);
+	dialogCheck(hOptionPage, "shellをアクティブにする",
+		&option[2]);
+	dialogCheck(hOptionPage, "呼び出し元ファイルをアクティブにする",
+		&option[3]);
+	dialogAddPage(hDialog, hOptionPage);
+	
+	//拡張オプションタブ
+	HDIALOG hErrorOption = dialog("エラージャンプの設定");
+	
+	dialogControlID(hErrorOption,IDC_TARGET_COMPILER);
+	dialogChoice(hErrorOption, "対象コンパイラ", labelWidth, &g_targetCompiler, 
+				editWidth, 
+				"javac", "BCC", "ANT", "その他", NULL);
+	
+	dialogHeadline(hErrorOption, "", headlineWidth);
+	
+	const BOOL enabled = (g_targetCompiler == OTHER);
+	
+	dialogControlEnable(hErrorOption, enabled);
+	dialogControlID(hErrorOption,IDC_ERROR_SEARCH);
+	dialogTxstr(hErrorOption, "エラー行検索条件", labelWidth,
+				g_errorSearch ,editWidth);
+	
+	dialogControlEnable(hErrorOption, enabled);
+	dialogControlID(hErrorOption,IDC_ERROR_FILE_SEARCH);
+	dialogTxstr(hErrorOption, "エラーファイル抽出条件", labelWidth,
+				g_errorFileSearch ,editWidth);
+	
+	dialogControlEnable(hErrorOption, enabled);
+	dialogControlID(hErrorOption,IDC_ERROR_LINE_SEARCH);
+	dialogTxstr(hErrorOption, "エラー行番号抽出条件", labelWidth,
+				g_errorLineSearch ,editWidth);
+	
+	dialogAddPage(hDialog, hErrorOption);
+	
+	//About
+	HDIALOG hAbout = dialog("About");
+	dialogCaption(hAbout, __APPNAME__ + " Ver. " + __VERSION__ );
+	dialogCaption(hAbout, "Copyright (c) " + __AUTHOR__);
+	dialogAddPage(hDialog, hAbout);
+	
+	//ダイアログ表示
+	if(IDOK == dialogOpen(hDialog))
+	{
+		setOptionFlag(ASK_CALL_FILE_SAVE, option[0]);
+		setOptionFlag(CLEAR_SHELL_BEFORE_COMMAND, option[1]);
+		setOptionFlag(SHELL_ACTIVE_AT_CALL, option[2]);
+		setOptionFlag(SHELL_CALL_WINDOW_ACTIVE, option[3]);
+		
+		__prmSave();
+		g_baseDir = "";
+	}
+}
+
+//フレームが作られるときに呼ばれる
+void __on_txFrameNew(TX* text)
+{
+	txSetHookWndprocbaseTxpcode(text,baseTxHook);
+}
+
+//---------------------------------------------------------------------------
+//##shellにメッセージを送る関数群
+//コンパイルメッセージを送る
+void sendCompileCommandMsg(TX* text)
+{
+	checkCommandInfo(text);
+	sendMsg2Shell(WM_COMPILE4SHELL, IDCOMP_COMPILE, (LPARAM)text->hwndbase,
+		TRUE, text);
+}
+
+//実行メッセージを送る
+void sendRunCommandMsg(TX* text)
+{
+	checkCommandInfo(text);
+	sendMsg2Shell(WM_COMPILE4SHELL, IDCOMP_RUN, (LPARAM)text->hwndbase,
+		TRUE, text);
+}
+
+//エラージャンプメッセージを送る
+void sendErrorJumpMsg(TX* text)
+{
+	sendMsg2Shell(WM_COMPILE4SHELL, IDCOMP_ERROR_JUMP, (LPARAM)text->hwndbase,
+		FALSE, text);
+}
+
+//---------------------------------------------------------------------------
+//##メッセージフック実装
+//メッセージフック関数
+HOOKRESULT CALLBACK baseTxHook(HWND hwnd,UINT uMsg,WPARAM wParam, LPARAM lParam)
+{
+	HOOKRESULT result = HOOK_CONTINUE;
+	TX* text = hwndtextGetText(hwnd);
+	//念のためNULLチェック
+	if(NULL != text)
+	{
+		if(uMsg == WM_COMPILE4SHELL)
+		{
+			if(TRUE == isShell(text))
+			{
+				if(0 != (g_optionFlag & SHELL_ACTIVE_AT_CALL))
+				{
+					setAbsoluteForegroundWindow(text->hwndbase);
+				}
+				
+				switch(wParam)
+				{
+				case IDCOMP_COMPILE:
+					onCompileCommand(text, (HWND)lParam);
+					break;
+					
+				case IDCOMP_RUN:
+					onRunCommand(text, (HWND)lParam);
+					break;
+					
+				case IDCOMP_ERROR_JUMP:
+					onErrorJump(text, (HWND)lParam);
+					break;
+				}
+				
+				result = HOOK_CAPTURE;
+			}
+		}
+	}
+	return HOOK_CONTINUE;
+}
+
+//指定コマンドをshellで実行
+void runCommandInShell(TX* text, 
+						const mchar* cmd,
+						const mchar* option,
+						const mchar* dir,
+						const mchar* filePath,
+						HWND callHwnd)
+{
+#ifdef _RUN_COMMAND_IN_SHELL_DEBUG
+	print("%s\n%s\n%s\n%s\n", cmd, option, dir, filePath);
+#endif // _RUN_COMMAND_IN_SHELL_DEBUG
+
+	if(0 != (g_optionFlag & CLEAR_SHELL_BEFORE_COMMAND))
+	{
+		txDeleteText(text);
+	}
+	
+	if(0 != strcmp(dir, ""))
+	{
+		if(0 == strcmp(dir, FILE_DIR))
+		{
+			txstr fileDir;
+			getFileDir(filePath, fileDir);
+			txInsert(text, "cd \"" + fileDir + "\"");
+			macroExec("shell.exec_command", text);
+		}
+		else
+		{
+			txInsert(text, "cd \"" + dir + "\"");
+			macroExec("shell.exec_command", text);
+		}
+	}
+	
+	txInsert(text, cmd + " " + option);
+	macroExec("shell.exec_command", text);
+	
+	if(0 != (g_optionFlag & SHELL_CALL_WINDOW_ACTIVE))
+	{
+		setAbsoluteForegroundWindow(callHwnd);
+	}
+}
+
+//コンパイルコマンドメッセージ処理関数
+void onCompileCommand(TX* text, HWND callHwnd)
+{
+	runCommandInShell(text, g_compileCommand,
+		g_compileOption, g_compileDir, 
+		g_filePath, callHwnd);
+}
+
+//実行コマンドメッセージ処理関数
+void onRunCommand(TX* text, HWND callHwnd)
+{
+	runCommandInShell(text, g_runCommand,
+		g_runOption, g_runDir,
+		g_filePath, callHwnd);
+}
+
+
+//カーソルの論理行に対しタグジャンプみたいない事を実現
+//タグジャンプだとファイルの有無を確認しないので、まずい事があるから
+//ジャンプ出来たときTRUEを返す
+BOOL jumpLikeTag(TX* text)
+{
+	BOOL canJump = FALSE;
+	
+#ifdef _JUMP_LIKE_TAG_DEBUG
+	information("%s", g_errorSearch);
+#endif // _JUMP_LIKE_TAG_DEBUG
+	
+	if(0 != txSearchEx(text, g_errorSearch, 
+			(SEARCH_FORWARD | SEARCH_CUR | SEARCH_PARATOP | SEARCH_REWZ)))
+	{
+		//パラグラフ取得
+		txstr paraString;
+		txGetPara(text, paraString);
+
+		//カーソルを選択範囲の終わりへ移動
+		txSelectJump(text);
+		
+#ifdef _JUMP_LIKE_TAG_DEBUG
+		information("%s\n%s", paraString, g_errorFileSearch);
+#endif // _JUMP_LIKE_TAG_DEBUG
+
+		//ファイル名の候補になりそうな物を探す
+		DWORD length;
+		mchar* pSearchTop
+			= reSearchEx(paraString, g_errorFileSearch, SEARCH_REWZ, &length);
+//			= reSearchEx(paraString, g_errorFileSearch, SEARCH_REVWXW, &length);
+		if(0 != length)
+		{
+			txstr filePath;
+			strncpy(filePath, pSearchTop, length);
+			
+#ifdef _JUMP_LIKE_TAG_DEBUG
+			information("filaPath = \"%s\"", filePath);
+#endif // _JUMP_LIKE_TAG_DEBUG
+
+			//ファイルがあるかチェック
+			if(TRUE == fileIsExist(filePath))
+			{
+#ifdef _JUMP_LIKE_TAG_DEBUG
+				information("file exist");
+#endif // _JUMP_LIKE_TAG_DEBUG
+
+				paraString = strrear(pSearchTop, (int)length);
+				
+#ifdef _JUMP_LIKE_TAG_DEBUG
+		information("%s", paraString);
+#endif // _JUMP_LIKE_TAG_DEBUG
+				
+				//行番号があれば取得
+				pSearchTop = reSearchEx(paraString, g_errorLineSearch,
+										SEARCH_REWZ, &length);
+				if((NULL != pSearchTop) && (0 != length))
+				{
+					txstr row;
+					strncpy(row, pSearchTop, length);
+					
+#ifdef _JUMP_LIKE_TAG_DEBUG
+					information("row = %s", row);
+#endif // _JUMP_LIKE_TAG_DEBUG
+
+					if(0 != strcmp(strleft(filePath, 1), "\""))
+					{
+						filePath = "\"" + filePath + "\"";
+					}
+					
+					//ファイルを開く
+					TX* errorText = textFrameOpenEx(filePath,  " /j" + row);
+					
+					canJump = TRUE;
+				}
+			}
+		}
+	}
+	
+	return canJump;
+}
+
+//エラージャンプメッセージ処理関数
+void onErrorJump(TX* text, HWND callHwnd)
+{
+	//成功するまでタグジャンプ
+	BOOL isContinue = TRUE;
+	//先頭へ移動したか
+	BOOL isJumpTop = FALSE;
+
+	while(isContinue)
+	{
+		if(TRUE == jumpLikeTag(text))
+		{
+			isContinue = FALSE;
+		}
+		else
+		{
+			if(FALSE == txNextPara(text))
+			{
+				//選択範囲をなくす
+				txSelectQuit(text);
+				//先頭へ
+				txJumpFileTop(text);
+				if(TRUE == isJumpTop)
+				{
+					statprintf("エラー行は見つかりませんでした");
+					if(0 != (g_optionFlag & SHELL_CALL_WINDOW_ACTIVE))
+					{
+						setAbsoluteForegroundWindow(callHwnd);
+					}
+					isContinue = FALSE;
+				}
+				else
+				{
+					isJumpTop = TRUE;
+				}
+			}
+		}
+		
+	}
+}
+
+//---------------------------------------------------------------------------
+//##ツール関数実装
+//shellのウィンドウハンドル取得
+//無ければ作る時は引数にTRUEを指定
+HWND getShellHwnd(const BOOL modeCreate, TX* text)
+{
+	//shellが起動してるかチェック
+	HWND hwnd = apSearchWindow(g_shellTitle);
+	if((NULL == hwnd) && (TRUE == modeCreate))
+	{
+		//起動してなければ立ち上げる
+		macroExec("shell.main", text);
+		hwnd = apSearchWindow(g_shellTitle);
+	}
+	
+	return hwnd;
+}
+
+//shellにメッセージを送る関数
+//shellが起動していないときに作るときはmodeCreateにTRUEをセットする事
+//それ以外の引数はSendMessageに渡すパラメータです
+void sendMsg2Shell(UINT msg, WPARAM wParam, LPARAM lParam,
+					const BOOL modeCreate, TX* text)
+{
+	if(TRUE == txGetEdit(text))
+	{
+		BOOL saveFile = FALSE;
+		if(0 != (g_optionFlag & ASK_CALL_FILE_SAVE))
+		{
+			if(IDYES == question("ファイルが変更されています\n"
+								"保存しますか"))
+			{
+				saveFile = TRUE;
+			}
+		}
+		else
+		{
+			saveFile = TRUE;
+		}
+		
+		if(TRUE == saveFile)
+		{
+			if(FALSE == txSave(text))
+			{
+				attention("ファイルのセーブに失敗しました");
+				return;
+			}
+		}
+	}
+	
+	HWND hwnd = getShellHwnd(modeCreate, text);
+	if(NULL != hwnd)
+	{
+		SendMessage(hwnd, msg, wParam, lParam);
+	}
+}
+
+//引数のtextがshellか
+BOOL isShell(TX* text)
+{
+	BOOL isShell = FALSE;
+	if(TRUE == macroExec("shell.is_console", text))
+	{
+		isShell = TRUE;
+	}
+	return isShell;
+}
+
+void setAbsoluteForegroundWindow(HWND hWnd)
+{
+    // フォアグラウンドウィンドウを作成したスレッドのIDを取得
+    DWORD foregroundID = GetWindowThreadProcessId(GetForegroundWindow(), NULL);
+    // 目的のウィンドウを作成したスレッドのIDを取得
+    DWORD targetID = GetWindowThreadProcessId(hWnd, NULL);
+
+    // スレッドのインプット状態を結び付ける
+    AttachThreadInput(targetID, foregroundID, TRUE);  // TRUE で結び付け
+
+	//VC includeフォルダ WUNUSER.Hの値を拝借
+	//ちょっと危険かも・・・
+	const DWORD SPI_GETFOREGROUNDLOCKTIMEOUT = 0x2000;
+	const DWORD SPI_SETFOREGROUNDLOCKTIMEOUT = 0x2001;
+
+	DWORD sp_time;
+    // 現在の設定を sp_time に保存
+    SystemParametersInfo(SPI_GETFOREGROUNDLOCKTIMEOUT,0,&sp_time,0);
+    // ウィンドウの切り替え時間を 0ms にする
+    SystemParametersInfo(SPI_SETFOREGROUNDLOCKTIMEOUT,0,(LPVOID)0,0);
+
+    // ウィンドウをフォアグラウンドに持ってくる
+    SetForegroundWindow(hWnd);
+
+    // 設定を元に戻す
+    SystemParametersInfo(SPI_SETFOREGROUNDLOCKTIMEOUT,0, (LPVOID)sp_time,0);
+
+    // スレッドのインプット状態を切り離す
+    AttachThreadInput(targetID, foregroundID, FALSE );  // FALSE で切り離し
+}
+
+//設定を読み出してセットする
+void setConfig(TX* text)
+{
+#ifdef _SET_CONFIG_DEBUG
+	information("setConfig");
+#endif // _SET_CONFIG_DEBUG
+	txstr paraString;
+	
+	while(TRUE)
+	{
+		txGetPara(text, paraString);
+		//先頭が.だったら新しいディレクトリ設定の始まりなので抜ける
+		if(0 == strcmp(strleft(paraString, 1), "."))
+		{
+			break;
+		}
+		
+		//コメントチェック
+		if(0 != strcmp(strleft(paraString, 1), "#"))
+		{
+#ifdef _SET_CONFIG_DEBUG
+			information("\"%s\"", paraString);
+#endif // _SET_CONFIG_DEBUG
+			int length;
+			if(NULL != reSearchEx(paraString, CONF_COMPILE_COMMAND,
+				SEARCH_REVWXW, &length))
+			{
+				paraString = strright(paraString, 
+								(strlen(paraString) - length));
+				removeLastWhiteSpace(paraString);
+				g_compileCommand = paraString;
+			}
+			else if(NULL != reSearchEx(paraString, CONF_COMPILE_OPTION,
+				SEARCH_REVWXW, &length))
+			{
+				paraString = strright(paraString, 
+								(strlen(paraString) - length));
+				removeLastWhiteSpace(paraString);
+				g_compileOption = paraString;
+			}
+			else if(NULL != reSearchEx(paraString, CONF_COMPILE_DIR,
+				SEARCH_REVWXW, &length))
+			{
+				paraString = strright(paraString, 
+								(strlen(paraString) - length));
+				removeLastWhiteSpace(paraString);
+				g_compileDir = paraString;
+			}
+			else if(NULL != reSearchEx(paraString, CONF_RUN_COMMAND,
+				SEARCH_REVWXW, &length))
+			{
+				paraString = strright(paraString, 
+								(strlen(paraString) - length));
+				removeLastWhiteSpace(paraString);
+				g_runCommand = paraString;
+			}
+			else if(NULL != reSearchEx(paraString, CONF_RUN_OPTION,
+				SEARCH_REVWXW, &length))
+			{
+				paraString = strright(paraString, 
+								(strlen(paraString) - length));
+				removeLastWhiteSpace(paraString);
+				g_runOption = paraString;
+			}
+			else if(NULL != reSearchEx(paraString, CONF_RUN_DIR,
+				SEARCH_REVWXW, &length))
+			{
+				paraString = strright(paraString, 
+								(strlen(paraString) - length));
+				removeLastWhiteSpace(paraString);
+				g_runDir = paraString;
+			}
+#ifdef _SET_CONFIG_DEBUG
+			information("\"%s\"", paraString);
+#endif // _SET_CONFIG_DEBUG
+		}
+		
+		if(FALSE == txNextPara(text))
+		{
+			break;
+		}
+	}
+}
+
+//コンフィグファイルを読む
+//現在のファイルパスとマッチし、設定を読み込んだら TRUE
+//設定がマッチしなかったとき FALSE
+BOOL readConfig(TX* text, mchar* filePath)
+{
+	txstr paraString;
+	txGetPara(text, paraString);
+	
+#ifdef _READ_CONFIG_DEBUG
+	information("\"%s\"", paraString);
+#endif // _READ_CONFIG_DEBUG
+
+	//先頭の.を削除
+	paraString = strright(paraString, (strlen(paraString)-1));
+	//末尾のタブ・空白削除
+	removeLastWhiteSpace(paraString);
+
+#ifdef _READ_CONFIG_DEBUG
+	information("\"%s\"", paraString);
+#endif // _READ_CONFIG_DEBUG
+		
+	//ファイルとマッチするかチェック
+	mchar* pChar = strstr(filePath, paraString);
+	if(NULL != pChar)
+	{
+		//ディレクトリ設定
+		g_baseDir = paraString;
+		if(TRUE == txNextPara(text))
+			setConfig(text);
+		
+		return TRUE;
+	}
+	
+	return FALSE;
+}
+
+//コマンド情報をチェックします
+void checkCommandInfo(TX* text)
+{
+	//シェルの時は無視
+	if(NULL != strstr(text->szfilename, g_shellTitle))
+	{
+		return;
+	}
+	
+	//設定ファイルを読みに行くかチェック
+	BOOL readConfing = FALSE;
+	if(strlen(g_baseDir) == 0)
+	{
+		readConfing = TRUE;
+	}
+	else
+	{
+		//現在のベースディレクトリとマッチするか
+		mchar* pPos = strstr(text->szfilename, g_baseDir);
+		if(NULL == pPos)
+		{
+			readConfing = TRUE;
+		}
+	}
+	
+	if(TRUE == readConfing)
+	{
+		//設定を初期化しておく
+		g_compileCommand = g_defaultCompileCommand;
+		g_compileOption = "";
+		g_compileDir = "";
+			
+		g_runCommand = g_defaultRunCommand;
+		g_runOption = "";
+		g_runDir = "";
+		
+		//設定が読み込めたか
+		BOOL canReadSetting = FALSE;
+		
+		//設定ファイルを開く
+		txstr confFilePath;
+		pathFullConfig(confFilePath, CONFIG_FILE);
+		TX* confText = textopen(confFilePath);
+		//先頭へジャンプ
+		txJumpFileTop(confText);
+		
+		//ディレクトリ設定を読み込んでみる
+		int length;
+		length = txSearchEx(confText, "^\\..*",
+					(SEARCH_CUR | SEARCH_PARATOP| SEARCH_REWZ));
+		if(0 != length)
+		{
+			//ディレクトリ設定があった
+			//設定読み込み
+			if(FALSE == readConfig(confText, text->szfilename))
+			{
+				while(0 != txSearchEx(confText, "^\\..*",
+								(SEARCH_PARATOP| SEARCH_REWZ)))
+				{
+					if(TRUE == readConfig(confText, text->szfilename))
+					{
+						canReadSetting = TRUE;
+						break;
+					}
+				}
+				
+			}
+			else
+			{
+				canReadSetting = TRUE;
+			}
+		}
+		
+		//設定ファイルを閉じる	
+		textclose(confText);
+		
+		if(FALSE == canReadSetting)
+		{
+			//今のファイルのディレクトリを選択しておく
+			getFileDir(text->szfilename, g_baseDir);
+		}
+	}
+	
+	//毎回書くのはまずいかも
+	g_filePath = text->szfilename;
+	__prmSave();
+	
+#ifdef _CHECK_COMMAND_INFO_DEBUG
+	information("baseDir : \"%s\"\n\n"
+				"compileCommand : \"%s\"\n"
+				"compileOption  : \"%s\"\n"
+				"compileDir     : \"%s\"\n\n"
+				"runCommand : \"%s\"\n"
+				"runOption  : \"%s\"\n"
+				"runDir     : \"%s\"",
+		g_baseDir, g_compileCommand,
+		g_compileOption, g_compileDir,
+		g_runCommand, g_runOption,
+		g_runDir);
+#endif // _CHECK_COMMAND_INFO_DEBUG
+}
+
+//ファイルのフルパスからファイルディレクトリ取得
+void getFileDir(const mchar* filePath, txstr fileDir)
+{
+	//本当は、後ろから\探してその位置までコピーすれば
+	//良いのだが、良い方法見つからないから。
+	//面倒なので正規表現に頼っちゃう
+	int length;
+	mchar* pPos = reSearchEx(filePath, "^.*\\\\", 0, &length);
+	if(NULL != pPos)
+	{
+		strcpylen(fileDir, pPos, length-1);
+	}
+}
+
+//ファイルのフルパスからファイル名取得
+void getFileName(const mchar* filePath, txstr fileName)
+{
+	//本当は、後ろから\探してその位置以降をコピーすれば
+	//良いのだが、良い方法見つからないから。
+	//面倒なので正規表現に頼っちゃう
+	int length;
+	mchar* pPos = reSearchEx(filePath, "^.*\\\\", 0, &length);
+	if(NULL != pPos)
+	{
+		pPos += length;
+		strcpylen(fileName, pPos, strlen(filePath) - length);
+	}
+}
+
+//末尾の空白、タブを削除
+void removeLastWhiteSpace(txstr string)
+{
+	//末尾のタブ・空白削除
+	int length;
+	if(NULL != reSearchEx(string, "[\t\s]*$", SEARCH_REVWXW,
+						&length))
+	{
+		string = strleft(string, strlen(string)-length);
+	}
+}

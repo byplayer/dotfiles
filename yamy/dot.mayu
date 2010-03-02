@@ -1,0 +1,45 @@
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# 窓使いの憂鬱 - dot.mayu
+# 設定ファイル
+#
+
+# まずキーボード定義を読み込む
+if ( USE104 )
+  include "104.mayu"    # 104 キーボード設定
+  if ( USE109on104 )
+    include "109on104.mayu" # 104 キーボードを 109 キーボード風に
+  endif
+else
+  include "109.mayu"    # 109 キーボード設定
+  if ( USE104on109 )
+    include "104on109.mayu" # 109 キーボードを 104 キーボード風に
+  endif
+endif
+
+# if ( USEdefault )
+#   include "default.mayu"  # Emacs ライクなさまざまな設定
+# endif
+
+keymap Global
+  # workaround.regが入っているのが前提
+  mod control += 英数       # 英数を Control に
+  key *英数   = *LControl   # 〃
+  mod control += E0英数     # 英数を Control に
+  key *E0英数   = *LControl   # 〃
+
+  # HHKライクに
+  mod shift -= ReverseSolidus
+  mod mod0 = !ReverseSolidus
+
+  key *C-*S-M0-J      => *C-*S-Home
+  key *C-*S-M0-M      => *C-*S-End
+  key *C-*S-M0-P      => *C-*S-Up
+  key *C-*S-M0-L      => *C-*S-Left
+  # TODO: CTRL, SHIFT + 右矢印の挙動ができていない
+  key M0-Semicolon  => *C-*S-Right
+  key *C-*S-M0-FullStop => *C-*S-Down
+  key *C-*S-M0-K      => *C-*S-PageUp
+  key *C-*S-M0-Comma    => *C-*S-PageDown
+
+
+

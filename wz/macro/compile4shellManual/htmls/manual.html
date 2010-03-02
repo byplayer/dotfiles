@@ -1,0 +1,521 @@
+<!doctype html public "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<meta name="generator" content="WZ Editor4.0">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</style>
+<title>compile4shell</title>
+<link rel="STYLESHEET" type="text/css" href="../style.css">
+</head>
+<body>
+
+<h1>compile4shell</h1>
+<div class="subTitle">
+	shellモードプラグイン用コンパイル支援マクロ
+</div>
+
+<hr>
+
+<div class="sectionBlock">
+	<h2><a name="outline">概要</a></h2>
+	<div class="section">
+		<p>WZには、t_kumagaiさんが作られた「shellモードプラグインマクロ」と言う物があります。shellモードプラグインはWZの中で、shell(コマンドプロンプト)を実行出来てしまうという素晴らしいマクロなのです。それが出来ると何が良いかと言うと、コンパイル後エラーがあったらエラー文を読んで、ファイルを探して開いて、エラーへ移動する、という作業がWZ搭載のタグジャンプ機能で実現出来るわけです。こいつは、便利です。</p>
+		
+		<p>しかし、僕は極度にマウス操作が嫌いな人間でして（だってマウス使うと肩こるじゃん！）。そんな僕が、ソース編集→shellをアクティブにしてコンパイルという１日に何度繰り返すか分からない作業をマウスで行うのに耐えられなくなって作ったのが、このマクロです。</p>
+		
+		<p>WZを使っている人でどの位の人がemacsを使った事があるか分かりませんが、emacsは、エディタで編集→コンパイル→エラージャンプ→編集→コンパイルが出来るのです。あれを目指したのです。</p>
+	</div>
+</div>
+
+<div class="sectionBlock">
+	<h2><a name="environment">動作確認環境</a></h2>
+	<div class="section">
+		<p>このマクロはWZ 4.00E + shellモードプラグイン0.02 windows 2000で動作確認をしています。</p>
+		
+		<p>これ以外のwindows環境でも動くと思いますが、windows 2000環境で必ずウインドがアクティブになるようにする都合上、windows2000から追加された設定項目を読んでいる箇所があります。そのため、それ以外のwindows環境では、不具合が出るかもしれません。その場合は、言っていただければオプションメニューにその設定を利用するかどうかを追加します。</p>
+	</div>
+</div>
+
+<div class="sectionBlock">
+	<h2><a name="first">まず始めに</a></h2>
+	<div class="section">
+		<p>すでに、「shellモードプラグイン」を使っている方は、この章を読み飛ばして頂いてかまいません。</p>
+		
+		<p>何よりも先に、t_kumagaiさん作「shellモードプラグイン」を入手しプラグインマクロとして登録してください。これがないと使えません。t_kumagaiさんに感謝！</p>
+		
+		<p>初めて、「shellモードプラグイン」をインストールした方は、この段階でshellを開いて、dirなどのコマンドがちゃんと動くか確かめておくと、あとでトラブルが起きたときに原因究明の足がかりになるかもしれません。</p>
+	</div>
+</div>
+
+<div class="sectionBlock">
+	<h2><a name="install">インストール</a></h2>
+	<div class="section">
+		<p>次に、compile4shell.txcをマクロフォルダにコピーし、プラグインマクロに登録します。インストール作業は以上です。今後のために、このマニュアルフォルダを丸ごとマクロフォルダの下などにコピーしておくと、良いかもしれません。</p>
+	</div>
+</div>
+
+<div class="sectionBlock">
+	<h2><a name="how_to_use">使い方</a></h2>
+	<div class="section">
+		<p>以下が、コンパイル、実行、エラージャンプをする関数名です。。</p>
+		<table class="config" border="1">
+			<tr>
+				<td>sendCompileCommandMsg</td>
+				<td>
+					コンパイルコマンドで指定したコマンドをshellで実行します。
+				</td>
+			</tr>
+			<tr>
+				<td>sendRunCommandMsg</td>
+				<td>
+					実行コマンドで指定したコマンドをshellで実行します。
+				</td>
+			</tr>
+			<tr>
+				<td>sendErrorJumpMsg</td>
+				<td>
+					shell内のエラー箇所を探し、ファイルを開きます。
+				</td>
+			</tr>
+		</table>
+		
+		<p>これらの関数を、特定のキーに割り当てるか、マクロを実行などから呼んで利用してください。</p>
+		
+		<p>僕は、以下のようなVisual C++と同じキーバインドを利用しています。</p>
+		
+		<table class="config" border="1">
+			<tr>
+				<td>sendCompileCommandMsg</td>
+				<td class="key" width="100">F7</td>
+			</tr>
+			<tr>
+				<td>sendRunCommandMsg</td>
+				<td class="key">F5</td>
+			</tr>
+			<tr>
+				<td>sendErrorJumpMsg</td>
+				<td class="key" >F4</td>
+			</tr>
+		</table>
+		
+		<p>また、M.Ishidaさん作のmaclistマクロを利用されている方は、以下の名前で各関数が表示されるので、それを選択する事により、コンパイル、実行、エラージャンプをすることができます。</p>
+		
+		<table class="config" border="1">
+			<tr>
+				<td>sendCompileCommandMsg</td>
+				<td>
+					コンパイル
+				</td>
+			</tr>
+			<tr>
+				<td>sendRunCommandMsg</td>
+				<td>
+					実行
+				</td>
+			</tr>
+			<tr>
+				<td>sendErrorJumpMsg</td>
+				<td>
+					エラージャンプ
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
+
+<div class="sectionBlock">
+	<h2><a name="basicConfig">基本設定</a></h2>
+	<div class="section">
+		<div class="image">
+			<p><img src="./image/BasicConfig.jpg"></p>
+		</div>
+		
+		<table class="config" border="1">
+			<tr>
+				<td width="100">shellタイトル</td>
+				<td>
+					<div class="image"><img src="./image/ShellConfig.jpg"></div>
+					<p>上図にあるshellの設定で入力した「shellタイトル」と同じ文字列を設定します。</p>
+					<p><span class="notice">本マクロは、ここに設定されたウインドウのキャプションを持つWZを検索し、見つかった物をshellと思って動きます。故に、正しいshellのタイトルを設定してください。ここが間違っていると、かなり悲しいことになります。</span></p>
+				</td>
+			</tr>
+			<tr>
+				<td>コンパイルコマンド</td>
+				<td>
+					<p><a href="./manual.html#dirConfig">ディレクトリ個別の設定</a>がない場合に、利用するコンパイル用コマンドを設定します。</p>
+				</tr>
+			</tr>
+			<tr>
+				<td>実行コマンド</td>
+				<td>
+					<p><a href="./manual.html#dirConfig">ディレクトリ個別の設定</a>がない場合に、利用する実行用コマンドを設定します。</p>
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
+
+<div class="sectionBlock">
+	<h2><a name="option">オプション</a></h2>
+	<div class="section">
+		<div class="image"><img src="./image/Option.jpg"></div>
+		<table class="config" border="1">
+			<tr>
+				<td width="210">ファイル保存の前に確認する</td>
+				<td>
+					<p>チェックされている場合は、「コンパイル」「実行」コマンドを呼び出し時に、ファイルが編集されている場合、保存するかどうかを確認するダイアログを出します。</p>
+					
+					<p>チェックされていない場合、自動でファイルを上書き保存しコマンドを呼び出します。</p>
+				</td>
+			</tr>
+			<tr>
+				<td>コマンド実行前にshellをクリアする</td>
+				<td>
+					<p>チェックされている場合、「コンパイル」「実行」コマンドをshellで実行する前に、shellの内容を削除します。</p>
+				</td>
+			</tr>
+			<tr>
+				<td>shellをアクティブにする</td>
+				<td>
+					<p>チェックされている場合は、「コンパイル」「実行」「エラージャンプ」時に、shellをアクティブにします。</p>
+					
+					<p>チェックされていない場合、shellをアクティブにしません。ただし、初めてshellを起動した場合は、shellがアクティブになります。これは、仕様です(＾＾;</p>
+				</td>
+			</tr>
+			<tr>
+				<td>呼び出し元ファイルをアクティブにする</td>
+				<td>
+					<p>チェックされている場合、「コンパイル」「実行」「エラージャンプ時にエラーファイルが見つからなかった場合」それらのコマンドを実行したファイルをアクティブにします。</p>
+					
+					<p>ただし、「エラージャンプ時にエラーファイルが見つかった場合」は、エラーファイルをアクティブにします。</p>
+				</td>
+			</tr>
+		</table>
+		
+		<p>「shellをアクティブにする」と「呼び出し元ファイルをアクティブにする」の両方にチェックを入れた時の振る舞い：</p>
+		<div class="section">
+			<p>まず「shellのウインドウ」がアクティブになり、その後すぐに「呼び出しもとファイル」がアクティブになります。</p>
+		</div>
+	</div>
+</div>
+
+<div class="sectionBlock">
+	<h2><a name="dirConfig">ディレクトリ個別の設定</a></h2>
+	<div class="section">
+		<p>「ディレクトリ個別の設定」とは、特定のディレクトリ以下のファイルに対し、共通のコンパイルコマンド、実行コマンド、コンパイルディレクトリ、実行ディレクトリを設定することです。</p>
+		
+		<p>設定ファイルは、WZをインストールしたディレクトリにcompile4shell.txtと言う名前で保存します。設定ファイルには以下のような構造になります。</p>
+		
+		<table class="dirConfig" border="1">
+			<tr>
+				<td width="200">先頭が「.」で始まる行</td>
+				<td width="400">
+					<p>この設定を適用するディレクトリ</p>
+					<p>このディレクトリ以下全てのファイルにこの設定を適用します</p>
+				</td>
+			</tr>
+			<tr>
+				<td>COMPILE_COMMAND</td>
+				<td>
+					<p>コンパイルに使うコマンド</p>
+				</td>
+			</tr>
+			<tr>
+				<td>COMPILE_OPTION</td>
+				<td>
+					<p>コンパイルコマンド用オプション</p>
+				</td>
+			</tr>
+			<tr>
+				<td>COMPILE_DIR</td>
+				<td>
+					<p>コンパイルに使うディレクトリ</p>
+				</td>
+			</tr>
+			<tr>
+				<td>RUN_COMMAND</td>
+				<td>
+					<p>実行に使うコマンド</p>
+				</td>
+			</tr>
+			<tr>
+				<td>RUN_OPTION</td>
+				<td>
+					<p>実行コマンド用オプション</p>
+				</td>
+			</tr>
+			<tr>
+				<td>RUN_DIR</td>
+				<td>
+					<p>実行に使うディレクトリ</p>
+				</td>
+			</tr>
+		</table>
+		
+		<p>また、「COMPILE_DIR」「RUN_DIR」」には、以下の項目を設定する事が出来ます。</p>
+		
+		<table class="dirConfig" border="1">
+			<tr>
+				<td width="200">$(FILE_DIR)</td>
+				<td width="400">
+					<p>ファイルのあるディレクトリ<p>
+				</td>
+			</tr>
+			<tr>
+				<td>$(NO_CHANGE)</td>
+				<td>
+					<p>ディレクトリを変更しません</p>
+					<p>何も指定しない場合は、これと同じ動作になります</p>
+				</td>
+			</tr>
+		</table>
+		
+		<p>例</p>
+		
+		<div class="sample">
+			<p class="nomargin">.D:\hogehoge</p>
+			<p class="nomargin">COMPILE_COMMAND = make</p>
+			<p class="nomargin">COMPILE_OPTION = </p>
+			<p class="nomargin">COMPILE_DIR = $(FILE_DIR)</p>
+			<p class="nomargin">RUN_COMMAND = make</p>
+			<p class="nomargin">RUN_OPTION = run</p>
+			<p class="nomargin">RUN_DIR = D:\hogehoge</p>
+		</div>
+		
+		<p>上記の用に設定ファイルに記述し、D:\hogehoge\source\abc.cppとうファイルを開いている状態で、sendCompileCommandMsg関数を呼び出した場合、</p>
+		
+		<p>shellのカレントディレクトリは、「D:\hogehoge\source」に変更され、「make」コマンドを実行します。</p>
+		
+		<p>また、sendRunCommandMsg関数を呼び出した場合、</p>
+		<p>shellのカレントディレクトリは、「D:\hogehoge」に変更され、「make run」コマンドが実行されます。
+	</div>
+</div>
+
+<div class="sectionBlock">
+	<h2><a name="errorJumpConfig">エラージャンプの設定</a></h2>
+	<div class="section">
+		<div class="image"><img src="./image/ErrorJumpConfig.jpg"></div>
+		
+		<h3>対象コンパイラ</h3>
+		
+		<div class="configTable">
+			<table class="dirConfig" border="1">
+				<tr>
+					<td width="100">javac</td>
+					<td>
+						<p>javacコンパイラ用の設定</p>
+					</td>
+				</tr>
+				<tr>
+					<td>BCC</td>
+					<td>
+						<p>Borland C++ Compiler用の設定です。</p>
+					</td>
+				</tr>
+				<tr>
+					<td>ant</td>
+					<td>
+						<p>ant用の設定です。</p>
+					</td>
+				</tr>
+				<tr>
+					<td>その他</td>
+					<td>
+						<p>エラー行検索条件</p>
+						<p>エラーファイル抽出条件</p>
+						<p>エラー行番号抽出条件</p>
+						<p>を指定します。</p>
+					</td>
+				</tr>
+			</table>
+		</div>
+		
+		<h3>「その他」を選択した場合の設定</h3>
+		
+		<p>その他を選択した場合は、「エラー行検索条件」「エラーファイル抽出条件」「エラー行番号抽出条件」をWZ4標準の正規表現で指定します。javacスタイル、BCCスタイルを選択しても、上手くエラーファイルジャンプが出来ないコンパイラの場合にこちらを指定してください。(gccくらはサポートした方が親切かも・・・）</p>
+		
+		<p>ここでは、BCCの場合を例に説明します。BCCの設定は以下のようになっています。</p>
+		
+		<div class="configTable">
+			<table class="dirConfig" border="1">
+				<tr>
+					<td>エラー行検索条件</td>
+					<td>^エラー.+</td>
+				</tr>
+				<tr>
+					<td>エラーファイル抽出条件</td>
+					<td>&lt;[^\s]+\.[^\s]+&gt;</td>
+				</tr>
+				<tr>
+					<td>エラー行抽出条件</td>
+					<td>[0-9]+</td>
+				</tr>
+			</table>
+		</div>
+		
+		<p>BCCは以下のような以下のようなエラーメッセージを出力します。</p>
+		
+		<div class="sample">
+			<p>bcc32  -c hello.cpp </p>
+			<p>Borland C++ 5.5.1 for Win32 Copyright (c) 1993, 2000 Borland</p>
+			<p>hello.cpp:</p>
+			<p>エラー E2451 hello.cpp 7: 未定義のシンボル cout(関数 main() )</p>
+			<p>エラー E2451 hello.cpp 7: 未定義のシンボル endl(関数 main() )</p>
+			<p>*** 2 errors in Compile ***</p>
+		</div>
+		
+		<p>この場合、エラー行検索条件「^エラー.+」により、以下の色が変わっている行が見つかります。</p>
+		
+		<div class="sample">
+			<p>bcc32  -c hello.cpp </p>
+			<p>Borland C++ 5.5.1 for Win32 Copyright (c) 1993, 2000 Borland</p>
+			<p>hello.cpp:</p>
+			<p class="selected">エラー E2451 hello.cpp 7: 未定義のシンボル cout(関数 main() )</p>
+			<p>エラー E2451 hello.cpp 7: 未定義のシンボル endl(関数 main() )</p>
+			<p>*** 2 errors in Compile ***</p>
+		</div>
+		
+		<p>本マクロでは、エラー行を見つけた場合、エラー行のパラグラフ文字列をtxGetParaを使って取り出します。表示例の場合は、</p>
+		
+		<div class="sample">
+			<p>エラー E2451 hello.cpp 7: 未定義のシンボル cout(関数 main() )</p>
+		</div>
+		
+		<p>が取り出されます。次に、この取り出された文字列に対し、エラーファイル抽出条件「&lt;[^\s]+\.[^\s]+&gt;」を使い検索をして</p>
+		
+		<div class="sample">
+			<p>エラー E2451 <span class="selected">hello.cpp</span> 7: 未定義のシンボル cout(関数 main() )</p>
+		</div>
+		
+		<p>選択部分が抽出されます（この場合「hello.cpp」）。これをファイル名とします。</p>
+		
+		<p>次に、対象文字列が、ファイル名以降に変更されます。今回の場合、</p>
+		
+		<div class="sample">
+			<p> 7: 未定義のシンボル cout(関数 main() )</p>
+		</div>
+		
+		<p>これに、エラー行抽出条件「[0-9]+」を使い検索をし、</p>
+		
+		<div class="sample">
+			<p> <span class="selected">7</span>: 未定義のシンボル cout(関数 main() )</p>
+		</div>
+		
+		<p>「7」が見つかります。これを行番号とし、ファイルを開きます。</p>
+		
+		<p>以上が、エラー行ジャンプ用の設定方法です。もし、自前で設定を作ったら作者にメールをくれると、次回以降のリリース時に標準でサポートされるかもしれません。</p>
+	</div>
+</div>
+
+<div class="sectionBlock">
+	<h2><a name="javac_topic">javac用の設定</a></h2>
+	<div class="section">
+		<p>もともとこのマクロは手に馴染むJava開発環境がないので、それを開発すべく作り始めたのです。そこで、僕のjavac用設定を紹介。（Java1.2以降のコンパイラでないと動作しなかったと記憶してます。）</p>
+		
+		<p>まず、パッケージのルートディレクトリに、以下のようなバッチファイルを作って置いておきます。</p>
+		
+		<div class="sample">
+			<p>@echo off</p>
+			<p>set OUT_DIR=（ここに出力先ディレクトリを設定）</p>
+			<p>set SOURCE_DIR=（ここにパッケージのディレクトリを設定）</p>
+			<p>set CLASS_PATH=%SOURCE_DIR%</p>
+			<p></p>
+			<p>set JAVAC=javac</p>
+			<p>set JAVAC_FLAG=-nowarn</p>
+			<p></p>
+			<p>set FILE_LIST=__FILE_LISE__</p>
+			<p></p>
+			<p>dir /B /S *.java > %FILE_LIST%</p>
+			<p></p>
+			<p>echo compile source ...</p>
+			<p>%JAVAC% %JAVAC_FLAG% -classpath %CLASS_PATH% -d %OUT_DIR% @%FILE_LIST%</p>
+			<p>del %FILE_LIST%</p>
+		</div>
+		
+		<p>（ここに出力先ディレクトリを設定）と書いてある部分を、出力先ディレクトリで置き換えます。また、（ここにパッケージのディレクトリを設定）となっている部分はパッケージのルートディレクトリで置き換えます。例えば、パッケージルートディレクトリが、D:\hoge\src、出力先ディレクトリがD:\hoge\classesだとすると、バッチファイルは以下のようになります。これを、compile.batという名前でD:\hoge\srcに保存しておきます。</p>
+		
+		<div class="sample">
+			<p>@echo off</p>
+			<p>set OUT_DIR=D:\hoge\classes</p>
+			<p>set SOURCE_DIR=D:\hoge\src</p>
+			<p>set CLASS_PATH=%SOURCE_DIR%</p>
+			<p></p>
+			<p>set JAVAC=javac</p>
+			<p>set JAVAC_FLAG=-nowarn</p>
+			<p></p>
+			<p>set FILE_LIST=__FILE_LISE__</p>
+			<p></p>
+			<p>dir /B /S *.java > %FILE_LIST%</p>
+			<p></p>
+			<p>echo compile source ...</p>
+			<p>%JAVAC% %JAVAC_FLAG% -classpath %CLASS_PATH% -d %OUT_DIR% @%FILE_LIST%</p>
+			<p>del %FILE_LIST%</p>
+		</div>
+		
+		<p>次に、WZのあるディレクトリの「compile4shell.txt」ファイルに、</p>
+		
+		<div class="sample">
+			<p>.D:\hoge\src</p>
+			<p>COMPILE_COMMAND = compile.bat</p>
+			<p>COMPILE_DIR = D:\hoge\src</p>
+		</div>
+		
+		<p>と記述します。あとは、D:\hoge\src以下のソースを編集して、コンパイルコマンドを呼び出せば、自動で、D:\hoge\srcへ移動しcompile.batを実行してくれる訳です。このバッチファイルでコンパイルした場合は、エラーファイル名がフルパスで出てくるので、エラー行が長くなり多少見にくくはなりますが、確実にファイルを開けて便利です。</p>
+	</div>
+</div>
+
+<div class="sectionBlock">
+	<h2><a name="copyright">著作権・免責</a></h2>
+	<div class="section">
+		<p>本ソフトウエアはあるがままに提供されます。</p>
+		<p>本ソフトウエアは、各ユーザーの自己責任の元にご利用下さい。使用によって生じたいかなる損失も著作者は責任を負いません。重大なバグが顕在化したとしても、修正の義務を持ちません。</p>
+		<p>このマクロプログラムは、使用はもちろんのこと配布、改変版の作成も自由です。GNUのオープンソースのルールに従っていただけると幸いです。</p>
+	</div>
+</div>
+
+<div class="sectionBlock">
+	<h2><a name="history">変更履歴</a></h2>
+	<div class="section">
+		<div class="historyNumber">v0.02</div>
+		<div class="historyComment">
+			<p class="history">コンパイラ事の設定(ant)を追加。</p>
+		</div>
+		<div class="historyNumber">v0.01</div>
+		<div class="historyComment">
+			<p class="history">コンパイラ事の設定(javac, BCC)を追加。</p>
+		</div>
+		<div class="historyNumber">v0.00b</div>
+		<div class="historyComment">
+			<p class="history">設定ファイルからコンパイルディレクトリなどの設定を読み込めるよう変更</p>
+		</div>
+		
+		<div class="historyNumber">v0.00a</div>
+		<div class="historyComment">
+			<p class="history">設定ダイアログが使えるように変更</p>
+			<p class="history">shell実行時にウィンドウのアクティブが出来るように変更</p>
+		</div>
+		
+		<div class="historyNumber">v0.00</div>
+		<div class="historyComment">
+			<p class="history">とりあえず、動くバージョンを友人に公開</p>
+		</div>
+	</div>
+</div>
+
+<div class="sectionBlock">
+	<h2><a name="postscript">最後に</a></h2>
+	<div class="section">
+		<p>本マクロは、僕が勝手にshellモードプラグインプラグインを作った物です。当プラグインにまつわるバグに関し、shellモードプラグインの作者t_kumagai氏に文句を言うような事は辞めてください。そのような、文句、提案、愚痴は当方で受け付けます。</p>
+		
+		<p>また、最後になりましたが、</p>
+		
+		<p>shellモードプラグインの作者t_kumagai氏に感謝します。shellモードプラグインがなければ、このプラグインを作ろうと思うことはなかったでしょう。</p>
+		
+		<p>maclistプラグインの作者M.Ishida氏にも感謝します。大変便利に使わせて頂いております。</p>
+		
+		<p>htmlplusプラグインの作者 瑞輝智佳 氏にも感謝します。htmlplusプラグインの終了タグ補完機能がなかったら、当マニュアルを作る気にはなれなかったことでしょう。</p>
+	</div>
+</div>
+
+</body>
+</html>

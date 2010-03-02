@@ -1,0 +1,2060 @@
+// -*- tab-width:4 -*-
+//────────────────────────────────────────
+//      ＫＦ 定義ファイル
+//          for KF Version 2.23
+//────────────────────────────────────────
+
+// マクロ宣言
+#define     IDOK        1                               // OK
+#define     IDCANCEL    2                               // キャンセル
+#define     IDABORT     3                               // 中止
+#define     IDRETRY     4                               // 再試行
+#define     IDIGNORE    5                               // 無視
+#define     IDYES       6                               // はい
+#define     IDNO        7                               // いいえ
+#define     REGROOT     "HKEY_CURRENT_USER\Software\Kissy\KF for Windows\Karin\"
+
+                                                        // ログファイル操作結果の色
+#define     LC_NORMAL   0                               // 通常（%LogCol）
+#define     LC_OK       1                               // 成功（%LogOkCol）
+#define     LC_BAD      2                               // 失敗（%LogBadCol）
+#define     LC_INFOR    3                               // 情報（%LogInfCol）
+
+
+// [VKMM:Begin System Value]
+
+%Reader     0                   // 95Readerによる読み上げ機能を使う         [0]:no  1:yes
+%TitleWait  1000                // タイトルでの待機時間[ms]                 [1000]
+
+%DirFont    "ＭＳ 明朝"         // ディレクトリ表示用フォント名             [ＭＳ 明朝]
+%DirCX      7                   // ディレクトリ表示用フォントの幅(dot)      [8]
+%DirCY      14                  // ディレクトリ表示用フォントの高さ(dot)    [16]
+%DirPit     2                   // ディレクトリ表示用フォントの間隔(dot)    [0]
+%ViewFont   "ＭＳ 明朝"         // ビュア表示用フォント名                   [ＭＳ 明朝]
+%ViewCX     7                   // ビュア表示用フォントの幅(dot)            [8]
+%ViewCY     14                  // ビュア表示用フォントの高さ(dot)          [16]
+%LogFont    "ＭＳ 明朝"         // ログウインドウ表示用フォント名           [ＭＳ 明朝]
+%LogFontCX  7                   // ログウインドウ表示用フォントの高さ       [8]
+%LogFontCY  14                  // ログウインドウ表示用フォントの幅         [16]
+%DirCol     RGB(  0,  0,  0)    // 通常のファイルの文字色                   [RGB(  0,  0,  0)]
+%DirShCol   RGB(255,255,255)    // 通常のファイルの文字色（影）             [RGB(255,255,255)]
+%BackCol    RGB(255,252,244)    // 通常のファイルの背景色                   [RGB(255,255,255)]
+%MarkCol    RGB(255,255,255)    // マーク中のファイルの文字色               [RGB(255,255,255)]
+%MarkBkCol  RGB(  0,120,255)    // マーク中の背景色                         [RGB(  0,120,255)]
+%RDCol      RGB(  0,150,  0)    // 読み込み専用ファイルの文字色             [RGB(  0,150,  0)]
+%HIDCol     RGB(  0, 50,255)    // 隠しファイルの文字色                     [RGB(  0, 50,255)]
+%SYSCol     RGB(192,  0,192)    // システムファイルの文字色                 [RGB(192,  0,192)]
+%CursorCol  RGB(192,  0,192)    // カーソルの色                             [RGB(192,  0,192)]
+%ViewCol    RGB(  0,  0,  0)    // ファイルビュアの文字色                   [RGB(  0,  0,  0)]
+%ViewBkCol  RGB(255,252,244)    // ファイルビュアの背景色                   [RGB(255,255,255)]
+%ViewSBkCol RGB(255,  0,  0)    // ファイルビュアで検索成功時の背景色       [RGB(255,  0,  0)]
+%ViewNumCol RGB(  0,128,  0)    // ファイルビュアの行番号文字色             [RGB(  0,128,  0)]
+%ViewCtlCol RGB(192, 50,192)    // ファイルビュアのコントロール文字色       [RGB(192,  0,192)]
+%ViewSelCol RGB(  0,  0,128)    // ファイルビュアで選択中の背景色           [RGB(  0,  0,128)]
+%GrphBkCol  RGB(  0,  0,  0)    // グラフィックビュアの背景色               [RGB(  0,  0,  0)]
+%LogCol     RGB(  0,  0,  0)    // ログウインドウ表示用の色                 [RGB(  0,  0,  0)]
+%LogBkCol   RGB(192,192,192)    // ログウインドウ表示用の背景色             [RGB(192,192,192)]
+%LogOkCol   RGB(  0,  0,  0)    // ログウインドウ ステータスOKの色          [RGB(  0,  0,  0)]
+%LogBadCol  RGB(255,  0,  0)    // ログウインドウ ステータスBADの色         [RGB(255,  0,  0)]
+%LogInfCol  RGB(  0,  0,  0)    // ログウインドウ ステータス情報の色        [RGB(  0,  0,  0)]
+                                //      RGB(r,g,b) r,g,bはそれぞれ0～255
+
+%BackBmpSw  0                   // KFの壁紙を使う                           0:no    [1]:yes
+%BackScroll 2                   // スクロール時に壁紙を消す                 0:no    1:yes   [2]:速度を最優先
+%BackWait   600                 // %BackScroll=1の時の再表示までの時間(ms)  200,400,[600],800,1000,……
+%BackDskTop "<auto>"                  // 壁紙のファイル名       "<auto>":グラフィックビュアでの閲覧時に自動変更
+%BackHalf   2                   // 壁紙の白黒の比率      白  ←－－－－－－原色－－－－－－→  黒
+                                //                   0:87.5% [1]:75% 2:50% 3:0% 4:50% 5:75% 6:87.5%
+
+%ScrollMar  2                   // スクロールマージン                       [2]
+%LSDisp     0                   // ディレクトリをUNIXのls形式で表示するか   [0]:no  1:yes
+%ExtSep     1                   // 拡張子を分離して表示する表示する         0:no    [1]:yes
+%LoadIcon   1                   // アイコン情報をロードする                 0:no    [1]:yes
+%IconCnt    250                 // 登録可能なアイコン数                     10～[256]～1000
+%OppGray    1                   // 反対ウインドウを灰色表示する             0:no    [1]:yes
+%VScroll    1                   // 垂直スクロールバーを表示する             0:no    [1]:yes
+%AddrBar    1                   // アドレスバーを表示する                   0:no    [1]:yes
+%ToolType   1                   // ツールバーの表示形態                     0:Win95 [1]:IE3.0
+%NoClose    1                   // ウインドウを閉じられないようにする       [0]:no  1:yes
+                                //      %ExtWindow=0のとき右上のxをクリックする癖のある方へ。
+                                //      Exit()などで終了。
+// %ScrDesign   "%f%%sadir% %yymmdd% %hhmm%"
+%ScrDesign  "%f%%sadir%"
+                                //  画面のカスタマイズ                      ["%f% %sdir% %yymmdd% %hhmm%"]
+                                //  UNIX lsライク   "%als%%sa% %tls% %fls%"
+                                //  WindowsNTライク "%yymmdd% %hhmmp%%scdir% %f%"
+                                //  KF Ver1.xx      "%f%%sdir%  %yymmdd%  %hhmmss%"
+                                //      %f%         ファイル名（ロングファイルネーム）
+                                //      %fs%        ファイル名（8.3形式ファイルネーム）
+                                //      %fls%       ファイル名 ls形式（ロングファイルネーム＋'/'or'*'）
+                                //      %fsls%      ファイル名 ls形式（8.3形式ファイルネーム＋'/'or'*'）
+                                //      %s%         ファイルサイズ（ディレクトリは0）
+                                //      %sdir%      ファイルサイズ（ディレクトリは<DIR>）
+                                //      %sc%        ファイルサイズ（','区切り、ディレクトリは0）
+                                //      %scdir%     ファイルサイズ（','区切り、ディレクトリは<DIR>）
+                                //      %sa%        ファイルサイズ（サイズによって自動単位付け、ディレクトリは0）
+                                //      %sadir%     ファイルサイズ（サイズによって自動単位付け、ディレクトリは<DIR>）
+                                //      %a%         ファイル属性 MS-DOS形式（rhsda）
+                                //      %als%       ファイル属性 ls形式（dashrw）
+                                //      %yyyymmdd%  更新日付（1998/01/01）
+                                //      %yymmdd%    更新日付（98/01/01）
+                                //      %hhmmss%    更新時刻 時分秒（13:45:05）
+                                //      %hhmm%      更新時刻 時分（13:45）
+                                //      %hhmmssp%   更新時刻 時分秒 午前午後（01:45:05p）
+                                //      %hhmmp%     更新時刻 時分 午前午後（01:45p）
+                                //      %tls%       更新時刻 ls形式 自動精度 月日時間 or 月日年（Jan  1 13:45）
+                                //      %ta%        更新時刻 自動精度        月日時間 or 月日年（01/01 13:45）
+                                //      %%          '%'自身
+                                //      %sp%        可変長空白
+                                //      ※可変長フィールド（%f%、%fls%、%sp%）は１個しか埋め込めません。
+
+%CopyWaitX  500                 // コピーなどでの正常終了時のウエイト(ms)   [500]
+%CopyWaitE  1000                // コピーなどでのエラー発生時のウエイト(ms) [1000]
+%CopyWaitC  1000                // コピーなどでの中止した時のウエイト(ms)   [1000]
+                                //      以上のウエイトは、最後のメッセージが表示されてから
+                                //      ダイアログボックスが閉じるまでの待ち時間を示す
+
+%VSwTool    0                   // ツールバーを表示する                     0:no  [1]:yes
+%VSwUSts    1                   // 上部ステータスバーを表示する             0:no  [1]:yes
+%VSwLSts    1                   // 下部ステータスバーを表示する             0:no  [1]:yes
+%VSwFnc     1                   // ファンクションバーを表示する             0:no  [1]:yes
+%VSwLog     1                   // ログウインドウを表示する                 0:no  [1]:yes
+%VSwHead    1                   // ファイル一覧画面のヘッダを表示する       0:no  [1]:yes
+
+%ExtWindow  1                   // ビュアを外部ウインドウで使う             0:no      [1]:yes
+%VLineMax   20000               // ビュアの最大テキスト行数                 [10000]
+                                //      １行につき４バイト消費
+%VBufSize   1048576             // ビュアのテキストバッファサイズ           [1048576]
+%VDspRLine  1                   // ビュアの右端折り返し位置を表示           0:しない  [1]:する
+%VCtrlChar  1                   // ビュアのコントロール文字表示             0:しない  [1]:する
+%VEof       1                   // ビュアで[EOF]を表示                      0:しない  [1]:する
+%VLineNum   1                   // ビュアの行番号表示                       [0]:しない  1:する
+%VTab4Ext   "C CPP H KRN JAVA"  // ビュアで４タブにするファイルの拡張子     [C CPP H KRN JAVA]
+%VSrchCap   1                   // ビュアの検索で英大･小文字を同一視する    0:no      [1]:yes
+%VColSize   0                   // ビュアのデフォルト桁数                   [0]
+                                //    0:起動時のウインドウサイズに合わせる
+%VCpMode    0                   // バイナリビュアからのコピー方法           [0]:元のデータ  1:n進数に変換
+%VCpFmt     "%02X"              // バイナリビュアからのコピーフォーマット   [%02X]
+%VCpDelm    ","                 // バイナリビュアからのコピー区切り文字     [,]
+%VCpRet     16                  // バイナリビュアからのコピー改行間隔       0～[16]～10000
+
+%VSaveWSize 1                   // ビュア前回終了時のウインドウサイズを使用 0:no    [1]:yes  2:指定
+%VWndX1     0                   // ビュア起動時のウインドウのＸ位置 （%VSaveWSize = 2の時のみ）
+%VWndY1     0                   // ビュア起動時のウインドウのＹ位置 （%VSaveWSize = 2の時のみ）
+%VWndCX     0                   // ビュア起動時のウインドウの幅     （%VSaveWSize = 2の時のみ）
+%VWndCY     0                   // ビュア起動時のウインドウの高さ   （%VSaveWSize = 2の時のみ）
+%ViewVBell  1                   // ファイルビュアでビジュアルベルを使用する 0:no    [1]:yes
+%GVSmooth   1000                // グラフィックビュアのスムース化までの時間 0,200,400～[1000]～30000  0:off
+
+
+%LogLineCnt 100                 // ログの最大記憶行数                       30～[3000]～30000
+%BackFileSw 1                   // バックグラウンドでファイル操作を行う     0:no    [1]:yes
+%MaxTaskCnt 4                   // バックグラウンド処理の最大同時起動可能数 1～[4]
+%OneCopyW   100                 // リムーバブル１ファイル毎のウエイト(ms)   0～[100]～10000
+%ByteCopyW  100                 // リムーバブル100KByte毎のウエイト(ms)     0～[100]～10000
+                                //  ※重要：OneCopyWとByteCopyWの値が小さいと、リムーバブルメディアに
+                                //          大量のデータを書き込んだときに、Windowsがダウンする危険が
+                                //          あります
+%SameFileW  800                 // 同名ダイアログオープン時のウエイト(ms)   0～[800]～10000
+%UpdateW    2000                // ディレクトリ変化後更新までのウエイト(ms) 0～[2000]～10000
+                                //  ※小さすぎるとパフォーマンスの低下や異常を招きます
+
+%WavPlay    0                   // イベントＰＣＭを再生する                 0:no  [1]:yes
+%CompFuzy   4                   // ファイルコンペアで同サイズとみなすサイズ [4]
+%MkDirChg   1                   // ディレクトリ作成後にカレントを移動       0:しない  [1]:する
+%PackTime   1                   // 圧縮時、最新ファイルに書庫時刻を合わせる 0:no      [1]:yes
+%PackLhaM   5                   // LHA圧縮形式 LH0～LH7                     0,1,[5],6,7
+%PackLhaS   0                   // LHA自己解凍書庫 形式
+                                //  [0]:しない 1:DOS 2:Win16日本語 3:Win16英語 4:Win32日本語 5:Win32英語
+%PackZipM   6                   // ZIP圧縮率                                0:無圧縮 1:高速～[6]～9:高圧縮
+%PackZipS   0                   // ZIP自己解凍書庫 形式                     [0]:しない 1:DOS 2:Win32
+%PackZipP   0                   // ZIPパスワードの使用                      [0]:しない 1:する
+%PackCabM   0                   // CAB圧縮形式
+                                // [0]:MSZIP  1:LZXlv15高速～7:LZXlv21高圧縮
+%PackCabS   0                   // CAB自己解凍                              [0]しない  1:する
+%PackCabV   0                   // CAB圧縮マルチボリュームサイズ[KB]        [0]:しない 1～1048576
+%PackTarM   6                   // TAR圧縮レベル  tar:(無圧縮),  tbz/taz/gz/z(1:高速～[6]～9:高圧縮)
+
+%VDirUpd    1                   // 仮想dirで変更時に書庫の更新を行う        0:no      [1]:yes
+%ISrchTop   1                   // インクリメンタルサーチの比較方法         0:全体  [1]:先頭
+%DelRecy    1                   // ごみ箱を使って削除する                   0:no  [1]:yes
+%LRParent   0                   // 逆向き←→キーで親ディレクトリに戻る     [0]:no  1:yes
+%RmvInfo    0                   // CD/リムーバブルドライブの情報を取得する  0:no  [1]:yes
+%DragWnd    2                   // ドラッグ中のウインドウ状態               0:通常  1:最小化  [2]:消去
+%LBoxLoop   0                   // リストボックスの上下移動をループ状にする [0]:no  1:yes
+%SameAuto   0                   // 同名ファイルを自動的に複写する方法       [0]:_をつける  1:(2)(3)  2:[2][3]
+%BakExcept  "*.bak *.$$$ *.idb *.pch *.pdb *.obj *.ilk *.res *.tlb *.sbr *.bsc *.ilk"
+                                // バックアップ時に除外するファイル
+%NewDir     "新しいフォルダ"    // ディレクトリの作成での新規ディレクトリ名
+
+%MAttrMode  0                   // 属性マスク 対象属性に対する操作          [0]:すべて表示 1:表示 2:非表示
+%MAttrRd    0                   // 属性マスク 読み込み専用属性を対象にする  [0]:no  1:yes
+%MAttrHide  0                   // 属性マスク 隠しファイル属性を対象にする  [0]:no  1:yes
+%MAttrArc   0                   // 属性マスク アーカイブ属性を対象にする    [0]:no  1:yes
+%MAttrSys   0                   // 属性マスク システム属性を対象にする      [0]:no  1:yes
+
+%InitMask   "*.*"               // 起動時のパスマスク
+%InitDir1   ""                  // 左ウインドウの初期ディレクトリ   [""]:前回値を参照
+%InitDir2   ""                  // 右ウインドウの初期ディレクトリ   [""]:前回値を参照
+%SaveWSize  1                   // 前回終了時のウインドウサイズを使用する   [0]:no  1:yes  2:指定
+%WndX1      0                   // 起動時のウインドウのＸ位置（%SaveWSize = 2の時のみ）
+%WndY1      0                   // 起動時のウインドウのＹ位置（%SaveWSize = 2の時のみ）
+%WndCX      0                   // 起動時のウインドウの幅    （%SaveWSize = 2の時のみ）
+%WndCY      0                   // 起動時のウインドウの高さ  （%SaveWSize = 2の時のみ）
+%SortMet    3                   // KF起動時のディレクトリのソート方法
+                                //    0:名前  1:DOS名  2:日付  3:拡張子  4:サイズ  5:属性  [6]:なし
+%SortDirec  1                   // KFの起動時に昇順にソートするかどうか     0:しない  [1]:する
+%SortDir    1                   // KFの起動時にディレクトリを先頭に集める   0:no  [1]:yes
+%SortCap    0                   // ソート時に大文字小文字を区別             [0]:しない  1:する
+
+%ClipCpForm 0                   // 形式指定名前コピー ファイル名の形式      [0]:ロングファイル  1:DOS8.3
+%ClipCpQuot 0                   // 形式指定名前コピー 引用符" "             [0]:あり  1:空白時  2:なし
+%ClipCpCr   0                   // 形式指定名前コピー １ファイルごとに改行  [0]:しない  1:する
+%ClipCpDir  1                   // 形式指定名前コピー ディレクトリ付き      0:no    [1]:yes
+
+
+//           F1      F2      F3      F4      F5      F6      F7      F8      F9      F10     F11     F12
+%FncNorm    "操作    表示    ツール  実行    最新    ソート  マスク  ｺﾏﾝﾄﾞ1  WZ_GREP cmd     閲覧窓  窓次    "
+%FncNormS   "ｵﾌﾟｼｮﾝ          Windows ﾃﾞｽｸﾄｯﾌﾟｽﾀｰﾄ    ｿｰﾄOFF  全表示                  ＯＳ    窓選択  窓前    "
+%FncNormC   "A:      B:      C:      D:      E:                                      指定DIR                 "
+%FncNormSC  "                                                                                                "
+%FncFile    "先頭    最終    指定行  検索↓  次検索↓                                        ﾌｧｲﾙ窓  窓次    "
+%FncFileS   "                        検索↑  次検索↑                                                窓前    "
+%FncFileC   "                                                                                                "
+%FncFileSC  "                                                                                                "
+%FncGrph    "上端    下端    左端    右端    滑らか  1.0倍   1.5倍   2.0倍   3.0倍   5.0倍   ﾌｧｲﾙ窓  窓次    "
+%FncGrphS   "明るさ+ 明るさ- ｺﾝﾄﾗｽﾄ+ ｺﾝﾄﾗｽﾄ- ｼｬｰﾌﾟ   ぼかし  ｶﾗｰﾚﾘｰﾌ ﾎﾞﾀﾝ化  白黒    ｾﾋﾟｱ    ﾈｶﾞﾃｨﾌﾞ 窓前    "
+%FncGrphC   "                                                                                                "
+%FncGrphSC  "                                                                                                "
+// %FncNorm     通常画面でのファンクションバーの内容（左詰で記述）
+// %FncFile     ファイルビュアでのファンクションバーの内容
+// %FncGrph     グラフィックビュアでのファンクションバーの内容
+//      %……S:シフトキー       %……C:コントロールキー     %……SC:シフト＋コントロールキー
+//      区切る位置は%FncLen文字、%FncCount個分を定義します。
+//      つまり、%FncNorm～%FncGrphSCは、%FncLen×%FncCount文字分あります。
+%FncLen     8                   // ファンクションキー定義の文字数           4～10
+%FncFont    "ＭＳ 明朝"         // ファンクション表示用フォント名           [ＭＳ 明朝]
+%FncCX      6                   // ファンクション表示用フォントの幅(dot)    [6]
+%FncCY      12                  // ファンクション表示用フォントの高さ(dot)  [12]
+%FncCount   1                   // ファンクションキーの 数                  [0]:10個    1:12個
+
+%Editor     """C:\Python25\pythonw.exe"" ""C:\tools\bin\emacs.py""" // エディタのコマンドライン
+%VEditor    """C:\Python25\pythonw.exe"" ""C:\tools\bin\emacs.py"" ""$P""" // ファイルビュアでのエディタのコマンドライン
+                                            //      $P:フルパス名（" "なし）  $L:行番号  $T:先頭行番号
+                                            //      単なる変数置換なので、修飾記述子は使えません
+%SusieDir   "C:\tools\Susie"                // Susieがインストールされているディレクトリ
+%TempDir    "C:\Temp"                       // 仮想ディレクトリ用の作業ディレクトリ
+%ToolDir    ".\TOOLBAR"                     // ツールバーアイコンのディレクトリ
+%PCMDir     ".\PCM"                         // PCMファイルのディレクトリ
+//  ホームディレクトリの設定：
+//      %HomeDirにKFのホームディレクトリを設定できます。省略時は、起動時のカレントディレクトリが
+//      ホームディレクトリとなります。また、%TempDir、%ToolDir、%ToolDirに設定できるディレクトリは、
+//      フルパス指定されたディレクトリの他に、「.」から始まるホームディレクトリ以下のディレクトリ名
+//      を指定できます。
+//          %HomeDir：なし  %ToolDir=".\Tool"   →  ツールバーは起動時のディレクトリの下のToolからロード
+//          %HomeDir：C:\   %ToolDir=".\Tool"   →  ツールバーはC:\Toolからロード
+//          %HomeDir：C:\   %ToolDir="D:\Tool"  →  ホームはC:\だが、ツールバーのみD:\Toolからロード
+
+// 空白を含んだエディタ・ファイルの扱いの例
+//      ・エディタ名に空白を含むときの例：%VEditor  """C:\Program Files\Kissy Editor\KE.EXE"""
+//      ・ファイル名に空白を含むときの例：%VEditor  "C:\TOOLS\KE\KE.EXE /L$L ""$P"""
+//      空白を含むファイルは" "で囲みます。
+//      文字列中に「"」を記述したいときは、「""」とします。
+
+// [VKMM:End System Value]
+
+
+//────────────────────────────────────────
+//      ユーザ関数・イベント通知
+//────────────────────────────────────────
+.DefinePrototype {
+    str SearchFiles(str $startDir, str $targetFile);
+    void SearchCopy();
+    void SearchMove();
+    void HighSpeedDelete();
+    void DeleteBackupFile();
+    void ConvertEncodeTypeDir(str $srcDir, str $destDir, str $codeType, str $dispCode);
+    void DisplayBar(int $tool, int $usts, int $lsts, int $func);
+    void EjectRemovableDiskConfirm(int $disk, int $confirm);
+    void EjectCdromDiskConfirm(int $disk, int $confirm);
+    void RenameExtension();
+    void RenameSequence();
+    void SinglePack();
+    void PopDirectoryMsg(int $msg);
+    void ExchangeCursor();
+    void ChangeDirectory();
+    void ExplainStop();
+    void OpenConfrimSFX();
+    void UnpackWithDirectory();
+    void WordOrTextOpen();
+    void PlayWavFile();
+    void SetFontSize(int $size);
+    void ExtractAll();
+    void FileInformation();
+    void EditKfDefFile();
+    void ToggleLogBorder();
+    void SetDesignFileOnly(int $fileOnly);
+    void SusieSlideShow(str $Dir);
+    void DevStudioOpen(str $path);
+    void svn_command(str $svn_cmd);
+    void EditMeadow(str $path);
+    void EditWZ(str $path);
+    void git_bash(str $path);
+}
+
+
+.UserFunction {
+    //=========================================================================================
+    //  内　容：イベント KF起動時の処理
+    //  引　数：なし
+    //  戻り値：KFを起動してよいとき1
+    //  メ　モ：ここでは、グローバル変数の宣言や、レジストリからの変数値の読み込みなどを行います。
+    //=========================================================================================
+    int _StartEvent()
+    {
+        global str $CR = IntToStr("%c", 13);                    // 改行文字
+    //  $foo = RegReadStr([$REGROOT]+"Kissy", "test");
+    //  KfExtension("KfExt_ssdi.DisableIME","");
+        return 1;
+    }
+
+
+    //=========================================================================================
+    //  内　容：イベント KF終了時の処理
+    //  引　数：なし
+    //  戻り値：KFを終了してよいとき1
+    //  メ　モ：ここでは、必要な終了処理や、レジストリへの変数値の保存などを行います。
+    //=========================================================================================
+    int _EndEvent()
+    {
+    //  RegWriteStr([$REGROOT]+"Kissy", "test", $foo);
+        return 1;
+    }
+
+    // レジストリへの書き込みの指標
+    //      レジストリへは基本的にどこでも書き込むことができますが、他人に配布する
+    //      目的の物を作る場合は、混乱を避けるため、以下の記録場所を推奨します。
+    //          HKEY_CURRENT_USER\Software\Kissy\KF for Windows\Karin
+    //      この下に、マクロの作者を示す作者名のキーを作り、その中に格納して下さい。
+
+
+    //=========================================================================================
+    //  内　容：イベント ディレクトリの変更
+    //  引　数：dir     変更したディレクトリ名
+    //  戻り値：なし
+    //=========================================================================================
+    //void _ChangeDirectory(str $dir)
+    //{
+    //}
+
+
+    //=========================================================================================
+    //  内　容：イベント KFがアクティブになったときの処理
+    //  引　数：flag    1:アクティブ化された
+    //                  0:非アクティブ化された
+    //  戻り値：なし
+    //  メ　モ：Information等のユーザインタフェースを伴う関数は使用できません
+    //=========================================================================================
+    //void _OnActivate(int $flag)
+    //{
+    //}
+
+
+
+
+    //=========================================================================================
+    //  内　容：指定したファイル全てを、一塊にする
+    //  引　数：$startDir   検索開始ディレクトリ名
+    //          $targetFile 検索ファイル（ワイルドマーク可）
+    //  戻り値：条件を満たすファイルを空白区切りで連結した文字列
+    //  メ　モ：戻り値をCopyEx等に渡して使用する    (c)Akira Hata
+    //=========================================================================================
+    str SearchFiles(str $startDir, str $targetFile)
+    {
+        int $i = 0;
+        int $cntObj = 0;
+        int $bFind = 0;
+        int $bCheck = 0;
+        str $fileName = "";
+        str $oldDir = "";
+        str $result = "";
+        str $findFile = "";
+
+        PrintFile("Search File：", $C);
+        UpdateWindow(0);
+        // ディレクトリ中のオブジェクトを調べる
+        $cntObj = GetObjectCount(0);
+        for($i=0; $i<$cntObj; $i=$i+1) {
+            // ファイル名の取得
+            $fileName = GetFileName(0, $i);
+            if($fileName:t != "..") {                   // 親ディレクトリは無視する
+                if(IsDirectory($fileName)) {            // ディレクトリの場合
+                    // 検索ディレクトリを再帰的に検索
+                    PushDirectory($C + "\");
+                    ChangeDir($fileName + "\");
+                    $findFile = SearchFiles($fileName, $targetFile);
+                    PopDirectory();
+                    $result = $result + $findFile;
+                } else {                                // 通常ファイルの場合
+                    $bCheck = EvaluateFile($targetFile:au, $fileName:au);
+                    if($bCheck) {                       // 条件を満たす場合
+                        // フルパスのファイル名を取得するための小細工
+                        CursorTop();
+                        CursorDown($i);
+                        $result = $result + " " +  $P;
+                    }
+                }
+            }
+        }
+        // 親ディレクトリに戻る
+
+        return $result;
+    }
+
+
+    //=========================================================================================
+    //  内　容：ディレクトリ以下を検索して条件を満たすファイルを反対ウィンドウへコピー
+    //  引　数：なし
+    //  戻り値：なし
+    //=========================================================================================
+    void SearchCopy()
+    {
+        str $targetFile;
+        int $st = Input("検索コピー"+$CR+
+                        "現在のディレクトリ以下から指定されたファイル名を検索し、"+$CR+
+                        "反対パスにコピーします。"+$CR+
+                        "検索するファイルまたはワイルドカードを入力してください。",
+                        "", $targetFile);
+        if(($st == [$IDCANCEL]) | ($targetFile == "")) {            // キャンセルされた
+            End();
+        }
+        Print("ファイルを検索中");
+        str $result = SearchFiles($C, $targetFile);
+        Print("検索完了");
+        int $checkYN = AskYN("これらのファイルを反対ウィンドウへコピーしてよろしいですか？" +
+                             $result, [$IDYES]);
+        if($checkYN == [$IDYES]) {
+            CopyEx($result, $O);
+            ReloadOpp();
+        }
+    }
+
+
+    //=========================================================================================
+    //  内　容：ディレクトリ以下を検索して条件を満たすファイルを反対ウィンドウへ移動
+    //  引　数：なし
+    //  戻り値：なし
+    //=========================================================================================
+    void SearchMove()
+    {
+        str $targetFile;
+        int $st = Input("検索移動"+$CR+
+                        "現在のディレクトリ以下から指定されたファイル名を検索し、"+$CR+
+                        "反対パスに移動します。"+$CR+
+                        "検索するファイルまたはワイルドカードを入力してください。",
+                        "", $targetFile);
+        if(($st == [$IDCANCEL]) | ($targetFile == "")) {            // キャンセルされた
+            End();
+        }
+        Print("ファイルを検索中");
+        str $result = SearchFiles($C, $targetFile);
+        Print("検索完了");
+        int $checkYN = AskYN("これらのファイルを反対ウィンドウへ移動してよろしいですか？" +
+                             $result, [$IDYES]);
+        if($checkYN == [$IDYES]) {
+            MoveEx($result, $O);
+            ReloadOpp();
+        }
+    }
+
+
+    //=========================================================================================
+    //  内　容：ごみ箱設定を無視して高速に削除する
+    //  引　数：なし
+    //  戻り値：なし
+    //=========================================================================================
+    void HighSpeedDelete()
+    {
+        int $temp = %DelRecy;
+        %DelRecy = 0;
+        Delete();
+        %DelRecy = $temp;
+    }
+
+
+    //=========================================================================================
+    //  内　容：バックアップファイルなどのゴミファイルを削除する
+    //  引　数：なし
+    //  戻り値：なし
+    //=========================================================================================
+    void DeleteBackupFile()
+    {
+        ClearMark();
+        MarkEx("*.bak *.$$$", 1);
+        if(GetMark(0) > 0) {
+            Delete();
+        }
+    }
+
+
+    //=========================================================================================
+    //  内　容：指定したディレクトリ以下のファイルを指定されたコード系に変換する
+    //  引　数：$srcDir     転送元ディレクトリ名
+    //          $destDir    転送先ディレクトリ名
+    //          $codeType   エンコード方式（"-sm":SJIS  "-em":EUC  "-jm":ISO-2022-JP）
+    //          $dispCode   表示用エンコード方式（"SJIS" / "EUC" / "JIS"）
+    //  戻り値：なし
+    //=========================================================================================
+    void ConvertEncodeTypeDir(str $srcDir, str $destDir, str $codeType, str $dispCode)
+    {
+        int $tempWait = %CopyWaitX;
+        %CopyWaitX = 0;
+        if(IsDirectory($srcDir) == 0) {
+            Warning("ディレクトリ以外は指定できません。");
+        } else {
+            UpdateWindow(0);
+            // ディレクトリ中のオブジェクトを調べる
+            int $cntObj = GetObjectCount(0);
+            int $i;
+            for($i=0; $i<$cntObj; $i=$i+1) {
+                // ファイル名の取得
+                str $fileName = GetFileName(0, $i);
+                if($fileName:t != "..") {                       // 親ディレクトリは無視する
+                    if(IsDirectory($fileName)) {                // ディレクトリの場合
+                        // 検索ディレクトリを再帰的に検索
+                        PushDirectory($C + "\");
+                        ChangeDir($fileName + "\");
+                        str $oppNewDir = $destDir+"\"+$fileName;
+                        MakeDirEx($oppNewDir);
+                        ConvertEncodeTypeDir($fileName, $oppNewDir, $destDir+$codeType, $dispCode);
+                        PopDirectory();
+                    } else {                                    // 通常ファイルの場合
+                        if(IsWordDocument($fileName) == 0) {    // バイナリファイル
+                            PrintFile("Convert"+$dispCode+"：", $fileName);
+                            NkfConvert("-sm", $C+"\"+$fileName, $destDir+"\"+$fileName);
+                        } else {                                // テキストファイル
+                            PrintFile("Copy File  ：", $fileName);
+                            CopyEx($C+"\"+$fileName, $destDir+"\");
+                        }
+                    }
+                }
+            }
+        }
+        %CopyWaitX = $tempWait;
+    }
+
+
+    //=========================================================================================
+    //  内　容：表示状態を変更する
+    //  引　数：$tool   ツールバーを表示するとき1
+    //          $usts   上部ステータスバーを表示するとき1
+    //          $lsts   下部ステータスバーを表示するとき1
+    //          $func   ファンクションバーを表示するとき1
+    //  戻り値：なし
+    //=========================================================================================
+    void DisplayBar(int $tool, int $usts, int $lsts, int $func)
+    {
+        ShowToolbar($tool);
+        ShowUStatusbar($usts);
+        ShowLStatusbar($lsts);
+        ShowFunctionbar($func);
+    }
+
+
+    //=========================================================================================
+    //  内　容：リムーバブルディスクをイジェクトする
+    //  引　数：$disk       イジェクトするドライブ（先頭から数えたリムーバブルドライブの数）
+    //          $confrim    イジェクトの確認を行うとき1
+    //  戻り値：なし
+    //=========================================================================================
+    void EjectRemovableDiskConfirm(int $disk, int $confirm)
+    {
+        if($confirm == 1) {
+            if(AskOC("MOをイジェクトします。", [$IDNO]) == [$IDOK]) {
+                EjectRemovableDisk($disk);
+            }
+        } else {
+            EjectRemovableDisk($disk);
+        }
+    }
+
+
+    //=========================================================================================
+    //  内　容：ＣＤ－ＲＯＭディスクをイジェクトする
+    //  引　数：$disk       イジェクトするドライブ（先頭から数えたCD-ROMドライブの数）
+    //          $confirm    イジェクトの確認を行うとき1
+    //  戻り値：なし
+    //=========================================================================================
+    void EjectCdromDiskConfirm(int $disk, int $confirm)
+    {
+        if($confirm == 1) {
+            if(AskOC("CD-ROMをイジェクトします。", [$IDNO]) == [$IDOK]) {
+                EjectCdromDisk($disk);
+            }
+        } else {
+            EjectCdromDisk($disk);
+        }
+    }
+
+
+    //=========================================================================================
+    //  内　容：拡張子を変更する
+    //  引　数：なし
+    //  戻り値：なし
+    //=========================================================================================
+    void RenameExtension()
+    {
+        int $st;
+        str $ext;
+        $st = Input("マークファイルの拡張子を変更"+$CR+
+                    "マークされたすべてのファイルの拡張子を指定されたものに変更します。"+$CR+
+                    "変更したい拡張子を入力して下さい。",
+                    ".txt", $ext);
+        if(($st == [$IDCANCEL]) | ($ext == "")) {               // キャンセルされた
+            End();
+        }
+        if(StrMid($ext, 0, 1) != ".") {                         // 拡張子の前に必ず'.'を
+            $ext = "." + $ext;
+        }
+
+        str $markFile = $M;
+        int $conf = 1;                                          // 確認して実行するとき1
+        int $markCount = GetMark(0);
+        int $i;
+        for($i=0; $i<$markCount; $i=$i+1) {
+            str $oldFile = GetMarkPos($markFile, $i);           // 旧ファイル名
+            str $newFile = $oldFile:r + $ext;                   // 新ファイル名
+            if($conf == 1) {
+                $st = AskYNC("次のリネームを実行します。"+$CR+
+                             "    "+$oldFile:t+" → "+$newFile+$CR+
+                             "以下、確認なしで実行しますか？", [$IDNO]);
+                switch($st) {
+                    case [$IDYES]: {                            // はい
+                        $conf = 0;
+                    }
+                    case [$IDCANCEL]: {                         // キャンセル
+                        End();
+                    }
+                }
+            }
+            if(RenameEx($C+"\"+$oldFile:t, $C+"\"+$newFile:t) == 1) {
+                MarkEx($oldFile:t, 0);
+            } else {
+                Warning("次のファイルのリネームに失敗しました。"+$CR+
+                        "    "+$oldFile:t+" → "+$newFile);
+            }
+        }
+    }
+
+
+    //=========================================================================================
+    //  内　容：指定されたファイルに通し番号をつける
+    //  引　数：なし
+    //  戻り値：なし
+    //=========================================================================================
+    void RenameSequence()
+    {
+        int $st;
+        str $template;
+        $st = Input("マークファイルに通し番号を付加"+$CR+
+                    "マークされているすべてのファイルのファイル名を通し番号を含む"+$CR+
+                    "ファイル名に変更します。"+$CR+
+                    "マーク順に、File01.dat、File02.datのような名前を自動的に割り当てます。"+$CR+$CR+
+                    "変更後のファイル名のテンプレートを入力してください。"+$CR+
+                    "自動的に数値を割り当てる部分を%dとして、ファイル名を指定して下さい。"+$CR+
+                    "数値部分を%0ndとすると、n桁の数値を割り当てます。"+$CR+
+                    "    例１  File1.dat、File2.dat  →  「File%d.dat」と入力"+$CR+
+                    "    例２  File0001.dat、File0002.dat  → 「File%04d.dat」と入力",
+                    "%04d"+$<+".jpg", $template);
+        if(($st == [$IDCANCEL]) | ($template == "")) {          // キャンセルされた
+            End();
+        }
+
+        str $markFile = $M;
+        int $conf = 1;                                          // 確認して実行するとき1
+        int $markCount = GetMark(0);
+        int $i;
+        for($i=0; $i<$markCount; $i=$i+1) {
+            str $oldFile = GetMarkPos($markFile, $i);           // 旧ファイル名
+            str $newFile = IntToStr($template, $i+1);           // 新ファイル名
+            if($conf == 1) {
+                $st = AskYNC("次のリネームを実行します。"+$CR+
+                             "    "+$oldFile:t+" → "+$newFile+$CR+
+                             "以下、確認なしで実行しますか？", [$IDNO]);
+                switch($st) {
+                    case [$IDYES]: {                            // はい
+                        $conf = 0;
+                    }
+                    case [$IDCANCEL]: {                         // キャンセル
+                        End();
+                    }
+                }
+            }
+            if(RenameEx($C+"\"+$oldFile:t, $C+"\"+$newFile:t) == 1) {
+                MarkEx($oldFile:t, 0);
+            } else {
+                Warning("次のファイルのリネームに失敗しました。"+$CR+
+                        "    "+$oldFile:n+" → "+$newFile);
+            }
+        }
+    }
+
+
+    //=========================================================================================
+    //  内　容：マークファイルを単独で圧縮する
+    //  引　数：なし
+    //  戻り値：なし
+    //=========================================================================================
+    void SinglePack()
+    {
+        int $st;
+        $st = AskOC("このマクロでは、マークされているすべてのファイルをそれぞれ別の"+$CR+
+                    "ファイルに圧縮します。"+$CR+
+                    "例えば、Text1.txt、Tool.exeというファイルをText1.lzh、Tool.lzh"+$CR+
+                    "に圧縮します。ただし、ファイル名本体が同一のファイルは同じ書庫に"+$CR+
+                    "格納されます。", [$IDOK]);
+        if($st == [$IDCANCEL]) {
+            End();
+        }
+
+        str $markFile = $M;
+        int $markCount = GetMark(0);
+        int $cancel = 0;
+        int $i;
+        for($i=0; ($i<$markCount) & ($cancel==0); $i=$i+1) {
+            str $file = GetMarkPos($markFile, $i);              // 処理ファイル名
+            str $arcFile = $file:r+".lzh";                      // 書庫ファイル名
+            ClearMark();
+            MarkEx($file:t, 1);                                 // 対象ファイルのみマーク
+            if(PackEx($O+"\"+$arcFile, 1) == 0) {
+                $cancel = 1;
+            }
+        }
+        if($cancel == 1) {                                      // キャンセルした
+            int $j;
+            for($j=$i-1; $j<$markCount; $j=$j+1) {              // 未処理ファイルをマーク
+                str $file = GetMarkPos($markFile, $j);
+                MarkEx($file:t, 1);
+            }
+        }
+    }
+
+
+    //=========================================================================================
+    //  内　容：ディレクトリをディレクトリスタックからポップする
+    //  引　数：$msg    エラー時のメッセージを表示するとき1
+    //  戻り値：なし
+    //=========================================================================================
+    void PopDirectoryMsg(int $msg)
+    {
+        if($msg == 1) {
+            if(PopDirectory() == 0) {
+                Warning("ディレクトリスタックは空です。");
+            }
+        } else {
+            PopDirectory();
+        }
+    }
+
+
+    //=========================================================================================
+    //  内　容：カーソルの左右を入れ替える
+    //  引　数：なし
+    //  戻り値：なし
+    //=========================================================================================
+    void ExchangeCursor()
+    {
+        if(IsCursorLeft()) {                        // 左にいたら右へ
+            CursorRight();
+        } else {                                    // 右にいたら左へ
+            CursorLeft();
+        }
+    }
+
+
+    //=========================================================================================
+    //  内　容：ディレクトリを変更する
+    //  引　数：なし
+    //  戻り値：なし
+    //=========================================================================================
+    void ChangeDirectory()
+    {
+        if($F == "..") {
+            OpenDirectory();
+        } else {
+            OpenDirectory();
+            RestoreCursor();
+        }
+    }
+
+
+    //=========================================================================================
+    //  内　容：停止方法を説明する
+    //  引　数：なし
+    //  戻り値：なし
+    //=========================================================================================
+    void ExplainStop()
+    {
+        int $st;
+        $st = AskOC("これより、永久ループに入ってKFの処理を停止させます。"+$CR+
+                    "このような場合はSTOPキーまたはBreakキーを押すことで"+$CR+
+                    "インタプリタの強制終了を行います。", [$IDOK]);
+        if($st == [$IDCANCEL]) {
+            End();
+        }
+        while(1) {
+            Sleep(1);
+        }
+    }
+
+
+    //=========================================================================================
+    //  内　容：自己展開ファイルかどうかを確認したうえでファイルを実行する
+    //  引　数：なし
+    //  戻り値：なし
+    //=========================================================================================
+    void OpenConfrimSFX()
+    {
+        if(GetFileSize($P) >= 2097152) {                // 2MB以上はそのまま実行
+            Open();
+        } else {
+            if(!IsSFXFile($P)) {                        // 普通の実行ファイル
+                Open();
+            } else {                                    // lzh形式自己解凍書庫
+                if(AskYN("これはlzh自己解凍書庫です。仮想ディレクトリで表示しますか？",
+                         [$IDYES]) == [$IDYES]) {
+                    VirtualDir();
+                } else {
+                    Open();
+                }
+            }
+        }
+    }
+
+
+    //=========================================================================================
+    //  内　容：自己展開ファイルかどうかを確認したうえでファイルを実行する
+    //  引　数：なし
+    //  戻り値：なし                        (c) Osamu.Yoshida
+    //=========================================================================================
+    void UnpackWithDirectory()
+    {
+        int $i;
+        str $s;
+        for($i=0; GetMarkPos($M,$i)!=""; $i=$i+1) {
+            $s=GetMarkPos($M,$i);
+            MakeDirEx($O+"\"+$s:r);
+            SetWorkDir($O+"\"+$s:r);
+            Unpack($s);
+        }
+    }
+
+
+    //=========================================================================================
+    //  内　容：Microsoft Wordファイルかどうかを確認し、.DOCファイルのオープンを行う
+    //  引　数：なし
+    //  戻り値：なし
+    //=========================================================================================
+    void WordOrTextOpen()
+    {
+        if(IsWordDocument($P)) {                    // Wordの.docファイル
+            if(AskYN("これはWordドキュメントです。Wordを起動しますか？",
+                     [$IDNO]) == [$IDYES]) {
+                Open();
+            }
+        } else {                                    // テキストの.docファイル
+            FileViewer();
+        }
+    }
+
+
+    //=========================================================================================
+    //  内　容：ファイルサイズに応じて.WAVファイルの再生を行う
+    //  引　数：なし
+    //  戻り値：なし
+    //=========================================================================================
+    void PlayWavFile()
+    {
+        if(GetFileSize($P) < 2097152) {             // 2MB未満はそのまま再生
+            PlaySound($P);
+        } else {                                    // 2MB以上は外部プレイヤーを呼ぶ
+            Open();
+        }
+    }
+
+
+    //=========================================================================================
+    //  内　容：フォントサイズを指定された大きさに変更します
+    //  引　数：$size   フォントの幅（pixel単位）
+    //  戻り値：なし
+    //=========================================================================================
+    void SetFontSize(int $size)
+    {
+        if($size < 8) {
+            %DirFont = "ＭＳ ゴシック";
+        } else {
+            %DirFont = "ＭＳ 明朝";
+        }
+        %DirCX = $size;
+        %DirCY = $size * 2;
+    }
+
+
+    //=========================================================================================
+    //  内　容：全圧縮ファイルを展開
+    //  引　数：なし
+    //  戻り値：なし
+    //=========================================================================================
+    void ExtractAll()
+    {
+        SetWorkDir($O+"\");
+        ClearMark();
+        MarkEx("*.lzh *.zip *.cab *.tar *.arj", 1);
+        Unpack($M);
+    }
+
+
+    //=========================================================================================
+    //  内　容：ファイル情報を表示
+    //  引　数：なし
+    //  戻り値：なし
+    //=========================================================================================
+    void FileInformation()
+    {
+        if(IsDirectory($P)) {
+            Warning("ディレクトリでは実行できません。");
+        } else {
+            if(IsWordDocument($P)) {
+                Warning("バイナリファイルでは実行できません。");
+            } else {
+                if(GetFileSize($P) < 2097152) {             // 2MB未満のみ
+                    Information("テキストファイル情報" + $CR +
+                                IntToStr("　　ファイルサイズ：%6dKB", GetFileSize($P)/1024) + $CR +
+                                IntToStr("　　テキスト行数　：%6d行", CalcTextLine($P)));
+                } else {
+                    Warning("ファイルが大きすぎます。");
+                }
+            }
+        }
+    }
+
+
+    //=========================================================================================
+    //  内　容：KFの定義ファイルを編集
+    //  引　数：なし
+    //  戻り値：なし
+    //=========================================================================================
+    void EditKfDefFile()
+    {
+        EditDirect(""""+$DEFFILE+"""");
+        if(AskYN("定義ファイルの設定を反映させるため、今すぐに再起動しますか？",
+                 [$IDYES]) == [$IDYES]) {
+            Restart();
+        }
+    }
+
+
+    //=========================================================================================
+    //  内　容：ログウインドウのサイズを切り替える
+    //  引　数：なし
+    //  戻り値：なし
+    //=========================================================================================
+    void ToggleLogBorder()
+    {
+        global int $logBorderMode = 0;
+        global int $logBorderRatio0;
+        global int $logBorderRatio1 = 80;
+        int $newBorder = GetLogBorder();
+        if($newBorder != -1) {                          // ログウインドウが表示されている
+            if($logBorderMode == 0) {                   // 小→大
+                $logBorderRatio0 = $newBorder;
+                SetLogBorder($logBorderRatio1);
+            } else {                                    // 大→小
+                $logBorderRatio1 = $newBorder;
+                SetLogBorder($logBorderRatio0);
+            }
+            $logBorderMode = 1 - $logBorderMode;
+        }
+    }
+
+
+    //=========================================================================================
+    //  内　容：デザインの変更を行う
+    //  引　数：$fileOnly   ファイル名のみ
+    //  戻り値：なし
+    //=========================================================================================
+    void SetDesignFileOnly(int $fileOnly)
+    {
+        global str $oldDesign = "";
+        if($fileOnly == 1) {
+            if($oldDesign == "") {                          // 現在詳細表示
+                $oldDesign = %ScrDesign;                    // ファイル名のみにする
+                %ScrDesign = "%f%";
+            }
+        } else {                                            // 現在ファイル名のみ
+            if($oldDesign != "") {
+                %ScrDesign = $oldDesign;                    // 詳細表示にする
+                $oldDesign = "";
+            }
+        }
+    }
+
+    //=========================================================================================
+    //  内　容：Susieのスライドショー実行
+    //  引　数：ディレクトリ名
+    //  戻り値：なし
+    //=========================================================================================
+    void SusieSlideShow(str $Dir)
+    {
+        str $cmd = """C:\Tools\Susie\Susie.exe"" -s " + """"+$Dir+"""";
+        Exec($cmd);
+    }
+
+    void DevStudioOpen(str $path)
+    {
+        str $cmd = """C:\Visual_Studio\Common\MSDev98\Bin\msdev.exe"" " + $path;
+        Exec($cmd);
+    }
+
+    void svn_command(str $svn_cmd)
+    {
+        int $i;
+        str $s;
+        str $cmd = "svn " + $svn_cmd;
+        if(GetMarkPos($M,0) == "")
+        {
+            $cmd = $cmd + " " + $P;
+        }
+        else
+        {
+            for($i=0; GetMarkPos($M,$i)!=""; $i=$i+1)
+            {
+                $s=GetMarkPos($M,$i);
+                $cmd = $cmd + " " + $s;
+            }
+        }
+        Print($cmd);
+        ExecEx($cmd, 0);
+        ClearMark();
+    }
+
+    void EditMeadow(str $path)
+    {
+        str $cmd = """c:\tools\Meadow\bin\emacsclientw.exe"" -n " + """" + $path + """";
+        Exec($cmd);
+    }
+
+    void EditWZ(str $path)
+    {
+        // str $cmd = """C:\tools\WZ Editor\WZEDITOR.EXE"" " + """" + $path + """";
+        str $cmd = """C:\tools\WZ Editor\WZEDITOR.EXE"" " + $path;
+        Exec($cmd);
+    }
+
+    //=========================================================================================
+    //  内　容：Open Git Bash
+    //  引　数：$path   パス
+    //  戻り値：なし
+    //=========================================================================================
+    void git_bash(str $path)
+    {
+        Print("Git Bash: " + $path);
+        Exec("""C:\WINDOWS\system32\cmd.exe"" /c ""pushd """ + $path +  """ && ""C:\tools\Git\bin\sh.exe"" --login -i""");
+    }
+// [VKMM:New Function]
+}
+
+
+
+
+//────────────────────────────────────────
+//      キーバインド
+//────────────────────────────────────────
+//**********************
+//* デフォルトファイル *
+//**********************
+.Class "すべての拡張子" ( *.* ) {                                       // ﾍﾙﾌﾟ:半角28文字以内  last↓
+    _return ------v--   FileViewer();                                   # ファイル内容を表示
+            -t-------   Open();                                         # 開く
+    _up     ---------   CursorUp(1);                                    # 上へ移動
+            -t-------   CursorUp(2);                                    # 指定行数だけ上へ移動
+            --c------   SetBorderRatio(50);                             # ウインドウ境界同一
+    _down   ---------   CursorDown(1);                                  # 下へ移動
+            -t-------   CursorDown(2);                                  # 指定行数だけ下へ移動
+            --c------   MoveWindow();                                   # ウインドウを移動
+    _left   ---------   CursorLeft();                                   # 左ウインドウへ
+            -t-------   PreviousDrive(); RestoreCursor();               # 前ﾄﾞﾗｲﾌﾞへ移動・位置復元
+            --c------   MoveBorder(-16);                                # ウインドウ境界 左へ
+            -tc------   MoveBorder(-999);                               # ウインドウ境界 左最大
+    _right  ---------   CursorRight();                                  # 右ウインドウへ
+            -t-------   NextDrive(); RestoreCursor();                   # 次ﾄﾞﾗｲﾌﾞへ移動・位置復元
+            --c------   MoveBorder(16);                                 # ウインドウ境界 右へ
+            -tc------   MoveBorder(999);                                # ウインドウ境界 右最大
+    _space  ---------   Mark();                                         # マーク
+            -t----v--   MarkUpper();                                    # １つ上をマーク
+    _prior  ---------   CursorRollup();                                 # １ページ上へ移動
+            --c------   MinimizeWindow();                               # ウインドウをアイコン化
+    _next   ---------   CursorRolldown();                               # １ページ下へ移動
+            --c------   MaximizeWindow();                               # ウインドウを最大化
+    _back   ---------   ChdirToParent();                                # 親ディレクトリへ
+    _home   ---------   ReverseMarkFile();                              # 全ファイルのマーク反転
+            -t-------   ClearMark();                                    # 全マーク解除
+            --c------   ReverseMark();                                  # 全マーク反転
+            -tc------   MarkAllFile();                                  # 全ファイルのマーク
+    _end    ---------   ReloadP(); UpdateToolbar();                     # 最新の状態に更新
+    _delete ---------   Delete();                                       # 削除
+            -t-------   HighSpeedDelete();                              # 高速削除
+            --c------   DeleteBackupFile();                             # ゴミファイルを削除
+            -tc------   MyComputer($C:d+":\RECYCLED");                  # ごみ箱を開く
+    _tab    ---------   ContextMenu();                                  # コンテキストメニュー
+            -t-------   ContextMenuEx($C+"\", -1);                      # ディレクトリのメニュー
+    _escape ---------   KfTaskManager();                                # タスクマネージャ
+            -t-------   CancelAllTask();                                # 全タスクをキャンセル
+    _num0   ---------   ChangeDir("C:\TEMP"); RestoreCursor();          # 作業ディレクトリへ移動
+    _num1   ---------   ChangeDrive("A"); RestoreCursor();              # Ａドライブへ移動
+    _num2   ---------   ChangeDrive("B"); RestoreCursor();              # Ｂドライブへ移動
+    _num3   ---------   ChangeDrive("C"); RestoreCursor();              # Ｃドライブへ移動
+    _num4   ---------   ChangeDrive("D"); RestoreCursor();              # Ｄドライブへ移動
+    _num5   ---------   ChangeDrive("E"); RestoreCursor();              # Ｅドライブへ移動
+    _num6   ---------   ChangeDrive("F"); RestoreCursor();              # Ｆドライブへ移動
+    _num7   ---------   ChangeDrive("G"); RestoreCursor();              # Ｇドライブへ移動
+    _num8   ---------   ChangeDrive("H"); RestoreCursor();              # Ｈドライブへ移動
+    _num9   ---------   ChangeDrive("I"); RestoreCursor();              # Ｉドライブへ移動
+    _f1     ---------   Menu(12);                                       # キーヘルプ
+            -t-------   Option(0);                                      # 現在環境オプション
+            --c------   ChangeDrive("A"); RestoreCursor();              # Ａドライブへ移動
+    _f2     ---------   Menu(3);                                        # 表示メニュー
+            --c------   ChangeDrive("B"); RestoreCursor();              # Ｂドライブへ移動
+    _f3     ---------   Menu(6);                                        # ツールメニュー
+            -t-------   ChangeDir($WINDOWS); RestoreCursor();           # Windowsﾃﾞｨﾚｸﾄﾘへ移動
+            --c------   ChangeDrive("C"); RestoreCursor();              # Ｃドライブへ移動
+    _f4     ---------   Menu(8);                                        # 実行メニュー
+            -t-------   ChangeDir($DESKTOP); RestoreCursor();           # デスクトップへ移動
+            --c------   ChangeDrive("D"); RestoreCursor();              # Ｄドライブへ移動
+    _f5     ---------   ReloadP(); UpdateToolbar();                     # 最新の状態に更新
+            -t-------   ChangeDir($STARTMENU); RestoreCursor();         # スタートメニューへ移動
+            --c------   ChangeDrive("E"); RestoreCursor();              # Ｅドライブへ移動
+    _f6     ---------   SortMenu();                                     # 整列方法を選択
+            -t-------   Sort(6);                                        # ソート解除
+    _f7     ---------   PathMask();                                     # パスマスクの設定
+            -t-------   SetPathMask(0);                                 # パスマスク解除
+    _f8     ---------   SpecialQuick1();                                # キー入力実行１
+    _f9     ---------   Exec("""C:\Tools\WZ EDITOR\WZEDITOR.EXE"" /fwzgrep -f"""+$C+"\*.cpp;*.c;*.cxx;*.hpp;*.hxx;*.h;*.inl;*.java;*.php;*.inc;*.js;*.sql;*.html;*.xhtml;*.phtml;*.xml;*.rb;*.rhtml;*.py;*.log;*.txt;*.el;*.css;*.erb;*.yml;*.pl;*.properties""");# WZ GREP
+    _f10    ---------   Exec("cmd.exe");                                # コマンドプロンプト
+//          -t-------   Exec("cmd.exe");                                # コマンドプロンプト
+            --c------   LogDir(); RestoreCursor();                      # ﾃﾞｨﾚｸﾄﾘを変更・位置復元
+    _f11    ---------   ToggleWindow();                                 # 直前のビュアに切り替え
+            -t-------   SelectWindow();                                 # ウインドウを選択
+    _f12    ---------   ChangeNextWindow();                             # 次のウインドウに切り替え
+            -t-------   ChangePrevWindow();                             # 前のウインドウに切り替え
+    _:      --------n                                                   #
+    _;      ---------   PopDirectoryMsg(1);                             # 保存したディレクトリへ
+            -t-------   PushDirectory($C+"\");                          # ディレクトリを保存
+    _-      ---------   ToggleLogBorder();                              # ログの大きさを切り替え
+            -t-------   ToggleLogWindow();                              # ログ表示切り替え
+    _,      ---------   EjectRemovableDiskConfirm(2,1);                 # リムーバブルイジェクト
+            -t-------   EjectCdromDiskConfirm(1,1);                     # CD-ROMイジェクト
+    _.      ---------   PathMask();                                     # パスマスクの設定
+            -t-------   SetPathMask(0);                                 # パスマスク解除
+    _/      ---------   LumpMark();                                     # 一括マーク
+    _@      ---------   ToggleBackBmp();                                # 壁紙表示の切り替え
+    _[      ---------   PathHistory(); RestoreCursor();                 # パスヒストリ・位置復元
+    _\      ---------   ChdirToRoot();                                  # ルートディレクトリへ
+    _]      ---------   ExchangeCursor();                               # カーソル左右切り替え
+    _A      ---------   RenameMark();                                   # ファイル情報一括編集
+            -c-------   IncrementalSearchEx("A");                       # 指定文字列ｲﾝｸﾘﾒﾝﾀﾙｻｰﾁ
+    _B      ---------   Backup();                                       # バックアップ
+            -c-------   IncrementalSearchEx("B");                       # 指定文字列ｲﾝｸﾘﾒﾝﾀﾙｻｰﾁ
+    _C      ---------   Copy();                                         # コピー
+            -t-------   Menu(14);                                       # 方法を選択してコピー
+            -tc----d1   ClipCopy();                                     # ファイル名をコピー
+            -c-------   IncrementalSearchEx("C");                       # 指定文字列ｲﾝｸﾘﾒﾝﾀﾙｻｰﾁ
+    _D      ---------   Delete();                                       # 削除
+            -t-------   HighSpeedDelete();                              # 高速削除
+            --c------   DeleteBackupFile();                             # ゴミファイルを削除
+            -tc------   MyComputer($C:d+":\RECYCLED");                  # ごみ箱を開く
+            -c-------   IncrementalSearchEx("D");                       # 指定文字列ｲﾝｸﾘﾒﾝﾀﾙｻｰﾁ
+    _E      -----o---   Edit();                                         # テキストを編集
+            -t-------   EditWZ($P);                         # 他のエディタで編集
+            -tc------   EditDirect(""""+$C:n+"\"+$<+"""");              # 新規編集
+            -c-------   IncrementalSearchEx("E");                       # 指定文字列ｲﾝｸﾘﾒﾝﾀﾙｻｰﾁ
+    _F      ---------   IncrementalSearch();                            # インクリメンタルサーチ
+            -t-------   Where($C);                                      # ファイル検索
+            -c-------   IncrementalSearchEx("F");                       # 指定文字列ｲﾝｸﾘﾒﾝﾀﾙｻｰﾁ
+//  _G      ---------   SlideShow($C);                                  # スライドショーを実行
+    _G      ---------   SusieSlideShow($C);                             # スライドショーを実行
+    -t-------   git_bash($C);                                   # Git Bash
+            -c-------   IncrementalSearchEx("G");                       # 指定文字列ｲﾝｸﾘﾒﾝﾀﾙｻｰﾁ
+    _H      ---------   KeyHelp();                                      # キーバインドヘルプ
+            -c-------   IncrementalSearchEx("H");                       # 指定文字列ｲﾝｸﾘﾒﾝﾀﾙｻｰﾁ
+    _I      ---------   CalcDirectorySize();                            # ディレクトリサイズ計算
+            -t-------   DisplayBar(1,1,1,1);                            # 表示状態の変更 通常
+            -tc------   DisplayBar(0,0,0,0);                            # 表示状態の変更 最大
+            -c-------   IncrementalSearchEx("I");                       # 指定文字列ｲﾝｸﾘﾒﾝﾀﾙｻｰﾁ
+    _J      ---------   ChdirToRegDir(0); RestoreCursor();              # 登録ﾃﾞｨﾚｸﾄﾘへ・位置復元
+            -c-------   IncrementalSearchEx("J");                       # 指定文字列ｲﾝｸﾘﾒﾝﾀﾙｻｰﾁ
+    _K      ---------   MakeDir();                                      # ディレクトリの作成
+            -c-------   IncrementalSearchEx("K");                       # 指定文字列ｲﾝｸﾘﾒﾝﾀﾙｻｰﾁ
+            -t-------   svn_command("lock");                            # svn lock
+    _L      ---------   LogDisk(); RestoreCursor();                     # ドライブの変更・位置復元
+            -t-------   SetFocusAddressbar();                           # ディレクトリ変更
+            -c-------   IncrementalSearchEx("L");                       # 指定文字列ｲﾝｸﾘﾒﾝﾀﾙｻｰﾁ
+    _M      ---------   Move();                                         # 移動
+            -t-------   Menu(15);                                       # 方法を選択して移動
+            -c-------   IncrementalSearchEx("M");                       # 指定文字列ｲﾝｸﾘﾒﾝﾀﾙｻｰﾁ
+    _N      ---------   LoginNet();                                     # ネットワーク接続
+            -t-------   LogoutNet();                                    # ネットワーク接続を解除
+            -c-------   IncrementalSearchEx("N");                       # 指定文字列ｲﾝｸﾘﾒﾝﾀﾙｻｰﾁ
+    _O      ---------   ChdirToOpposite();                              # 対象dir＝反対dir
+            -t-------   OppositeChdir();                                # 反対dir＝対象dir
+            -c-------   IncrementalSearchEx("O");                       # 指定文字列ｲﾝｸﾘﾒﾝﾀﾙｻｰﾁ
+    _P      ---------   Pack(1, $F:r+".lzh");                           # マークファイルを圧縮
+            -c-------   IncrementalSearchEx("P");                       # 指定文字列ｲﾝｸﾘﾒﾝﾀﾙｻｰﾁ
+    _Q      ---------   Exit();                                         # 終了
+            -t-------   Restart();                                      # 再起動
+            -tc------   QuickExit();                                    # 即時終了
+            -c-------   IncrementalSearchEx("Q");                       # 指定文字列ｲﾝｸﾘﾒﾝﾀﾙｻｰﾁ
+    _R      ---------   Rename();                                       # 名前の変更
+            -t------d   RenameExtension();                              # 拡張子の変更
+            -tc-----d   RenameSequence();                               # 自動連続番号リネーム
+            -c-------   IncrementalSearchEx("R");                       # 指定文字列ｲﾝｸﾘﾒﾝﾀﾙｻｰﾁ
+    _S      ---------   SortMenu();                                     # 整列方法を選択
+            -c-------   IncrementalSearchEx("S");                       # 指定文字列ｲﾝｸﾘﾒﾝﾀﾙｻｰﾁ
+    _T      ---------   CreateShortcut();                               # ショートカットを作成
+            -c-------   IncrementalSearchEx("T");                       # 指定文字列ｲﾝｸﾘﾒﾝﾀﾙｻｰﾁ
+    _U      -----ov-d   SetWorkDir($O+"\"); Unpack($M);                 # 反対パスに展開
+            -c-------   IncrementalSearchEx("U");                       # 指定文字列ｲﾝｸﾘﾒﾝﾀﾙｻｰﾁ
+            -t-------   svn_command("unlock");                          # svn unlock
+    _V      ------v--   FileViewer();                                   # ファイル内容を表示
+            -t----v--   FileViewerEx($P, 1);                            # ファイル内容を表示(内部)
+            -c-------   IncrementalSearchEx("V");                       # 指定文字列ｲﾝｸﾘﾒﾝﾀﾙｻｰﾁ
+    _W      ---------   FileCompare();                                  # ファイルコンペア
+            -c-------   IncrementalSearchEx("W");                       # 指定文字列ｲﾝｸﾘﾒﾝﾀﾙｻｰﾁ
+    _X      ---------   Menu(6);                                        # ツールメニュー
+            -t-------   Menu(8);                                        # 実行メニュー
+            -c-------   IncrementalSearchEx("X");                       # 指定文字列ｲﾝｸﾘﾒﾝﾀﾙｻｰﾁ
+    _Y      --------n                                                   #
+            -c-------   IncrementalSearchEx("Y");                       # 指定文字列ｲﾝｸﾘﾒﾝﾀﾙｻｰﾁ
+    _Z      -c-------   IncrementalSearchEx("Z");                       # 指定文字列ｲﾝｸﾘﾒﾝﾀﾙｻｰﾁ
+
+    // マウス
+    _dblclk ---------   Identify(_return, 0);                           # Returnキーと同じ動作
+            -t-------   Identify(_return, 1);                           # Returnキーと同じ動作
+            --c------   Identify(_return, 2);                           # Returnキーと同じ動作
+            -tc------   Identify(_return, 3);                           # Returnキーと同じ動作
+    _lbutt  ---------   BringCursor(); MouseMark();                     # ドラッグしてマーク
+            -t-------   MouseMarkRange();                               # カーソル位置からマーク
+            --c------   MouseMarkDrag();                                # カーソル位置をマーク追加
+    _lbuttu ---------                                                   #
+    _rbutt  ---------                                                   #
+    _rbuttu ---------   BringCursor(); CursorMousePos(); ContextMenu(); # コンテキストメニュー
+    _mbutt  ---------   BringCursor(); MouseMarkDrag();                 # ドラッグしてマーク
+    _mbuttu ---------                                                   #
+    // Ver1.30までの左ボタン操作を行いたいときは_lbuttにMouseMarkDrag()を割り当てて下さい
+
+    // ステータスバーのクリック
+    _ustlcl ---------   BringCursor();                                  # カーソルをこちらへ
+    _ustmcl --------n                                                   #
+    _ustrcl ---------   BringCursor(); ContextMenuEx($C+"\", -1);       # ディレクトリのメニュー
+    _ustdbl ---------   ChdirToOpposite();                              # 対象dir＝反対dir
+            -t-------   OppositeChdir();                                # 反対dir＝対象dir
+    _lstlcl ---------   BringCursor();                                  # カーソルをこちらへ
+    _lstmcl --------n                                                   #
+    _lstrcl ---------   BringCursor(); ContextMenuEx($C+"\", GetScreenLineSize(0)+1);       # ディレクトリのメニュー
+    _lstdbl ---------   ChdirToOpposite();                              # 対象dir＝反対dir
+            -t-------   OppositeChdir();                                # 反対dir＝対象dir
+
+    // コンテキスト（右クリック）メニュー
+    .ContextMenu {
+        // Exploreメニューから項目を削除
+        DeleteItem  "送る"                                              // "送る"階層には項目が存在しません
+        DeleteItem  "切り取り"
+        DeleteItem  "ｺﾋﾟｰ"
+        DeleteItem  "ｼｮｰﾄｶｯﾄの作成"
+        DeleteItem  "削除"
+        DeleteItem  "名前の変更"
+
+        // 先頭に項目を追加
+        InsertItem  top {
+            --------x   FileViewer();                                   # ファイル内容を表示(&V)
+            ---------                                                   # ----------------
+        }
+        // ﾌﾟﾛﾊﾟﾃｨの前に項目を追加
+        InsertItem  before "ﾌﾟﾛﾊﾟﾃｨ" {
+            ---------                                                   # ----------------
+            -----o--x   Copy();                                         # コピー(&C)
+            -----o--x   Move();                                         # 移動(&M)
+            ---------                                                   # ----------------
+            -----o--x   CreateShortcut();                               # ショートカットの作成(&T)
+            ------d1x   DeleteFileEx($P);                               # 削除(&D)
+            --------x   Rename();                                       # 名前の変更(&N)
+            ---------                                                   # ----------------
+        }
+    }
+}
+
+
+//****************
+//* システム関係 *
+//****************
+.Class "ディレクトリ" ( directory ) : inheritance "すべての拡張子" {
+    _return -t-------   MyComputer($P);                                 # マイコンピュータで開く
+            ---------   ChangeDirectory();                              # ディレクトリを変更
+    .ContextMenu {
+        DeleteItem  "ファイル内容を表示"
+        InsertItem  top {
+            --------x   ChangeDirectory();                              # ディレクトリを変更
+        }
+    }
+}
+
+
+.Class "実行ファイル" ( *.exe ) : inheritance "すべての拡張子" {
+    _return ---------   OpenConfrimSFX();                               # 開く（.EXE 自己展開確認）
+    _f9     ---------   Exec($P+" "+$<);                                # .EXE キー入力実行２
+    _f10    ---------   Exec($P+" "+$<+$M);                             # .EXE キー入力実行３
+    .ContextMenu {
+        InsertItem  top {
+            -x-------   OpenConfrimSFX();                               # 開く（.EXE 自己展開確認）
+            ---------   Exec($P+" "+$<+$M);                             # キー入力実行(&K)...
+        }
+    }
+}
+
+
+//************************
+//* アプリケーション関係 *
+//************************
+.Class "圧縮ファイル" ( *.lzh *.zip *.cab *.tar *.tgz *.taz *.arj *.rar ) : inheritance "すべての拡張子" {
+    _return ---------   VirtualDir();                                   # 仮想ディレクトリ
+            -t---ov-d   SetWorkDir($O+"\"); Unpack($M);                 # 反対パスに展開
+            --c--ov--   Unpack($M);                                     # 対象パスに展開
+    .ContextMenu {
+        InsertItem  top {
+            --------x   VirtualDir();                                   # 仮想ディレクトリ(&X)
+            -----ov-d   SetWorkDir($O+"\"); Unpack($M);                 # 反対パスに展開(&C)
+            -----ov--   Unpack($M);                                     # 対象パスに展開(&O)
+            --------d   UnpackWithDirectory();                          # ディレクトリ付き展開(&D)
+        }
+    }
+}
+
+
+.Class "ドキュメント/MS-Wordファイル" ( *.doc ) : inheritance "すべての拡張子" {
+    _return ------v--   WordOrTextOpen();                               # 開く（.DOC Word/Text確認）
+    .ContextMenu {
+        InsertItem  top {
+            --------x   WordOrTextOpen();                               # 閲覧/編集(&X)
+        }
+    }
+}
+
+
+//******************
+//* 音楽・音声関係 *
+//******************
+.Class "音声ファイル" ( *.wav ) : inheritance "すべての拡張子" {
+    _return ------v--   PlayWavFile();                                  # 開く（.WAV サイズ確認）
+    .ContextMenu {
+        InsertItem  top {
+            ------v-x   PlayWavFile();                                  # 音声データを再生(&P)
+        }
+    }
+}
+
+
+//************
+//* 画像関係 *
+//************
+.Class "画像ファイル" ( *.jpg *.jpeg *.pi *.mag *.q4 *.pic *.p2 *.tif *.blk *.cam
+                        *.clp *.dpic *.gcd *.GRA *.hg *.j6i *.kt4 *.ktx *.kty *.mit *.mki
+                        *.ml1 *.pbm *.pcd *.pct *.pcx *.pgm *.pict *.pms *.png *.ppm *.Q
+                        *.ras *.tga *.tim ) : inheritance "すべての拡張子" {
+    _return ------v--   GraphicViewer();                                # 画像を表示
+    .ContextMenu {
+        InsertItem  top {
+            ------v-x   GraphicViewer();                                # 画像を表示(&V)
+        }
+    }
+}
+
+.Class "Windowsビットマップファイル" ( *.bmp ) : inheritance "画像ファイル" {
+    _return -c----v--   SetWallPaper($P);                               # デスクトップの壁紙に設定
+    .ContextMenu {
+        InsertItem  top {
+            --------x   GraphicViewer();                                # 画像を表示(&V)
+            --------x   SetWallPaper($P);                               # デスクトップの壁紙に設定(&W)
+        }
+    }
+}
+
+//*************
+//* DevStudio *
+//*************
+.Class "DevStudioファイル" ( *.dsp *.dsw ) : inheritance "すべての拡張子" {
+    _return -t----v--   DevStudioOpen($P);                              # 開く
+}
+
+// [VKMM:New Class]
+
+
+.Susie {                                                // susie plug-inのファイル名
+    "bmp"       ""
+    "jpg"       "IFJPEG.SPI"                            // Joint Photographic Exports Group
+    "jpeg"      "IFJPEG.SPI"
+//  "jpg"       "IFjpegv6.SPI"                          // Progressive jpeg画像
+//  "jpeg"      "IFjpegv6.SPI"                          // Progressive jpeg画像
+    "pi"        "IFPI.SPI"
+    "mag"       "IFMAG.SPI"
+    "q4"        "IFXLD4.SPI"
+    "pic"       "IFPIC.SPI"
+    "p2"        "IFPIC2.SPI"
+    "gif"       "IFGIF.SPI"
+//  "gif"       "IFGIF2.SPI"                            // グレースケールgif対応
+    "tif"       "IFTIFF.SPI"                            // Tagged Image File Format
+//  "tif"       "IFTIFF6.SPI"                           // tiff Format(Towns tiff 不可)
+    "blk"       "IFblk.SPI"                             // PC98 BLK 画像
+    "cam"       "IFcam.SPI"                             // QV-10画像
+    "clp"       "IFclp.SPI"                             // Window クリップボード形式
+    "dpic"      "IFdpic.SPI"                            // DoGa-pic画像
+    "gcd"       "IFgcd.SPI"                             // GCD 画像
+    "gra"       "IFqld.SPI"                             // qld format画像
+    "hg"        "IFhg.SPI"                              // HG 画像
+    "j6i"       "IFj6i.SPI"                             // DC-2L(RICHOﾃﾞｼﾞﾀﾙｶﾒﾗ)
+    "kt4"       "IFkty.SPI"                             // kitty 400line 8色
+    "ktx"       "IFkty.SPI"                             // kitty 400line 16色
+    "kty"       "IFkty.SPI"                             // kitty 200line 8色
+    "mit"       "IFmint.SPI"                            // Mint Title 画像
+    "mki"       "IFmaki.SPI"                            // maki 画像
+    "ml1"       "IFML1_24.SPI"                          // mloader1画像
+    "pbm"       "IFpnm.SPI"                             // X Window Portable Bitmap
+    "pcd"       "IFpcd.SPI"                             // Kodak phot CD 画像
+    "pct"       "IFpict.SPI"                            // Machintosh Picture
+    "pcx"       "IFpcx.SPI"                             // Zsoft pcx
+    "pict"      "IFpict.SPI"                            // Machintosh Picture
+    "pgm"       "IFpnm.SPI"                             // X Window 画像
+    "pms"       "IFpms.SPI"                             // アリスソフトPMS
+    "png"       "IFpng.SPI"                             // Portable Network Graphics
+    "ppm"       "IFpnm.SPI"                             // X Window 画像
+    "q"         "IFald.SPI"                             // ald format画像
+    "ras"       "IFSunRas.SPI"                          // Sun microsytem社 Sun Rasterfile
+    "tga"       "IFtga.SPI"                             // Truevision社 Targa ﾌｫｰﾏｯﾄ
+    "tim"       "IFtim.SPI"                             // tim 画像
+}
+
+
+
+
+//────────────────────────────────────────
+//      メニュー
+//────────────────────────────────────────
+//  メニュー番号0はウインドウに付属するメニューです。
+//  -mを指定すると、マーク無しの状態で淡色表示になります。
+.Menu ( 0 ) "KF Main" {
+    .Menu ( 1 ) "ﾌｧｲﾙ(&F)" {                                        // メニュー項目  &でｼｮｰﾄｶｯﾄｷｰ
+        ---------   Open();                                         # 開く(&O)
+        ---------                                                   # ----------------
+        -m-------   Copy();                                         # コピー(&C)
+        -m-------   Move();                                         # 移動(&M)
+        .Menu ( 13 ) "各種ファイル操作(&X)" {
+            -m-------   Copy();                                     # 通常コピー(&C)
+            -m------d   WindowsCopy();                              # Windows方式でコピー(&W)
+            -m-------   DirectCopy();                               # ディレクトリ指定(&D)...
+            -m-------   HistoryCopy();                              # ヒストリコピー(&H)...
+            -m-------   RegDirCopy(1);                              # 登録dirへコピー(&1)...
+            -------d2   SearchCopy();                               # 検索コピー(&F)
+            ---------                                               # ----------------
+            -m-------   Move();                                     # 通常ムーブ(&N)
+            -m------d   WindowsMove();                              # Windows方式で移動(&W)
+            -m-------   DirectMove();                               # ディレクトリ指定(&D)...
+            -m-------   HistoryMove();                              # ヒストリムーブ(&H)...
+            -m-------   RegDirMove(1);                              # 登録ディレクトリへ移動(&1)...
+            -------d2   SearchMove();                               # 検索移動(&F)
+        }
+        ---------                                                   # ----------------
+        ---------   Rename();                                       # 名前の変更(&R)...
+        -m-------   RenameMark();                                   # ファイル情報一括編集(&A)...
+        -m------d   RenameExtension();                              # 拡張子変更(&E)
+        -m------d   RenameSequence();                               # 自動連続番号リネーム(&C)
+        ---------                                                   # ----------------
+        -m-------   Backup();                                       # バックアップ(&B)...
+        -m-------   Delete();                                       # 削除(&D)...
+        -m-------   CreateShortcut();                               # ショートカットを作成(&C)...
+        ---------   MakeDir();                                      # ディレクトリの作成(&K)...
+        ---------   EjectEx($C);                                    # 現在ドライブをイジェクト(&T)
+        ---------                                                   # ----------------
+        ---------   LogDisk();                                      # ドライブの変更(&L)...
+        ---------   ChdirToRegDir(0);                               # 登録ディレクトリへ移動...(&J)
+        ---------   PathHistory();                                  # パスヒストリ...(&H)
+        ---------                                                   # ----------------
+        ---------   Restart();                                      # 再起動(&S)
+        ---------   Exit();                                         # 終了(&X)
+    }
+    .Menu ( 2 ) "編集(&E)" {
+        -------d1   ClipCopy();                                     # ファイル名をコピー(&C)
+        --o----d1   ClipCopyAs();                                   # 形式指定名前コピー(&S)...
+        ---------                                                   # ----------------
+        ---------   IncrementalSearch();                            # インクリメンタルサーチ(&I)...
+        ---------   Where($C);                                      # ファイル検索(&F)...
+        ---------                                                   # ----------------
+        ---------   PathMask();                                     # パスマスク(&M)...
+        ---------   AttributeMask();                                # 属性マスク(&B)...
+        ---------                                                   # ----------------
+        ---------   FileCompare();                                  # ファイルコンペア(&P)...
+        ---------   MarkAllFile();                                  # 全ファイルのマーク(&A)
+        ---------   ClearMark();                                    # 全マーク解除(&R)
+        ---------   LumpMark();                                     # 一括マーク(&L)...
+        ---------                                                   # ----------------
+        ---------   KfTaskManager();                                # タスクマネージャ(&T)...
+        ---------   CancelAllTask();                                # 全タスクをキャンセル(&C)
+    }
+    .Menu ( 3 ) "表示(&V)" {
+        .Menu ( 4 ) "整列方法(&S)" {
+            ---------   Sort(0);                                    # 名前順にソート(&F)
+            ---------   Sort(1);                                    # DOS名順にソート(&F)
+            ---------   Sort(2);                                    # 日付順にソート(&T)
+            ---------   Sort(3);                                    # 拡張子順にソート(&E)
+            ---------   Sort(4);                                    # サイズ順にソート(&L)
+            ---------   Sort(5);                                    # 属性順にソート(&L)
+            ---------   Sort(6);                                    # ソート解除(&N)
+            ---------                                               # ----------------
+            ---------   SortMenu();                                 # 整列方法を選択(&S)...
+        }
+        .Menu ( 5 ) "ウインドウ境界の変更(&B)" {
+            ---------   SetBorderRatio(100);                        # 左ウインドウ最大(&1)
+            ---------   SetBorderRatio(65);                         # 左ウインドウ優先(&2)
+            ---------   SetBorderRatio(50);                         # 左右均等(&3)
+            ---------   SetBorderRatio(35);                         # 右ウインドウ優先(&4)
+            ---------   SetBorderRatio(0);                          # 右ウインドウ最大(&5)
+        }
+        .Menu ( 18 ) "表示オプション(&O)" {
+            ---------   ChangeViewSwitch();                         # 表示スイッチを切り替え(&V)...
+            ---------   DisplayBar(1,1,1,1);                        # 通常表示(&N)
+            ---------   DisplayBar(0,0,0,0);                        # 最大表示(&X)
+            ---------                                               # ----------------
+            ---------   SetFontSize(6);                             # 小さいフォント(&S)
+            ---------   SetFontSize(8);                             # 通常のフォント(&L)
+            ---------                                               # ----------------
+            ---------   SetDesignFileOnly(1);                       # 画面デザイン ファイル名(&F)
+            ---------   SetDesignFileOnly(0);                       # 画面デザイン 詳細表示(&D)
+        }
+
+        -m-------   CalcDirectorySize();                            # ディレクトリサイズ計算(&D)
+        ---------                                                   # ----------------
+        ---------   ClearLog();                                     # ログを消去(&C)
+        ---------   SelectWindow();                                 # ウインドウを選択(&W)...
+        ---------                                                   # ----------------
+        ---------   ReloadP(); UpdateToolbar();                     # 最新の状態に更新(&R)
+    }
+    .Menu ( 6 ) "ﾂｰﾙ(&T)" {
+        ------v--   Edit();                                         # テキストを編集(&E)
+        ---------   EditDirect(""""+$C:n+"\"+$<+"""");              # 新規編集(&N)...
+        ------v--   FileViewer();                                   # ファイル内容を表示(&V)
+        .Menu ( 7 ) "圧縮･解凍(&P)" {
+            ---------   Pack(1, $F:r+".lzh");                       # LHA圧縮(&P)...
+            ---------   Pack(1, $F:r+".cab");                       # CAB圧縮(&C)...
+            ---------   Pack(1, $F:r+".tar");                       # TARアーカイブ(&T)...
+            -m-----d2   SinglePack();                               # 自動単独圧縮(&P)
+            ---------                                               # ----------------
+            -----ov-d   SetWorkDir($O+"\"); Unpack($M);             # 反対パスに展開(&U)
+            ------v-d   ExtractAll();                               # 全圧縮ファイルを展開(&A)
+        }
+        ---------                                                   # ----------------
+        ---------   LoginNet();                                     # ネットワークを接続...(&I)
+        ---------   LogoutNet();                                    # ネットワークを切断...(&O)
+        ---------                                                   # ----------------
+        ---------   SortDir($C, 0);                                 # ファイル順ソート書き込み(&S)
+        ---------   SortDir($C, 3);                                 # 拡張子順ソート書き込み(&Z)
+        ---------   ShakeDir($C);                                   # エントリを詰めて書き込み(&K)
+        ---------   UpperDir($C);                                   # ファイル名大文字化(&C)
+        ---------   LowerDir($C);                                   # ファイル名小文字化(&A)
+        ---------   CapitalDir($C);                                 # ファイル名先頭大文字化(&T)
+        ---------                                                   # ----------------
+        -m-----d2   CombineFile(1, "新しいﾌｧｲﾙ");                   # マークファイルを結合(&B)...
+        ---------   EditVolumeLabel();                              # ボリュームラベルを編集(&V)...
+        ---------   SlideShow($C);                                  # スライドショー(&G)
+        ---------   SetWallPaper($P);                               # 壁紙を変更(&W)
+    }
+    .Menu ( 8 ) "実行(&X)" {
+        ---------   SpecialQuick1();                                # 実行(&1)
+        ---------   SpecialQuick2();                                # ファイル名付き実行(&2)
+        ---------   SpecialQuick3();                                # ファイル一覧付き実行(&3)
+        ---------   Exec("COMMAND.COM");                            # コマンドプロンプト(&C)
+        ---------                                                   # ----------------
+        ---------   ControlPanel();                                 # コントロールパネル(&L)
+        ---------   Exec("REGEDIT");                                # レジストリエディタ(&R)
+        ---------   MyComputer($C:d+":\RECYCLED");                  # ごみ箱を開く(&X)
+        ---------   MyComputer($C);                                 # マイコンピュータで開く(&M)
+        ---------   Exec("EXPLORER /n,/e,"+$C);                     # エクスプローラ(&F)
+        ---------                                                   # ----------------
+        ---------   FileInformation();                              # ファイル情報を表示(&I)...
+        ---------                                                   # ----------------
+        .Menu ( 16 ) "テキスト変換(&T)" {
+            --------d   TabToSpace($P, $O+"\"+$F:r+$<+".txt", 8);       # 8tab→space 変換(&1)...
+            --------d   TabToSpace($P, $O+"\"+$F:r+$<+".txt", 4);       # 4tab→space 変換(&2)...
+            --------d   SpaceToTab($P, $O+"\"+$F:r+$<+".txt", 8);       # space→8tab 変換(&3)...
+            --------d   SpaceToTab($P, $O+"\"+$F:r+$<+".txt", 4);       # space→4tab 変換(&4)...
+            ---------                                                   # ----------------
+            --------d   NkfConvert("-sm", $P, $O+"\"+$F:r+$<+".txt");   # Shift_JIS 変換(&J)...
+            --------d   NkfConvert("-em", $P, $O+"\"+$F:r+$<+".txt");   # EUC-JP 変換(&E)...
+            --------d   NkfConvert("-jm", $P, $O+"\"+$F:r+$<+".txt");   # ISO-2022-JP 変換(&I)...
+            --------d   ConvertEncodeTypeDir($P, $O, "-sm", "SJIS");    # Shift_JIS dir変換(&H)...
+            --------d   ConvertEncodeTypeDir($P, $O, "-em", "EUC");     # EUC-JP dir変換(&U)...
+            --------d   ConvertEncodeTypeDir($P, $O, "-jm", "JIS");     # ISO-2022-JP dir変換(&S)...
+        }
+    }
+    .Menu ( 9 ) "ｵﾌﾟｼｮﾝ(&O)" {
+        ---------   RegistUser();                                   # 送金ユーザの登録(&S)...
+        ---------   Uninstall();                                    # インストール情報の削除(&D)...
+        ---------                                                   # ----------------
+        .Menu ( 17 ) "一時オプション(&C)" {
+            ---------   Option(0);                                  # 現在環境オプション(&O)...
+            ---------   ViewOption(0);                              # 現在環境表示オプション(&I)...
+            ---------   KeyAssign(0);                               # 現在キー割り当ての変更(&K)...
+            ---------   RegDirOption(0);                            # 現在登録ﾃﾞｨﾚｸﾄﾘの設定(&J)...
+        }
+        ---------   Option(1);                                      # オプション(&O)...
+        ---------   ViewOption(1);                                  # 表示オプション(&I)...
+        ---------   KeyAssign(1);                                   # キー割り当ての変更(&K)...
+        ---------   RegDirOption(1);                                # 登録ディレクトリの設定(&J)...
+        ---------                                                   # ----------------
+        ---------   FileViewerEx($DEFFILE, 0);                      # 定義ファイルの閲覧(&V)
+        ---------   EditKfDefFile();                                # 定義ファイルの編集(&E)
+        ---------                                                   # ----------------
+        ---------   ToggleEventPCM();                               # PCM再生の切り替え(&P)
+        ---------   ToggleBackBmp();                                # 壁紙表示の切り替え(&W)
+        ---------   ExplainStop();                                  # マクロ停止方法の説明(&X)
+    }
+    .Menu ( 11 ) "ﾍﾙﾌﾟ(&H)" {
+        ---------   Help();                                         # 目次(&C)
+        ---------   HelpSearch();                                   # キーワードの検索(&S)
+        ---------   OnePoint();                                     # ワンポイント(&O)
+        ---------                                                   # ----------------
+        ---------   KeyHelp();                                      # キーバインドヘルプ(&K)
+        .Menu ( 12 ) "キー操作(&K)" {
+            -m-------   RenameMark();                               # ファイル情報一括編集(&A)
+            -m-------   Backup();                                   # バックアップ(&B)...
+            -m-------   Copy();                                     # コピー(&C)
+            -m-------   Delete();                                   # 削除(&D)...
+            ------v--   Edit();                                     # テキストを編集(&E)
+            ---------   IncrementalSearch();                        # インクリメンタルサーチ(&F)
+            ---------   SlideShow($C);                              # スライドショーを実行(&G)
+            ---------   KeyHelp();                                  # キーバインドヘルプ(&H)...
+            ---------   CalcDirectorySize();                        # ディレクトリサイズ計算(&I)
+            ---------   ChdirToRegDir(0);                           # 登録ディレクトリへ移動(&J)...
+            ---------   MakeDir();                                  # ディレクトリの作成(&K)...
+            ---------   LogDisk();                                  # ドライブの変更(&L)...
+            -m-------   Move();                                     # 移動(&M)
+            ---------   LoginNet();                                 # ネットワーク接続(&N)...
+            ---------   ChdirToOpposite();                          # 対象dir＝反対dir(&O)
+            ---------   Pack(1, $F:r+".lzh");                       # マークファイルを圧縮(&P)...
+            ---------   Exit();                                     # 終了(&Q)
+            ---------   Rename();                                   # 名前の変更(&R)...
+            ---------   SortMenu();                                 # 整列方法を選択(&S)...
+            -m-------   CreateShortcut();                           # ショートカットの作成(&T)
+            -----ov-d   SetWorkDir($O+"\"); Unpack($M);             # 反対パスに展開(&U)
+            ---------   FileViewer();                               # ファイル内容を表示(&V)
+            ---------   FileCompare();                              # ファイルコンペア(&W)...
+            ---------   Menu(6);                                    # ツールメニュー(&X)
+            ---------                                               # ----------------
+            ---------   Nop();                                      # 上記のショートカットキーが
+            ---------   Nop();                                      # 通常画面のキー操作を示します
+        }
+        ---------                                                   # ----------------
+        ---------   HelpAbout();                                    # KFについて(&A)...
+    }
+}
+
+
+.Menu ( 14 ) "" {
+    -m-------   Copy();                                             # 通常コピー(&C)
+    -m------d   WindowsCopy();                                      # Windows方式でコピー(&W)
+    -m-------   DirectCopy();                                       # ディレクトリ指定(&D)...
+    -m-------   HistoryCopy();                                      # ヒストリコピー(&H)...
+    -m-------   RegDirCopy(1);                                      # 登録dirへコピー(&1)...
+    -------d2   SearchCopy();                                       # 検索コピー(&F)
+    --------d   ClipCopy();                                         # ファイル名をコピー(&C)
+}
+
+
+.Menu ( 15 ) "" {
+    -m-------   Move();                                             # 通常ムーブ(&N)
+    -m------d   WindowsMove();                                      # Windows方式で移動(&W)
+    -m-------   DirectMove();                                       # ディレクトリ指定(&D)...
+    -m-------   HistoryMove();                                      # ヒストリムーブ(&H)...
+    -m-------   RegDirMove(1);                                      # 登録dirへ移動(&1)...
+    -------d2   SearchMove();                                       # 検索移動(&F)
+}
+
+
+
+//────────────────────────────────────────
+//      ツールバー
+//────────────────────────────────────────
+.Toolbar {
+    "COPY.BMP"      -mb------   Copy();                             # コピー
+    "MOVE.BMP"      -mb------   Move();                             # 移動
+    "DELETE.BMP"    -m-------   Delete();                           # 削除
+    "RENAME.BMP"    ---------   Rename();                           # 名前の変更
+    "MKDIR.BMP"     ---------   MakeDir();                          # ディレクトリの作成
+    "SORT.BMP"      ---------   SortMenu();                         # 整列方法を選択
+    ""              ---------                                       # ----------------
+    "VIEW.BMP"      ---------   FileViewer();                       # テキストを表示
+    "EDIT.BMP"      ------v--   Edit();                             # 編集
+    "PACK.BMP"      ---------   Pack(1, $F:r+".lzh");               # LHA圧縮
+    "UNPACK.BMP"    ------v--   SetWorkDir($O+"\"); Unpack($P);     # LHA展開
+    ""              ---------                                       # ----------------
+    "MARKALL.BMP"   ---------   MarkAllFile();                      # 全ファイルのマーク
+    "CHDIRP.BMP"    ---------   ChdirToParent();                    # 親ディレクトリへ移動
+    "CHDIRR.BMP"    ---------   ChdirToRegDir(0);                   # 登録ディレクトリへ移動
+    ""              ---------                                       # ----------------
+    "<DRIVELIST>"   ---------                                       # ドライブ変更
+}
+
+
+
+
+//────────────────────────────────────────
+//      ファイルビュア
+//────────────────────────────────────────
+//************
+//* キー定義 *
+//************
+// コマンドの連続実行、#によるキーヘルプ定義はできません。
+.FileViewer {
+    _up     -----   V_ScrollUp(1);                                  // 上へスクロール
+            -t---   V_ScrollUp(4);                                  // 上へ高速スクロール
+    _down   -----   V_ScrollDown(1);                                // 下へスクロール
+            -t---   V_ScrollDown(4);                                // 下へ高速スクロール
+    _left   -----   V_ScrollLeft(1);                                // 左へスクロール
+            -t---   V_ScrollLeft(999);                              // 左端を表示
+    _right  -----   V_ScrollRight(1);                               // 右へスクロール
+            -t---   V_ScrollRight(999);                             // 右端を表示
+    _prior  -----   V_CursorRollup();                               // ロールアップ
+    _next   -----   V_CursorRolldown();                             // ロールダウン
+    _escape -----   V_Escape();                                     // ビュア終了
+    _return -----   V_Escape();                                     // ビュア終了
+    _f1     -----   V_JumpTopLine();                                // 先頭行へ
+    _f2     -----   V_JumpBottomLine();                             // 最終行へ
+    _f3     -----   V_JumpDirect();                                 // 指定行へ
+    _f4     -----   V_SearchForward();                              // 前方↓検索（新規）
+            -t---   V_SearchReverse();                              // 後方↑検索（新規）
+    _f5     -----   V_SearchNext();                                 // 前方↓検索（次）
+            -t---   V_SearchBack();                                 // 後方↑検索（次）
+    _f11    -----   V_ActivateFiler();                              // ファイラーに切り替え
+    _f12    -----   V_ChangeNextWindow();                           // 次のウインドウに切り替え
+            -t---   V_ChangePrevWindow();                           // 前のウインドウに切り替え
+    _-      -----   V_ToggleViewMode();                             // テキスト⇔ダンプ
+    _^      -----   V_SetTab(4);                                    // タブ：４桁
+    _\      -----   V_SetTab(8);                                    // タブ：８桁
+    _A      -----   V_FullScreen();                                 // 全画面表示
+            -c---   V_SelectAll();                                  // すべて選択
+    _C      -----   V_RotateTextMode();                             // テキストコードタイプの変更
+            -c---   V_CopyText();                                   // 選択範囲をクリップボードにコピー
+            -tc--   V_CopyTextAs();                                 // 形式を指定してクリップボードにコピー
+    _E      -----   V_Edit();                                       // 編集
+    _J      -----   V_JumpDirect();                                 // 指定行へ
+    _V      -----   V_Escape();                                     // ビュア終了
+    _W      -----   V_SetWidth();                                   // 折り返し位置の変更
+    _0      -----   V_Jump(0);                                      // 指定行へ ０入力
+    _num0   -----   V_Jump(0);                                      // 指定行へ ０入力
+    _1      -----   V_Jump(1);                                      // 指定行へ １入力
+    _num1   -----   V_Jump(1);                                      // 指定行へ １入力
+    _2      -----   V_Jump(2);                                      // 指定行へ ２入力
+    _num2   -----   V_Jump(2);                                      // 指定行へ ２入力
+    _3      -----   V_Jump(3);                                      // 指定行へ ３入力
+    _num3   -----   V_Jump(3);                                      // 指定行へ ３入力
+    _4      -----   V_Jump(4);                                      // 指定行へ ４入力
+    _num4   -----   V_Jump(4);                                      // 指定行へ ４入力
+    _5      -----   V_Jump(5);                                      // 指定行へ ５入力
+    _num5   -----   V_Jump(5);                                      // 指定行へ ５入力
+    _6      -----   V_Jump(6);                                      // 指定行へ ６入力
+    _num6   -----   V_Jump(6);                                      // 指定行へ ６入力
+    _7      -----   V_Jump(7);                                      // 指定行へ ７入力
+    _num7   -----   V_Jump(7);                                      // 指定行へ ７入力
+    _8      -----   V_Jump(8);                                      // 指定行へ ８入力
+    _num8   -----   V_Jump(8);                                      // 指定行へ ８入力
+    _9      -----   V_Jump(9);                                      // 指定行へ ９入力
+    _num9   -----   V_Jump(9);                                      // 指定行へ ９入力
+}
+
+
+//********************
+//* ツールバーの定義 *
+//********************
+.FViewerToolbar {
+    "EXIT.BMP"      ---------   V_Escape();                         # ビュアを終了
+    ""              ---------                                       # ----------------
+    "F_COPY.BMP"    ---------   V_CopyText();                       # コピー
+    "F_SELECT.BMP"  ---------   V_SelectAll();                      # すべて選択
+    ""              ---------                                       # ----------------
+    "F_TOP.BMP"     ---------   V_JumpTopLine();                    # 先頭行へ
+    "F_BOTTOM.BMP"  ---------   V_JumpBottomLine();                 # 最終行へ
+    "F_JUMP.BMP"    ---------   V_JumpDirect();                     # 指定行へ
+    ""              ---------                                       # ----------------
+    "F_TEXT.BMP"    ---------   V_ChangeTextMode();                 # テキストを表示
+    "F_DUMP.BMP"    ---------   V_ChangeDumpMode();                 # ダンプ表示
+    "F_FULL.BMP"    ---------   V_FullScreen();                     # 全画面表示
+    ""              ---------                                       # ----------------
+    "F_SRCHFN.BMP"  ---------   V_SearchForward();                  # 検索↓方向
+    "F_SRCHBN.BMP"  ---------   V_SearchReverse();                  # 検索↑方向
+    "F_SRCHF.BMP"   ---------   V_SearchNext();                     # 次検索↓方向
+    "F_SRCHB.BMP"   ---------   V_SearchBack();                     # 次検索↑方向
+    ""              ---------                                       # ----------------
+    "EDIT.BMP"      ---------   V_Edit();                           # 編集
+}
+
+
+
+
+//────────────────────────────────────────
+//      グラフィックビュア
+//────────────────────────────────────────
+//************
+//* キー定義 *
+//************
+// コマンドの連続実行、#によるキーヘルプ定義はできません。
+.GraphicViewer {
+    _up     -----   G_ScrollUp(32);                                 // 上へ高速スクロール
+            -t---   G_ScrollUp(1);                                  // 上へスクロール
+            --c--   G_ViewTop();                                    // 上端を表示
+    _down   -----   G_ScrollDown(32);                               // 上へ高速スクロール
+            -t---   G_ScrollDown(1);                                // 上へスクロール
+            --c--   G_ViewBottom();                                 // 下端を表示
+    _left   -----   G_ScrollLeft(32);                               // 左へ高速スクロール
+            -t---   G_ScrollLeft(1);                                // 左へスクロール
+            --c--   G_ViewLeft();                                   // 左端を表示
+    _right  -----   G_ScrollRight(32);                              // 右へ高速スクロール
+            -t---   G_ScrollRight(1);                               // 右へスクロール
+            --c--   G_ViewRight();                                  // 右端を表示
+    _prior  -----   G_ZoomIn();                                     // 拡大表示
+            -t---   G_ZoomInEx(10);                                 // 拡大表示(10%単位)
+            --c--   G_ZoomInEx(1);                                  // 拡大表示(1%単位)
+    _next   -----   G_ZoomOut();                                    // 縮小表示
+            -t---   G_ZoomOutEx(10);                                // 縮小表示(10%単位)
+            --c--   G_ZoomOutEx(1);                                 // 縮小表示(1%単位)
+    _escape -----   G_Escape();                                     // ビュア終了
+    _return -----   G_EscapeOrNext();                               // 自動／ビュア終了
+            -t---   G_PreviousSlide();                              // 前の画像へ
+    _home   -----   G_Home();                                       // 中心を表示
+            -t---   G_ZoomEx(100);                                  // 拡大 1.0倍
+    _delete -----   G_FileOprDeleteOff();                           // ファイル削除予約を解除
+    _insert -----   G_FileOprDeleteOn();                            // ファイル削除予約を登録
+    _1      -----   G_ZoomEx(100);                                  // 拡大 1.0倍
+    _2      -----   G_Zoom(2);                                      // 拡大 1.5倍
+    _3      -----   G_Zoom(3);                                      // 拡大 2.0倍
+    _4      -----   G_Zoom(4);                                      // 拡大 3.0倍
+    _5      -----   G_Zoom(5);                                      // 拡大 5.0倍
+    _6      -----   G_Zoom(6);                                      // 拡大10.0倍
+    _f1     -----   G_ViewTop();                                    // 上端を表示
+            -t---   G_FilterBright(10);                             // 明るさ+
+    _f2     -----   G_ViewBottom();                                 // 下端を表示
+            -t---   G_FilterBright(-10);                            // 明るさ-
+    _f3     -----   G_ViewLeft();                                   // 左端を表示
+            -t---   G_FilterContrast(20);                           // ｺﾝﾄﾗｽﾄ+
+    _f4     -----   G_ViewRight();                                  // 右端を表示
+            -t---   G_FilterContrast(-20);                          // ｺﾝﾄﾗｽﾄ-
+    _f5     -----   G_SmoothZoom();                                 // 滑らか
+            -t---   G_FilterSharp(80);                              // ｼｬｰﾌﾟ
+    _f6     -----   G_Zoom(1);                                      // 拡大 1.0倍
+            -t---   G_FilterBlur(80);                               // ぼかし
+    _f7     -----   G_Zoom(2);                                      // 拡大 1.5倍
+            -t---   G_FilterColorRelief(80);                        // ｶﾗｰﾚﾘｰﾌ
+    _f8     -----   G_Zoom(3);                                      // 拡大 2.0倍
+            -t---   G_FilterButton(8);                              // ﾎﾞﾀﾝ化
+    _f9     -----   G_Zoom(4);                                      // 拡大 3.0倍
+            -t---   G_Monochrome();                                 // 白黒
+    _f10    -----   G_Zoom(5);                                      // 拡大 5.0倍
+            -t---   G_Sepia();                                      // ｾﾋﾟｱ
+    _f11    -----   G_ActivateFiler();                              // ファイラーに切り替え
+            -t---   G_Negative();                                   // ﾈｶﾞﾃｨﾌﾞ
+    _f12    -----   G_ChangeNextWindow();                           // 次のウインドウに切り替え
+            -t---   G_ChangePrevWindow();                           // 前のウインドウに切り替え
+    _A      -----   G_FullScreen();                                 // 全画面表示
+    _B      -----   G_PreviousSlide();                              // 前の画像へ
+    _C      -----   G_Copy();                                       // クリップボードへコピー
+            -c---   G_Copy();                                       // クリップボードへコピー
+    _G      -----   G_NextSlide();                                  // 次の画像へ
+            -t---   G_PreviousSlide();                              // 前の画像へ
+    _H      -----   G_MirrorHorz();                                 // 水平ミラー
+    _V      -----   G_MirrorVert();                                 // 垂直ミラー
+    _O      -----   G_NextSlideLoop(0);                             // 次の画像へ（ループ）
+            -t---   G_PreviousSlideLoop(0);                         // 前の画像へ（ループ）
+    _R      -----   G_RotateCW();                                   // 時計回りに回転
+            -t---   G_RotateCCW();                                  // 反時計回りに回転
+    _L      -----   G_RotateCCW();                                  // 反時計回りに回転
+            -t---   G_RotateCW();                                   // 時計回りに回転
+    _N      -----   G_NextSlide();                                  // 次の画像へ
+    _S      -----   G_ToggleSquare();                               // アスペクト比切り替え
+    _W      -----   G_SetWallPaper();                               // 壁紙を変更
+    _Z      -----   G_SmoothZoom();                                 // なめらかに拡大表示
+}
+
+
+//********************
+//* ツールバーの定義 *
+//********************
+.GViewerToolbar {
+    "EXIT.BMP"      ---------   G_Escape();                         # ビュアを終了
+    ""              ---------                                       # ----------------
+    "G_COPY.BMP"    ---------   G_Copy();                           # クリップボードへコピー
+    ""              ---------                                       # ----------------
+    "G_BIG.BMP"     ---------   G_ZoomIn();                         # 拡大表示
+    "G_SMALL.BMP"   ---------   G_ZoomOut();                        # 縮小表示
+    "G_SMOOTH.BMP"  ---------   G_SmoothZoom();                     # なめらかに拡大表示
+    "G_FULL.BMP"    ---------   G_FullScreen();                     # 全画面表示
+    ""              ---------                                       # ----------------
+    "G_MIRRH.BMP"   ---------   G_MirrorHorz();                     # 水平ミラー
+    "G_MIRRV.BMP"   ---------   G_MirrorVert();                     # 垂直ミラー
+    "G_ROTCW.BMP"   ---------   G_RotateCW();                       # 時計回りに回転
+    "G_ROTCCW.BMP"  ---------   G_RotateCCW();                      # 反時計回りに回転
+    ""              ---------                                       # ----------------
+    "G_WALL.BMP"    ---------   G_SetWallPaper();                   # 壁紙に設定
+    ""              ---------                                       # ----------------
+    "G_SLNEXT.BMP"  ---------   G_NextSlide();                      # 次の画像へ
+    "G_SLPREV.BMP"  ---------   G_PreviousSlide();                  # 前の画像へ
+}
+
+
+
+
+//────────────────────────────────────────
+//      登録ディレクトリ
+//────────────────────────────────────────
+// グループは0～15を設定可能
+// [VKMM:Begin Registered Dir]
+.RegisteredDir "メイン" ( 0 ) {
+    _D  "D デスクトップ"            "C:\Documents and Settings\yukio.goto\デスクトップ"
+    _P  "P projects"                "C:\Gotou\projects"
+    _M  "M マイドキュメント"        $MYDOCUMENT
+    _S  "S スタートメニュー"        $STARTMENU
+    _W  "W Windows"                 $WINDOWS
+    _V  "V VC9"                     "C:\VisualStudio9.0\VC"
+    _G  "G Gotou"                   "C:\Gotou"
+    _T  "T Tools"                   "C:\Tools"
+    _-  "- KF for Windows"          %HomeDir
+}
+// [VKMM:End Registered Dir]
+// Begin Registered DirからEnd Registerd Dirまでは自動的に書き換えられます
+// 登録ディレクトリ以外の内容は削除されます
+
+
+
+
+//────────────────────────────────────────
+//      パスマスク
+//────────────────────────────────────────
+// 32項目まで設定可能。ワイルドカードは拡張子のみで255文字まで記述可能
+.PathMask {
+    _A  "A すべてのファイル"        "*.*"
+    _D  "D ドキュメント"            "*.DOC *.TXT *.MAN *.ME *.読 *.毒"
+    _R  "R 音楽関係"                "*.RCP *.SNG *.MID"
+    _G  "G 画像関係"                "*.BMP *.JPG *.JPEG *.PI *.MAG *.Q4 *.PIC *.P2 *.GIF *.TIF"
+    _D  "D 開発関係"                "*.C *.CPP *.H *.HPP *.RC *.DEF"
+    _X  "X 実行ファイル"            "*.EXE *.COM *.BAT"
+    _B  "B バックアップファイル"    "*.BAK"
+    _N  "N アーカイブ"              "*.LZH *.ZOO *.Z *.ARC *.ZP *.ZIP *.GZ *.TGZ"
+    _I  "I Ishファイル"             "*.ISH"
+    _E  "E システム関係は除去"      "!*.DLL !*.SYS !*.VXD !*.386 !*.DRV"
+}
+
+
+
+
+//────────────────────────────────────────
+//      ＰＣＭファイル
+//────────────────────────────────────────
+// イベント発生時に鳴らすPCMのファイル名です。
+// %PCMDirでディレクトリ指定を行います。
+// 行をカットするとそのイベントではPCMを再生しません。
+.EventPCM {
+    !Title      "Title.WAV"                         // KFを起動したとき
+    !End        "End.WAV"                           // KFを終了したとき
+    !Restart    "Restart.WAV"                       // KFを再起動したとき
+//  !Up         "Cursor.WAV"                        // カーソルを上に移動したとき
+//  !Down       "Cursor.WAV"                        // カーソルを下に移動したとき
+//  !Rollup     "Cursor.WAV"                        // カーソルをロールアップしたとき
+//  !Rolldown   "Cursor.WAV"                        // カーソルをロールダウンしたとき
+//  !Exg        "Exg.WAV"                           // カーソルを左右に移動したとき
+    !Cancel     "Cancel.WAV"                        // キャンセルしたとき
+    !CopyOpen   "CopyOpen.WAV"                      // コピーダイアログを開いたとき
+    !CopyDir    "TransDir.WAV"                      // ダイレクトコピーダイアログを開いたとき
+    !CopyHist   "TransDir.WAV"                      // ヒストリコピーダイアログを開いたとき
+    !CopyReg    "TransDir.WAV"                      // 登録ディレクトリへコピーを開いたとき
+//  !CopyOk     "FileOk.WAV"                        // コピーしたとき
+//  !CopyNo     "FileNo.WAV"                        // コピーしないとき
+//  !CopyNew    "FileNew.WAV"                       // コピーしないとき（転送先が最新）
+    !CopyFail   "FileFail.WAV"                      // コピーに失敗したとき
+    !CopyFull   "FileFail.WAV"                      // コピー時、ディスクフルで失敗したとき
+    !CopyEnd    "ActionEnd.WAV"                     // コピーが終了したとき
+    !MoveOpen   "MoveOpen.WAV"                      // 移動ダイアログを開いたとき
+    !MoveDir    "TransDir.WAV"                      // ダイレクトムーブダイアログを開いたとき
+    !MoveHist   "TransDir.WAV"                      // ヒストリムーブダイアログを開いたとき
+    !MoveReg    "TransDir.WAV"                      // 登録ディレクトリへ移動を開いたとき
+//  !MoveOk     "FileOk.WAV"                        // 移動したとき
+//  !MoveNo     "FileNo.WAV"                        // 移動しないとき
+//  !MoveNew    "FileNew.WAV"                       // 移動しないとき（転送先が最新）
+    !MoveFail   "FileFail.WAV"                      // 移動に失敗したとき
+    !MoveEnd    "ActionEnd.WAV"                     // 移動が終了したとき
+    !DelOpen    "DelOpen.WAV"                       // 削除ダイアログを開いたとき
+//  !DelOk      "DelOk.WAV"                         // 削除したとき
+//  !DelNo      "DelNo.WAV"                         // 削除しないとき
+//  !DelFail    "DelFail.WAV"                       // 削除に失敗したとき
+    !DelEnd     "ActionEnd.WAV"                     // 削除が終了したとき
+    !ShortOpen  "CopyOpen.WAV"                      // ショートカット作成ダイアログを開いたとき
+//  !ShortOk    "FileOk.WAV"                        // ショートカット作成したとき
+//  !ShortNo    "FileNo.WAV"                        // ショートカット作成しないとき
+    !ShortFail  "FileFail.WAV"                      // ショートカット作成に失敗したとき
+    !ShortEnd   "ActionEnd.WAV"                     // ショートカット作成が終了したとき
+    !BackupOpen "CopyOpen.WAV"                      // バックアップを開始したとき
+    !BackupEnd  "ActionEnd.WAV"                     // バックアップを完了したとき
+    !SameOpen   "SameOpen.WAV"                      // 同名のファイルがあったとき
+//  !SameO      "SameO.WAV"                         // 強制的に上書きするとき
+//  !SameU      "SameU.WAV"                         // 新しければ複写するとき
+//  !SameR      "SameR.WAV"                         // 改名して複写するとき
+//  !SameN      "SameN.WAV"                         // 複写しないとき
+//  !SameA      "SameA.WAV"                         // 自動的に_を付けて複写するとき
+//  !SameS      "SameS.WAV"                         // サイズまたは日付が違うとき複写するとき
+    !DelC       "DelC.WAV"                          // 削除の確認をするとき
+    !DelCDir    "DelCAttr.WAV"                      // ディレクトリ削除の確認をするとき
+    !DelCAttr   "DelCAttr.WAV"                      // 特殊な属性が付いていたとき
+    !RenOpen    "RenOpen.WAV"                       // 名前の変更を開いたとき
+    !AttrOpen   "AttrOpen.WAV"                      // ファイル情報一括編集を開いたとき
+    !MDOpen     "MDOpen.WAV"                        // ディレクトリの作成を開いたとき
+    !LogOpen    "LogDir.WAV"                        // ドライブの変更を開いたとき
+    !LogDOpen   "LogDir.WAV"                        // ディレクトリの変更を開いたとき
+//  !SizeOpen   "SizeOpen.WAV"                      // ディレクトリサイズの計算を開いたとき
+    !InclOpen   "InclOpen.WAV"                      // インクリメンタルサーチを開いたとき
+    !CompOpen   "CompOpen.WAV"                      // ファイルコンペアラを開いたとき
+    !SortOpen   "SortOpen.WAV"                      // ソートウインドウを開いたとき
+    !SortF      "SortF.WAV"                         // ファイル名でソートするとき
+    !SortT      "SortT.WAV"                         // 日付順でソートするとき
+    !SortE      "SortE.WAV"                         // 拡張子順でソートするとき
+    !SortL      "SortL.WAV"                         // サイズ順でソートするとき
+    !SortN      "SortN.WAV"                         // ソートを行わないとき
+    !AttrRead   "AttrRead.WAV"                      // 読み込み専用属性にしたとき
+    !AttrHide   "AttrHide.WAV"                      // 隠し属性にしたとき
+    !AttrSys    "AttrSys.WAV"                       // システム属性にしたとき
+    !AttrArch   "AttrArch.WAV"                      // アーカイブ属性にしたとき
+    !Viewer     "ViewIn.WAV"                        // ファイルビュアを開いたとき
+    !Viewer_    "ViewOut.WAV"                       // ファイルビュアを閉じたとき
+    !GViewer    "ViewIn.WAV"                        // グラフィックビュアを開いたとき
+    !GViewer_   "ViewOut.WAV"                       // グラフィックビュアを閉じたとき
+    !Editor     "Open.WAV"                          // エディタを起動したとき
+    !EditVol    "EditVol.WAV"                       // ボリュームラベルの変更を開いたとき
+    !Jump       "LogDir.WAV"                        // 登録ディレクトリへ移動したとき
+    !HistJump   "LogDir.WAV"                        // パスヒストリを開いたとき
+    !PathMask   "PathMask.WAV"                      // パスマスク設定ダイアログを開いたとき
+    !LumpMark   "PathMask.WAV"                      // 一括マークダイアログを開いたとき
+    !Pack       "Pack.WAV"                          // 圧縮を開いたとき
+    !Unpack     "UnPack.WAV"                        // 解凍を開いたとき
+    !Virtual    "ChdirS.WAV"                        // 仮想ディレクトリに移動したとき
+    !ChdirS     "ChdirS.WAV"                        // サブディレクトリへ移動したとき
+    !ChdirP     "ChdirP.WAV"                        // 親ディレクトリへ移動したとき
+    !ChdirR     "ChdirR.WAV"                        // ルートディレクトリへ移動したとき
+    !Reload     "Reload.WAV"                        // 最新の状態に更新したとき
+    !Open       "Open.WAV"                          // Windowsの関連付けで開いたとき
+//  !KeyHelp    "KeyHelp.WAV"                       // キーヘルプでキー入力を行うとき
+
+//  !Dummy      "何かのイベント.WAV"                // 注釈にすると、再生しません
+}
