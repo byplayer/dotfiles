@@ -16,7 +16,7 @@ vbell off
 caption always "%{=r dd} %-w%{= dd} %n %t %{-}%+w %="
 
 # log config
-logfile ${HOME}/.screen_log/screen-%Y%m%d.%n.log
+logfile ${HOME}/.screen_log/log-%Y%m%d.%c:%s.%n.log
 # log on
 # deflog on
 
