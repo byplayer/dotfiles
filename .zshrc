@@ -134,6 +134,9 @@ export MANPATH=/usr/local/ctags/share/man:`manpath -q`
 # alias 設定
 alias ls="ls -CF --color=auto"
 
+# add path private scripts
+export PATH=~/.bin:$PATH
+
 # ローカル用設定ファイルの読み込み
 if [ -f ~/.zsh_local ]; then
   . ~/.zsh_local
