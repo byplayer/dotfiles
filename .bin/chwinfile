@@ -1,0 +1,24 @@
+#!/bin/sh
+
+if [ ! $1 ]
+then
+  echo usage: `basename $0` TARGETFILE
+  exit 1
+fi
+
+if [ ! -f $1 ]
+then
+  echo ERROR: $1 does not exist .
+  exit 2
+fi
+
+target=`echo $1 | sed -e s/://g`
+
+if [ -f ${target} ]
+then
+  echo ERROR: target file ${target} exists .
+  exit 3
+fi
+
+echo "move: $1 -> ${target}"
+mv $1 ${target}
