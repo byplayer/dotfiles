@@ -12,7 +12,7 @@ then
   exit 2
 fi
 
-target=`echo $1 | sed -e s/://g`
+target=`echo $1 | sed -e s/://g -e 's/ /0/g'`
 
 if [ -f ${target} ]
 then
