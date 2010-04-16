@@ -34,6 +34,9 @@ bind o focus
 bind 2 split
 bind 3 split -v
 
+# read from clipboard
+bind < eval "exec sh -c 'xsel -o -b > ${HOME}/.screen_log/buffile'" readbuf
+
 # synchronize clipboard
 bufferfile ${HOME}/.screen_log/buffile
 bindkey -m ' ' eval 'stuff \040' writebuf "exec !!! sh -c 'xsel -i -b < ${HOME}/.screen_log/buffile'"
