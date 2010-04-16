@@ -15,4 +15,4 @@ if [ -z $2 ] ; then
   exit 1
 fi
 
-find $1 -type f | xargs grep -n $2
+find $1 -type f | xargs grep --color=always -n $2
