@@ -131,6 +131,10 @@ export PATH=/usr/local/freemind:$PATH
 export PATH=/usr/local/ctags/bin:$PATH
 export MANPATH=/usr/local/ctags/share/man:`manpath -q`
 
+# mysql
+export PATH=/usr/local/mysql/bin:$PATH
+export MANPATH=/usr/local/mysql/man:`manpath -q`
+
 # alias 設定
 alias ls="ls -CF --color=auto"
 
