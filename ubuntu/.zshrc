@@ -146,18 +146,3 @@ if [ -f ~/.zsh_local ]; then
   . ~/.zsh_local
 fi
 
-# run screen
-if [ $SHLVL = 1 ];then
-  screen
-fi
-
-# screen caption update
-case "${TERM}" in screen)
-    preexec() {
-        echo -ne "\ek#${1%% *}\e\\"
-    }
-    precmd() {
-        echo -ne "\ek$(basename $(pwd))\e\\"
-        vcs_console
-    }
-esac
