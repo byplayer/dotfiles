@@ -1,0 +1,14 @@
+#!/bin/sh
+
+
+if [ -z ${2} ] ; then
+  prefix=$1
+else
+  prefix=$2
+fi
+
+LOG_FILE=~/telnet_log/${prefix}-`date +%Y%m%d%H%M%S`.log
+
+echo `date +"%Y/%m/%d %H:%M:%S"` start >> $LOG_FILE
+telnet $1 2>&1 | tee -a $LOG_FILE
+echo `date +"%Y/%m/%d %H:%M:%S"` end >> $LOG_FILE
