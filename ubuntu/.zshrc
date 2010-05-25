@@ -138,6 +138,9 @@ export MANPATH=/usr/local/mysql/man:`manpath -q`
 # alias 設定
 alias ls="ls -CF --color=auto"
 
+# tmux
+alias tmux="tmux -2"
+
 # add path private scripts
 export PATH=~/.bin:$PATH
 
