@@ -13,6 +13,4 @@ fi
 
 LOG_FILE=~/telnet_log/${prefix}-`date +%Y%m%d%H%M%S`.log
 
-echo `date +"%Y/%m/%d %H:%M:%S"` start >> $LOG_FILE
-telnet $1 2>&1 | tee -a $LOG_FILE
-echo `date +"%Y/%m/%d %H:%M:%S"` end >> $LOG_FILE
+script -a -c "telnet $1" $LOG_FILE
