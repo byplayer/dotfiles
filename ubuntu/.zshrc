@@ -149,6 +149,12 @@ alias tmux="tmux -2"
 # add path private scripts
 export PATH=~/.bin:$PATH
 
+# rvm
+if [[ -s /home/yukio/.rvm/scripts/rvm ]] ; 
+then 
+  source /home/yukio/.rvm/scripts/rvm ; 
+fi
+
 # ローカル用設定ファイルの読み込み
 if [ -f ~/.zsh_local ]; then
   . ~/.zsh_local
