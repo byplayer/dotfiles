@@ -136,6 +136,10 @@ export MANPATH=/usr/local/ctags/share/man:`manpath -q`
 export PATH=/usr/local/mysql/bin:$PATH
 export MANPATH=/usr/local/mysql/man:`manpath -q`
 
+# tmux
+export PATH=/usr/local/tmux/bin:$PATH
+export MANPATH=/usr/local/tmux/man:`manpath -q`
+
 # alias 設定
 alias ls="ls -CF --color=auto"
 
