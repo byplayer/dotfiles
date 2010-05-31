@@ -150,9 +150,9 @@ alias tmux="tmux -2"
 export PATH=~/.bin:$PATH
 
 # rvm
-if [[ -s /home/yukio/.rvm/scripts/rvm ]] ; 
+if [[ -s $HOME/.rvm/scripts/rvm ]] ;
 then 
-  source /home/yukio/.rvm/scripts/rvm ; 
+  source $HOME/.rvm/scripts/rvm ;
 fi
 
 # ローカル用設定ファイルの読み込み
