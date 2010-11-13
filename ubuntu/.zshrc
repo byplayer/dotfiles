@@ -126,6 +126,9 @@ export PATH=/usr/local/git/bin:$PATH
 export MANPATH=/usr/local/git/share/man:`manpath -q`
 alias g="git"
 
+# rails env
+alias r="rails"
+
 # freemind
 export PATH=/usr/local/freemind:$PATH
 
@@ -136,6 +139,7 @@ export MANPATH=/usr/local/ctags/share/man:`manpath -q`
 # mysql
 export PATH=/usr/local/mysql/bin:$PATH
 export MANPATH=/usr/local/mysql/man:`manpath -q`
+export LD_LIBRARY_PATH=/usr/local/mysql/lib/mysql:$LD_LIBRARY_PATH
 
 # tmux
 export PATH=/usr/local/tmux/bin:$PATH
@@ -155,7 +159,7 @@ export PATH=~/.bin:$PATH
 
 # rvm
 if [[ -s $HOME/.rvm/scripts/rvm ]] ;
-then 
+then
   source $HOME/.rvm/scripts/rvm ;
 fi
 
