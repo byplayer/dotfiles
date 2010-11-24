@@ -64,9 +64,6 @@ compinit
 # ベルを鳴らさない。
 setopt no_beep
 
-# 補完時にヒストリを自動的に展開する。
-setopt hist_expand
-
 # バックグラウンドジョブが終了したらすぐに知らせる。
 setopt no_tify
 
@@ -155,7 +152,7 @@ export PATH=~/.bin:$PATH
 
 # rvm
 if [[ -s $HOME/.rvm/scripts/rvm ]] ;
-then 
+then
   source $HOME/.rvm/scripts/rvm ;
 fi
 
