@@ -56,10 +56,13 @@ SAVEHIST=10000000
 # 全履歴の一覧を出力する
 function history-all { history -E 1 }
 
+eval `dircolors ~/.dir_colors -b`
 
 # デフォルトの補完機能を有効
 autoload -U compinit
 compinit
+
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 
 # ベルを鳴らさない。
 setopt no_beep
