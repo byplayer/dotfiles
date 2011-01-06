@@ -1,28 +1,5 @@
 # .zshrc
 
-# oh-my-zsh
-# Path to your oh-my-zsh configuration.
-export ZSH=$HOME/.oh-my-zsh
-
-# Set to the name theme to load.
-# Look in ~/.oh-my-zsh/themes/
-export ZSH_THEME="byplayer"
-
-# Set to this to use case-sensitive completion
-# export CASE_SENSITIVE="true"
-
-# Comment this out to disable weekly auto-update checks
-# export DISABLE_AUTO_UPDATE="true"
-
-# Uncomment following line if you want to disable colors in ls
-# export DISABLE_LS_COLORS="true"
-
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git gem)
-
-source $ZSH/oh-my-zsh.sh
-
 # プロンプトのカラー表示を有効
 autoload -U colors
 colors
@@ -40,6 +17,36 @@ vcs_console () {
 precmd () {
   vcs_console;
 }
+
+# prompt
+PROMPT_FG_COLOR=white
+RPROMPT_FG_COLOR=white
+VC_FG_COLOR=blue
+
+case ${UID} in
+0)
+  PROMPT_FG_COLOR=red
+  ;;
+*)
+  PROMPT_FG_COLOR=white
+  ;;
+esac
+
+PROMPT_CL_PREFIX="%F{${PROMPT_FG_COLOR}}"
+PROMPT_PREFIX="${PROMPT_CL_PREFIX}"
+
+PROMPT_CL_SUFIX="%f"
+RPROMPT_CL_SUFIX="%f"
+
+[ -n "${REMOTEHOST}${SSH_CONNECTION}" ] &&
+    PROMPT_PREFIX="${PROMPT_PREFIX}%n@%m"
+
+PROMPT="${PROMPT_PREFIX}%#${PROMPT_CL_SUFIX} "
+PROMPT2="${PROMPT_CL_PREFIX}%_\$${PROMPT_CL_SUFIX} "
+SPROMPT="${PROMPT_CL_PREFIX}%r is correct? [n,y,a,e]:${PROMPT_CL_SUFIX} "
+
+
+RPROMPT="%F{${RPROMPT_FG_COLOR}}[%(4~,%-1~/.../%2~,%~)%f%1(v|%F{${VC_FG_COLOR}}%1v%f|)%F{${RPROMPT_FG_COLOR}}]%f"
 
 # ヒストリ設定
 HISTFILE=~/.zsh_history
