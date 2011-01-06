@@ -1,60 +1,10 @@
 # .zshrc
 
+source $HOME/.zsh.d/init.sh
+
 # プロンプトのカラー表示を有効
 autoload -U colors
 colors
-
-# プロンプトはバージョン関連情報を出す準備
-autoload -Uz vcs_info
-zstyle ':vcs_info:*' formats ':%b'
-zstyle ':vcs_info:*' actionformats ':%b|%a'
-vcs_console () {
-  psvar=()
-  LANG=en_US.UTF-8 vcs_info
-  [[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_"
-}
-
-precmd () {
-  vcs_console;
-}
-
-# prompt
-PROMPT_FG_COLOR=white
-RPROMPT_FG_COLOR=white
-VC_FG_COLOR=blue
-
-case ${UID} in
-0)
-  PROMPT_FG_COLOR=red
-  ;;
-*)
-  PROMPT_FG_COLOR=white
-  ;;
-esac
-
-PROMPT_CL_PREFIX="%F{${PROMPT_FG_COLOR}}"
-PROMPT_PREFIX="${PROMPT_CL_PREFIX}"
-
-PROMPT_CL_SUFIX="%f"
-RPROMPT_CL_SUFIX="%f"
-
-[ -n "${REMOTEHOST}${SSH_CONNECTION}" ] &&
-    PROMPT_PREFIX="${PROMPT_PREFIX}%n@%m"
-
-PROMPT="${PROMPT_PREFIX}%#${PROMPT_CL_SUFIX} "
-PROMPT2="${PROMPT_CL_PREFIX}%_\$${PROMPT_CL_SUFIX} "
-SPROMPT="${PROMPT_CL_PREFIX}%r is correct? [n,y,a,e]:${PROMPT_CL_SUFIX} "
-
-
-RPROMPT="%F{${RPROMPT_FG_COLOR}}[%(4~,%-1~/.../%2~,%~)%f%1(v|%F{${VC_FG_COLOR}}%1v%f|)%F{${RPROMPT_FG_COLOR}}]%f"
-
-# ヒストリ設定
-HISTFILE=~/.zsh_history
-HISTSIZE=10000000
-SAVEHIST=10000000
-
-# 全履歴の一覧を出力する
-function history-all { history -E 1 }
 
 eval `dircolors ~/.dir_colors -b`
 
@@ -124,6 +74,7 @@ export MANPATH=${RUBY_HOME}/share/man:`manpath -q`
 # git env
 export PATH=/usr/local/git/bin:$PATH
 export MANPATH=/usr/local/git/share/man:`manpath -q`
+alias g="git"
 
 # rails env
 alias r="rails"
