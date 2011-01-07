@@ -71,11 +71,6 @@ RUBY_HOME=/usr/local/ruby
 export PATH=${RUBY_HOME}/bin:$PATH
 export MANPATH=${RUBY_HOME}/share/man:`manpath -q`
 
-# git env
-export PATH=/usr/local/git/bin:$PATH
-export MANPATH=/usr/local/git/share/man:`manpath -q`
-alias g="git"
-
 # rails env
 alias r="rails"
 
