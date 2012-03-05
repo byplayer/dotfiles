@@ -238,11 +238,11 @@
 %FncCY      12                  // ファンクション表示用フォントの高さ(dot)  [12]
 %FncCount   1                   // ファンクションキーの 数                  [0]:10個    1:12個
 
-%Editor     "C:\Tools\meadow\bin\emacsclientw.exe -n " // エディタのコマンドライン
-%VEditor    "C:\Tools\meadow\bin\emacsclientw.exe -n ""$P""" // ファイルビュアでのエディタのコマンドライン
+%Editor     "C:\Goto\tools\emacs\bin\emacsclientw.exe -n " // エディタのコマンドライン
+%VEditor    "C:\Goto\tools\emacs\bin\emacsclientw.exe -n ""$P""" // ファイルビュアでのエディタのコマンドライン
                                             //      $P:フルパス名（" "なし）  $L:行番号  $T:先頭行番号
                                             //      単なる変数置換なので、修飾記述子は使えません
-%SusieDir   "C:\tools\Susie"                // Susieがインストールされているディレクトリ
+%SusieDir   "C:\Goto\tools\Susie"                // Susieがインストールされているディレクトリ
 %TempDir    "C:\Temp"                       // 仮想ディレクトリ用の作業ディレクトリ
 %ToolDir    ".\TOOLBAR"                     // ツールバーアイコンのディレクトリ
 %PCMDir     ".\PCM"                         // PCMファイルのディレクトリ
@@ -297,7 +297,7 @@
     void SusieSlideShow(str $Dir);
     void DevStudioOpen(str $path);
     void svn_command(str $svn_cmd);
-    void EditMeadow(str $path);
+    void EditEmacs(str $path);
     void EditWZ(str $path);
     void git_bash(str $path);
 }
@@ -1038,16 +1038,16 @@
         ClearMark();
     }
 
-    void EditMeadow(str $path)
+    void EditEmacs(str $path)
     {
-        str $cmd = """C:\Tools\meadow\bin\emacsclientw.exe"" -n " + """" + $path + """";
+        str $cmd = """C:\Goto\tools\emacs\bin\emacsclientw.exe"" -n " + """" + $path + """";
         Exec($cmd);
     }
 
     void EditWZ(str $path)
     {
-        // str $cmd = """C:\tools\WZ Editor\WZEDITOR.EXE"" " + """" + $path + """";
-        str $cmd = """C:\tools\WZ Editor\WZEDITOR.EXE"" " + $path;
+        // str $cmd = """C:\goto\tools\WZ Editor\WZEDITOR.EXE"" " + """" + $path + """";
+        str $cmd = """C:\goto\tools\WZ Editor\WZEDITOR.EXE"" " + $path;
         Exec($cmd);
     }
 
@@ -1059,7 +1059,7 @@
     void git_bash(str $path)
     {
         Print("Git Bash: " + $path);
-        Exec("""C:\WINDOWS\system32\cmd.exe"" /c ""pushd """ + $path +  """ && ""C:\tools\Git\bin\sh.exe"" --login -i""");
+        Exec("""C:\WINDOWS\system32\cmd.exe"" /c ""pushd """ + $path +  """ && ""C:\goto\tools\Git\bin\sh.exe"" --login -i""");
     }
 // [VKMM:New Function]
 }
@@ -1139,7 +1139,7 @@
     _f7     ---------   PathMask();                                     # パスマスクの設定
             -t-------   SetPathMask(0);                                 # パスマスク解除
     _f8     ---------   SpecialQuick1();                                # キー入力実行１
-    _f9     ---------   Exec("""C:\Tools\WZ EDITOR\WZEDITOR.EXE"" /fwzgrep -f"""+$C+"\*.cpp;*.c;*.cxx;*.hpp;*.hxx;*.h;*.inl;*.java;*.php;*.inc;*.js;*.sql;*.html;*.xhtml;*.phtml;*.xml;*.rb;*.rhtml;*.py;*.log;*.txt;*.el;*.css;*.erb;*.yml;*.pl;*.properties""");# WZ GREP
+    _f9     ---------   Exec("""C:\goto\Tools\WZ EDITOR\WZEDITOR.EXE"" /fwzgrep -f"""+$C+"\*.cpp;*.c;*.cxx;*.hpp;*.hxx;*.h;*.inl;*.java;*.php;*.inc;*.js;*.sql;*.html;*.xhtml;*.phtml;*.xml;*.rb;*.rhtml;*.py;*.log;*.txt;*.el;*.css;*.erb;*.yml;*.pl;*.properties""");# WZ GREP
     _f10    ---------   Exec("cmd.exe");                                # コマンドプロンプト
 //          -t-------   Exec("cmd.exe");                                # コマンドプロンプト
             --c------   LogDir(); RestoreCursor();                      # ﾃﾞｨﾚｸﾄﾘを変更・位置復元
@@ -1924,15 +1924,15 @@
 // グループは0～15を設定可能
 // [VKMM:Begin Registered Dir]
 .RegisteredDir "メイン" ( 0 ) {
-    _D  "D デスクトップ"            "C:\Documents and Settings\yukio.goto\デスクトップ"
-    _P  "P projects"                "C:\Goto\projects"
-    _M  "M マイドキュメント"        $MYDOCUMENT
-    _S  "S スタートメニュー"        $STARTMENU
-    _W  "W Windows"                 $WINDOWS
-    _V  "V VC9"                     "C:\VisualStudio9.0\VC"
-    _G  "G Goto"                   "C:\Goto"
-    _T  "T Tools"                   "C:\Tools"
-    _-  "- KF for Windows"          %HomeDir
+	_D	"D Desktop"					"C:\Users\yukio.goto\Desktop"
+	_P	"P projects"				"C:\Goto\projects"
+	_M	"M マイドキュメント"		$MYDOCUMENT
+	_S	"S スタートメニュー"		$STARTMENU
+	_W	"W Windows"					$WINDOWS
+	_V	"V VC9"						"C:\VisualStudio9.0\VC"
+	_G	"G Goto"					"C:\Goto"
+	_T	"T Tools"					"C:\goto\Tools"
+	_-	"- KF for Windows"			%HomeDir
 }
 // [VKMM:End Registered Dir]
 // Begin Registered DirからEnd Registerd Dirまでは自動的に書き換えられます
