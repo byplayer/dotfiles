@@ -51,7 +51,7 @@ builtin-parser:\
 user-custom|User custom plugin parser:\
 	:tc=common:\
 	:langmap=c\:.c.h:\
-	:gtags_parser=c\:/usr/local/global-6.2/lib/gtags/user-custom.la:
+	:gtags_parser=c\:/usr/local/global/lib/gtags/user-custom.la:
 #
 # Plug-in parser to use Exuberant Ctags.
 #
@@ -96,45 +96,45 @@ exuberant-ctags|plugin-example|setting to use Exuberant Ctags plug-in parser:\
 	:langmap=VHDL\:.vhdl.vhd:\
 	:langmap=Vim\:.vim:\
 	:langmap=YACC\:.y:\
-	:gtags_parser=Asm\:/usr/local/global-6.2/lib/gtags/exuberant-ctags.la:\
-	:gtags_parser=Asp\:/usr/local/global-6.2/lib/gtags/exuberant-ctags.la:\
-	:gtags_parser=Awk\:/usr/local/global-6.2/lib/gtags/exuberant-ctags.la:\
-	:gtags_parser=Basic\:/usr/local/global-6.2/lib/gtags/exuberant-ctags.la:\
-	:gtags_parser=BETA\:/usr/local/global-6.2/lib/gtags/exuberant-ctags.la:\
-	:gtags_parser=C\:/usr/local/global-6.2/lib/gtags/exuberant-ctags.la:\
-	:gtags_parser=C++\:/usr/local/global-6.2/lib/gtags/exuberant-ctags.la:\
-	:gtags_parser=C#\:/usr/local/global-6.2/lib/gtags/exuberant-ctags.la:\
-	:gtags_parser=Cobol\:/usr/local/global-6.2/lib/gtags/exuberant-ctags.la:\
-	:gtags_parser=DosBatch\:/usr/local/global-6.2/lib/gtags/exuberant-ctags.la:\
-	:gtags_parser=Eiffel\:/usr/local/global-6.2/lib/gtags/exuberant-ctags.la:\
-	:gtags_parser=Erlang\:/usr/local/global-6.2/lib/gtags/exuberant-ctags.la:\
-	:gtags_parser=Flex\:/usr/local/global-6.2/lib/gtags/exuberant-ctags.la:\
-	:gtags_parser=Fortran\:/usr/local/global-6.2/lib/gtags/exuberant-ctags.la:\
-# 	:gtags_parser=HTML\:/usr/local/global-6.2/lib/gtags/exuberant-ctags.la:\
-	:gtags_parser=Java\:/usr/local/global-6.2/lib/gtags/exuberant-ctags.la:\
-	:gtags_parser=JavaScript\:/usr/local/global-6.2/lib/gtags/exuberant-ctags.la:\
-	:gtags_parser=Lisp\:/usr/local/global-6.2/lib/gtags/exuberant-ctags.la:\
-	:gtags_parser=Lua\:/usr/local/global-6.2/lib/gtags/exuberant-ctags.la:\
-	:gtags_parser=MatLab\:/usr/local/global-6.2/lib/gtags/exuberant-ctags.la:\
-	:gtags_parser=OCaml\:/usr/local/global-6.2/lib/gtags/exuberant-ctags.la:\
-	:gtags_parser=Pascal\:/usr/local/global-6.2/lib/gtags/exuberant-ctags.la:\
-	:gtags_parser=Perl\:/usr/local/global-6.2/lib/gtags/exuberant-ctags.la:\
-	:gtags_parser=PHP\:/usr/local/global-6.2/lib/gtags/exuberant-ctags.la:\
-	:gtags_parser=Python\:/usr/local/global-6.2/lib/gtags/exuberant-ctags.la:\
-	:gtags_parser=REXX\:/usr/local/global-6.2/lib/gtags/exuberant-ctags.la:\
-	:gtags_parser=Ruby\:/usr/local/global-6.2/lib/gtags/exuberant-ctags.la:\
-	:gtags_parser=Scheme\:/usr/local/global-6.2/lib/gtags/exuberant-ctags.la:\
-	:gtags_parser=Sh\:/usr/local/global-6.2/lib/gtags/exuberant-ctags.la:\
-	:gtags_parser=SLang\:/usr/local/global-6.2/lib/gtags/exuberant-ctags.la:\
-	:gtags_parser=SML\:/usr/local/global-6.2/lib/gtags/exuberant-ctags.la:\
-	:gtags_parser=SQL\:/usr/local/global-6.2/lib/gtags/exuberant-ctags.la:\
-	:gtags_parser=Tcl\:/usr/local/global-6.2/lib/gtags/exuberant-ctags.la:\
-	:gtags_parser=Tex\:/usr/local/global-6.2/lib/gtags/exuberant-ctags.la:\
-	:gtags_parser=Vera\:/usr/local/global-6.2/lib/gtags/exuberant-ctags.la:\
-	:gtags_parser=Verilog\:/usr/local/global-6.2/lib/gtags/exuberant-ctags.la:\
-	:gtags_parser=VHDL\:/usr/local/global-6.2/lib/gtags/exuberant-ctags.la:\
-	:gtags_parser=Vim\:/usr/local/global-6.2/lib/gtags/exuberant-ctags.la:\
-	:gtags_parser=YACC\:/usr/local/global-6.2/lib/gtags/exuberant-ctags.la:
+	:gtags_parser=Asm\:/usr/local/global/lib/gtags/exuberant-ctags.la:\
+	:gtags_parser=Asp\:/usr/local/global/lib/gtags/exuberant-ctags.la:\
+	:gtags_parser=Awk\:/usr/local/global/lib/gtags/exuberant-ctags.la:\
+	:gtags_parser=Basic\:/usr/local/global/lib/gtags/exuberant-ctags.la:\
+	:gtags_parser=BETA\:/usr/local/global/lib/gtags/exuberant-ctags.la:\
+	:gtags_parser=C\:/usr/local/global/lib/gtags/exuberant-ctags.la:\
+	:gtags_parser=C++\:/usr/local/global/lib/gtags/exuberant-ctags.la:\
+	:gtags_parser=C#\:/usr/local/global/lib/gtags/exuberant-ctags.la:\
+	:gtags_parser=Cobol\:/usr/local/global/lib/gtags/exuberant-ctags.la:\
+	:gtags_parser=DosBatch\:/usr/local/global/lib/gtags/exuberant-ctags.la:\
+	:gtags_parser=Eiffel\:/usr/local/global/lib/gtags/exuberant-ctags.la:\
+	:gtags_parser=Erlang\:/usr/local/global/lib/gtags/exuberant-ctags.la:\
+	:gtags_parser=Flex\:/usr/local/global/lib/gtags/exuberant-ctags.la:\
+	:gtags_parser=Fortran\:/usr/local/global/lib/gtags/exuberant-ctags.la:\
+# 	:gtags_parser=HTML\:/usr/local/global/lib/gtags/exuberant-ctags.la:\
+	:gtags_parser=Java\:/usr/local/global/lib/gtags/exuberant-ctags.la:\
+	:gtags_parser=JavaScript\:/usr/local/global/lib/gtags/exuberant-ctags.la:\
+	:gtags_parser=Lisp\:/usr/local/global/lib/gtags/exuberant-ctags.la:\
+	:gtags_parser=Lua\:/usr/local/global/lib/gtags/exuberant-ctags.la:\
+	:gtags_parser=MatLab\:/usr/local/global/lib/gtags/exuberant-ctags.la:\
+	:gtags_parser=OCaml\:/usr/local/global/lib/gtags/exuberant-ctags.la:\
+	:gtags_parser=Pascal\:/usr/local/global/lib/gtags/exuberant-ctags.la:\
+	:gtags_parser=Perl\:/usr/local/global/lib/gtags/exuberant-ctags.la:\
+	:gtags_parser=PHP\:/usr/local/global/lib/gtags/exuberant-ctags.la:\
+	:gtags_parser=Python\:/usr/local/global/lib/gtags/exuberant-ctags.la:\
+	:gtags_parser=REXX\:/usr/local/global/lib/gtags/exuberant-ctags.la:\
+	:gtags_parser=Ruby\:/usr/local/global/lib/gtags/exuberant-ctags.la:\
+	:gtags_parser=Scheme\:/usr/local/global/lib/gtags/exuberant-ctags.la:\
+	:gtags_parser=Sh\:/usr/local/global/lib/gtags/exuberant-ctags.la:\
+	:gtags_parser=SLang\:/usr/local/global/lib/gtags/exuberant-ctags.la:\
+	:gtags_parser=SML\:/usr/local/global/lib/gtags/exuberant-ctags.la:\
+	:gtags_parser=SQL\:/usr/local/global/lib/gtags/exuberant-ctags.la:\
+	:gtags_parser=Tcl\:/usr/local/global/lib/gtags/exuberant-ctags.la:\
+	:gtags_parser=Tex\:/usr/local/global/lib/gtags/exuberant-ctags.la:\
+	:gtags_parser=Vera\:/usr/local/global/lib/gtags/exuberant-ctags.la:\
+	:gtags_parser=Verilog\:/usr/local/global/lib/gtags/exuberant-ctags.la:\
+	:gtags_parser=VHDL\:/usr/local/global/lib/gtags/exuberant-ctags.la:\
+	:gtags_parser=Vim\:/usr/local/global/lib/gtags/exuberant-ctags.la:\
+	:gtags_parser=YACC\:/usr/local/global/lib/gtags/exuberant-ctags.la:
 #---------------------------------------------------------------------
 # Configuration for htags(1)
 # Let's paint hypertext with your favorite colors!
