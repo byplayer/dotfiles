@@ -2,6 +2,9 @@
 # ‘‹Žg‚¢‚Ì—JŸT - dot.mayu
 # Ý’èƒtƒ@ƒCƒ‹
 #
+# capslock ‚Æ ctrl‚Ì’u‚«Š·‚¦‚Í
+# Ctrl2caps.exe ‚Å’u‚«Š·‚¦‚é‘O’ñ
+# http://technet.microsoft.com/en-us/sysinternals/bb897578.aspx
 
 # ‚Ü‚¸ƒL[ƒ{[ƒh’è‹`‚ð“Ç‚Ýž‚Þ
 if ( USE104 )
@@ -21,25 +24,19 @@ endif
 # endif
 
 keymap Global
-  # workaround.reg‚ª“ü‚Á‚Ä‚¢‚é‚Ì‚ª‘O’ñ
-  mod control += ‰p”       # ‰p”‚ð Control ‚É
-  key *‰p”   = *LControl   # V
-  mod control += E0‰p”     # ‰p”‚ð Control ‚É
-  key *E0‰p”   = *LControl   # V
-
   # HHKƒ‰ƒCƒN‚É
   mod shift -= ReverseSolidus
   mod mod0 = !ReverseSolidus
 
+  key M0-J            => Home
+  key M0-M            => End
+  key M0-P            => Up
+  key M0-L            => Left
   key *C-*S-M0-J      => *C-*S-Home
   key *C-*S-M0-M      => *C-*S-End
   key *C-*S-M0-P      => *C-*S-Up
   key *C-*S-M0-L      => *C-*S-Left
-  # TODO: CTRL, SHIFT + ‰E–îˆó‚Ì‹““®‚ª‚Å‚«‚Ä‚¢‚È‚¢
-  key M0-Semicolon  => *C-*S-Right
+  key *S-M0-Semicolon  => *S-Right
   key *C-*S-M0-FullStop => *C-*S-Down
   key *C-*S-M0-K      => *C-*S-PageUp
   key *C-*S-M0-Comma    => *C-*S-PageDown
-
-
-
