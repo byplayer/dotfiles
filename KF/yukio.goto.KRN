@@ -75,7 +75,7 @@
 %VScroll    1                   // 垂直スクロールバーを表示する             0:no    [1]:yes
 %AddrBar    1                   // アドレスバーを表示する                   0:no    [1]:yes
 %ToolType   1                   // ツールバーの表示形態                     0:Win95 [1]:IE3.0
-%NoClose    1                   // ウインドウを閉じられないようにする       [0]:no  1:yes
+%NoClose	1					// ウインドウを閉じられないようにする		[0]:no	1:yes
                                 //      %ExtWindow=0のとき右上のxをクリックする癖のある方へ。
                                 //      Exit()などで終了。
 // %ScrDesign   "%f%%sadir% %yymmdd% %hhmm%"
@@ -114,7 +114,7 @@
                                 //      以上のウエイトは、最後のメッセージが表示されてから
                                 //      ダイアログボックスが閉じるまでの待ち時間を示す
 
-%VSwTool    0                   // ツールバーを表示する                     0:no  [1]:yes
+%VSwTool	0					// ツールバーを表示する						0:no  [1]:yes
 %VSwUSts    1                   // 上部ステータスバーを表示する             0:no  [1]:yes
 %VSwLSts    1                   // 下部ステータスバーを表示する             0:no  [1]:yes
 %VSwFnc     1                   // ファンクションバーを表示する             0:no  [1]:yes
@@ -238,8 +238,8 @@
 %FncCY      12                  // ファンクション表示用フォントの高さ(dot)  [12]
 %FncCount   1                   // ファンクションキーの 数                  [0]:10個    1:12個
 
-%Editor     "C:\Goto\tools\emacs\bin\emacsclientw.exe -n " // エディタのコマンドライン
-%VEditor    "C:\Goto\tools\emacs\bin\emacsclientw.exe -n ""$P""" // ファイルビュアでのエディタのコマンドライン
+%Editor     "C:\Goto\tools\SublimeText2\sublime_text.exe " // エディタのコマンドライン
+%VEditor    "C:\Goto\tools\SublimeText2\sublime_text.exe ""$P""" // ファイルビュアでのエディタのコマンドライン
                                             //      $P:フルパス名（" "なし）  $L:行番号  $T:先頭行番号
                                             //      単なる変数置換なので、修飾記述子は使えません
 %SusieDir   "C:\Goto\tools\Susie"                // Susieがインストールされているディレクトリ
