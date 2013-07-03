@@ -1,0 +1,3 @@
+xprop -root -f _NET_DESKTOP_LAYOUT 32cccc -set _NET_DESKTOP_LAYOUT 0,2,2,0
+xset -dpms s off s noblank s 0 0 s noexpose
+
