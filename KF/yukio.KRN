@@ -1059,7 +1059,8 @@
     void git_bash(str $path)
     {
         Print("Git Bash: " + $path);
-        Exec("""C:\WINDOWS\system32\cmd.exe"" /c ""pushd """ + $path +  """ && ""C:\tools\Git\bin\sh.exe"" --login -i""");
+        str $cmd = """C:\goto\tools\git\git-bash.exe"" --cd=" + $path;
+        Exec($cmd);
     }
 // [VKMM:New Function]
 }
