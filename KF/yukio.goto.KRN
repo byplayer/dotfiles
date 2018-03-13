@@ -1021,7 +1021,7 @@
     void git_bash(str $path)
     {
         Print("Git Bash: " + $path);
-        Exec("""c:\goto\tools\Git\git-bash.exe"" --cd=""" + $path +  """");
+        Exec("""c:\goto\tools\Git\git-bash.exe"" ""--cd=" + $path +  """");
     }
 // [VKMM:New Function]
 }
