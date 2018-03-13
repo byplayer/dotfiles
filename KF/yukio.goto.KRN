@@ -38,7 +38,7 @@
 %LogFontCY  14                  // ログウインドウ表示用フォントの幅         [16]
 %DirCol     RGB(  0,  0,  0)    // 通常のファイルの文字色                   [RGB(  0,  0,  0)]
 %DirShCol   RGB(255,255,255)    // 通常のファイルの文字色（影）             [RGB(255,255,255)]
-%BackCol    RGB(255,252,244)    // 通常のファイルの背景色                   [RGB(255,255,255)]
+%BackCol    RGB(255,255,255)    // 通常のファイルの背景色                   [RGB(255,255,255)]
 %MarkCol    RGB(255,255,255)    // マーク中のファイルの文字色               [RGB(255,255,255)]
 %MarkBkCol  RGB(  0,120,255)    // マーク中の背景色                         [RGB(  0,120,255)]
 %RDCol      RGB(  0,150,  0)    // 読み込み専用ファイルの文字色             [RGB(  0,150,  0)]
@@ -214,7 +214,7 @@
 
 
 //           F1      F2      F3      F4      F5      F6      F7      F8      F9      F10     F11     F12
-%FncNorm    "操作    表示    ツール  実行    最新    ソート  マスク  ｺﾏﾝﾄﾞ1  WZ_GREP cmd     閲覧窓  窓次    "
+%FncNorm    "操作    表示    ツール  実行    最新    ソート  マスク  ｺﾏﾝﾄﾞ1  git     cmd     閲覧窓  窓次    "
 %FncNormS   "ｵﾌﾟｼｮﾝ          Windows ﾃﾞｽｸﾄｯﾌﾟｽﾀｰﾄ    ｿｰﾄOFF  全表示                  ＯＳ    窓選択  窓前    "
 %FncNormC   "A:      B:      C:      D:      E:                                      指定DIR                 "
 %FncNormSC  "                                                                                                "
@@ -238,8 +238,8 @@
 %FncCY      12                  // ファンクション表示用フォントの高さ(dot)  [12]
 %FncCount   1                   // ファンクションキーの 数                  [0]:10個    1:12個
 
-%Editor     "C:\Goto\tools\SublimeText2\sublime_text.exe " // エディタのコマンドライン
-%VEditor    "C:\Goto\tools\SublimeText2\sublime_text.exe ""$P""" // ファイルビュアでのエディタのコマンドライン
+%Editor     "C:\Goto\tools\SublimeText\sublime_text.exe " // エディタのコマンドライン
+%VEditor    "C:\Goto\tools\SublimeText\sublime_text.exe ""$P""" // ファイルビュアでのエディタのコマンドライン
                                             //      $P:フルパス名（" "なし）  $L:行番号  $T:先頭行番号
                                             //      単なる変数置換なので、修飾記述子は使えません
 %SusieDir   "C:\Goto\tools\Susie"                // Susieがインストールされているディレクトリ
@@ -296,9 +296,6 @@
     void SetDesignFileOnly(int $fileOnly);
     void SusieSlideShow(str $Dir);
     void DevStudioOpen(str $path);
-    void svn_command(str $svn_cmd);
-    void EditEmacs(str $path);
-    void EditWZ(str $path);
     void git_bash(str $path);
 }
 
@@ -1016,41 +1013,6 @@
         Exec($cmd);
     }
 
-    void svn_command(str $svn_cmd)
-    {
-        int $i;
-        str $s;
-        str $cmd = "svn " + $svn_cmd;
-        if(GetMarkPos($M,0) == "")
-        {
-            $cmd = $cmd + " " + $P;
-        }
-        else
-        {
-            for($i=0; GetMarkPos($M,$i)!=""; $i=$i+1)
-            {
-                $s=GetMarkPos($M,$i);
-                $cmd = $cmd + " " + $s;
-            }
-        }
-        Print($cmd);
-        ExecEx($cmd, 0);
-        ClearMark();
-    }
-
-    void EditEmacs(str $path)
-    {
-        str $cmd = """C:\Goto\tools\emacs\bin\emacsclientw.exe"" -n " + """" + $path + """";
-        Exec($cmd);
-    }
-
-    void EditWZ(str $path)
-    {
-        // str $cmd = """C:\goto\tools\WZ Editor\WZEDITOR.EXE"" " + """" + $path + """";
-        str $cmd = """C:\goto\tools\WZ Editor\WZEDITOR.EXE"" " + $path;
-        Exec($cmd);
-    }
-
     //=========================================================================================
     //  内　容：Open Git Bash
     //  引　数：$path   パス
@@ -1059,7 +1021,7 @@
     void git_bash(str $path)
     {
         Print("Git Bash: " + $path);
-        Exec("""C:\WINDOWS\system32\cmd.exe"" /c ""pushd """ + $path +  """ && ""C:\goto\tools\Git\bin\sh.exe"" --login -i""");
+        Exec("""c:\goto\tools\Git\git-bash.exe"" --cd=" + $path +  """");
     }
 // [VKMM:New Function]
 }
@@ -1139,7 +1101,7 @@
     _f7     ---------   PathMask();                                     # パスマスクの設定
             -t-------   SetPathMask(0);                                 # パスマスク解除
     _f8     ---------   SpecialQuick1();                                # キー入力実行１
-    _f9     ---------   Exec("""C:\goto\Tools\WZ EDITOR\WZEDITOR.EXE"" /fwzgrep -f"""+$C+"\*.cpp;*.c;*.cxx;*.hpp;*.hxx;*.h;*.inl;*.java;*.php;*.inc;*.js;*.sql;*.html;*.xhtml;*.phtml;*.xml;*.rb;*.rhtml;*.py;*.log;*.txt;*.el;*.css;*.erb;*.yml;*.pl;*.properties""");# WZ GREP
+    _f9     ---------   git_bash($C);                                   # Git bash
     _f10    ---------   Exec("cmd.exe");                                # コマンドプロンプト
 //          -t-------   Exec("cmd.exe");                                # コマンドプロンプト
             --c------   LogDir(); RestoreCursor();                      # ﾃﾞｨﾚｸﾄﾘを変更・位置復元
@@ -1175,7 +1137,7 @@
             -tc------   MyComputer($C:d+":\RECYCLED");                  # ごみ箱を開く
             -c-------   IncrementalSearchEx("D");                       # 指定文字列ｲﾝｸﾘﾒﾝﾀﾙｻｰﾁ
     _E      -----o---   Edit();                                         # テキストを編集
-            -t-------   EditWZ($P);                         # 他のエディタで編集
+            -t-------   Edit();                                         # 他のエディタで編集
             -tc------   EditDirect(""""+$C:n+"\"+$<+"""");              # 新規編集
             -c-------   IncrementalSearchEx("E");                       # 指定文字列ｲﾝｸﾘﾒﾝﾀﾙｻｰﾁ
     _F      ---------   IncrementalSearch();                            # インクリメンタルサーチ
@@ -1183,7 +1145,7 @@
             -c-------   IncrementalSearchEx("F");                       # 指定文字列ｲﾝｸﾘﾒﾝﾀﾙｻｰﾁ
 //  _G      ---------   SlideShow($C);                                  # スライドショーを実行
     _G      ---------   SusieSlideShow($C);                             # スライドショーを実行
-    -t-------   git_bash($C);                                   # Git Bash
+            -t-------   git_bash($C);                                   # Git Bash
             -c-------   IncrementalSearchEx("G");                       # 指定文字列ｲﾝｸﾘﾒﾝﾀﾙｻｰﾁ
     _H      ---------   KeyHelp();                                      # キーバインドヘルプ
             -c-------   IncrementalSearchEx("H");                       # 指定文字列ｲﾝｸﾘﾒﾝﾀﾙｻｰﾁ
@@ -1195,7 +1157,6 @@
             -c-------   IncrementalSearchEx("J");                       # 指定文字列ｲﾝｸﾘﾒﾝﾀﾙｻｰﾁ
     _K      ---------   MakeDir();                                      # ディレクトリの作成
             -c-------   IncrementalSearchEx("K");                       # 指定文字列ｲﾝｸﾘﾒﾝﾀﾙｻｰﾁ
-            -t-------   svn_command("lock");                            # svn lock
     _L      ---------   LogDisk(); RestoreCursor();                     # ドライブの変更・位置復元
             -t-------   SetFocusAddressbar();                           # ディレクトリ変更
             -c-------   IncrementalSearchEx("L");                       # 指定文字列ｲﾝｸﾘﾒﾝﾀﾙｻｰﾁ
@@ -1224,7 +1185,6 @@
             -c-------   IncrementalSearchEx("T");                       # 指定文字列ｲﾝｸﾘﾒﾝﾀﾙｻｰﾁ
     _U      -----ov-d   SetWorkDir($O+"\"); Unpack($M);                 # 反対パスに展開
             -c-------   IncrementalSearchEx("U");                       # 指定文字列ｲﾝｸﾘﾒﾝﾀﾙｻｰﾁ
-            -t-------   svn_command("unlock");                          # svn unlock
     _V      ------v--   FileViewer();                                   # ファイル内容を表示
             -t----v--   FileViewerEx($P, 1);                            # ファイル内容を表示(内部)
             -c-------   IncrementalSearchEx("V");                       # 指定文字列ｲﾝｸﾘﾒﾝﾀﾙｻｰﾁ
