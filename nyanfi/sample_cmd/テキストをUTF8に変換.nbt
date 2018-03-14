@@ -1,0 +1,50 @@
+;テキストファイルのコードページをUTF8に変換
+;選択中(なければカーソル位置)のファイルのコードページをUTF8に変換します。
+;---------------------------------------------------------------------------
+
+;変換コードページ
+;  値の変更によりUTF8以外も可能
+;  例:ShiftJIS  コードページ=932
+Set_コードページ=65001
+
+;---------------------------------------------------------------------------
+;選択中でなければカーソル位置を選択
+IfNotSel: Select_ND: EndIf
+
+;選択した項目だけを残す
+IfSel: SelMask: EndIf
+
+;先頭ファイル位置にカーソル移動
+CursorTop: Repeat: IfEnd_Break: IfFile_Break: CursorDown: EndRepeat
+
+Set_処理数=0
+
+Repeat
+  IfNotFile_Break
+
+  ;ファイルを読み込む
+  LoadBuffer_%FileName%
+
+  ;コードページのチェック
+  Test_CodePage==%コードページ%
+  ;指定コードページで無ければ変換して保存
+  IfFalse
+    Set_CodePage=%コードページ%
+    SaveBuffer_%FileName%
+    Set_処理数+=1
+  EndIf
+
+  IfEnd_Break
+  CursorDown
+EndRepeat
+
+;選択マスクを解除
+SelMask_CA
+
+;結果表示
+Test_処理数>0
+IfTrue
+  MsgBox_%処理数%個のファイルを変換しました
+Else
+  MsgBox_変換すべきファイルがありませんでした
+EndIf

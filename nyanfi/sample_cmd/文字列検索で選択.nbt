@@ -1,0 +1,55 @@
+;内容に指定した語を含むテキストファイルを選択
+;
+;---------------------------------------------------------------------------
+;検索文字列
+;  文字列全体を / で囲むと正規表現パターンとみなされます。
+;
+Set_検索文字列=/花|鳥|風|月/
+
+;マッチしたファイルだけを残すか？
+;  ON を指定すると、検索後にマッチしたファイルだけを残します(SelMask)
+;
+Set_マッチファイルを残す=OFF
+
+;---------------------------------------------------------------------------
+
+;選択中ならそれらを対象とする
+IfSel: SelMask: EndIf
+
+;最初のファイル位置にカーソル移動
+CursorTop: Repeat: IfEnd_Break: IfFile_Break: CursorDown: EndRepeat
+ClearAll
+
+Set_マッチ数=0
+
+Repeat
+  ;ファイルを Buffer に読み込む
+  LoadBuffer_%FileName%
+
+  ;内容を検索
+  MatchBuffer_%検索文字列%
+
+  ;マッチしたら選択
+  IfTrue
+    Select_ND
+    Set_マッチ数+=1
+  EndIf
+
+  IfEnd_Break
+  CursorDown
+EndRepeat
+
+;結果表示
+Test_マッチ数>0
+IfTrue
+  Test_マッチファイルを残す==ON
+  IfTrue
+    SelMask
+  Else
+    SelMask_CA
+  EndIf
+  MsgBox_%マッチ数%個のファイルが見つかりました
+Else
+  SelMask_CA
+  MsgBox_[%検索文字列%]が見つかりませんでした
+EndIf

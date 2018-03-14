@@ -1,0 +1,63 @@
+;イベント: テキストビュアーを開く直前
+;  左側余白、折り返し幅などを事前に設定することで、余計な処理を抑止できます。
+;  カスタマイズによりディレクトリ名やファイル名による動作変更も可能。
+;-------------------------------------------------------------------------------------
+
+;------------------------
+;バイナリー表示
+;------------------------
+IfBinary
+  SetMargin_50
+
+;------------------------
+;テキスト表示
+;------------------------
+Else
+  Repeat_1
+    ;------------------------
+    ;NyanFi タスクログ
+    ;------------------------
+    IfLog
+      ShowLineNo_ON: ShowRuler_ON
+      SetMargin_50: SetWidth_0
+      Break
+    EndIf
+
+    ;------------------------
+    ;テキスト(.txt)
+    ;------------------------
+    MatchExt_.txt
+    IfTrue
+      ShowLineNo_OFF: ShowRuler_OFF
+      SetMargin_200: SetWidth_80
+      Break
+    EndIf
+
+    ;------------------------
+    ;HTML文書
+    ;------------------------
+    MatchExt_.htm.html.sht.shtm.shtml.php
+    IfTrue
+      IfNotGrep
+        ;Grep 以外から開く場合はテキスト変換表示
+        ShowLineNo_OFF:
+        SetMargin_200: SetWidth_90
+        SetColor_Color_HTM.INI
+        HtmlToText_ON
+      Else
+        ;Grep から開く場合は通常表示
+        ShowLineNo_ON:
+        SetMargin_50: SetWidth_120
+        HtmlToText_OFF
+      EndIf
+      Break
+    EndIf
+
+    ;------------------------
+    ;その他(プログラム等)
+    ;------------------------
+    ShowLineNo_ON: ShowRuler_ON
+    SetMargin_50: SetWidth_120
+
+  EndRepeat
+EndIf

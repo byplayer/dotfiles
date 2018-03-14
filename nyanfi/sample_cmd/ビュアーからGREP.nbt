@@ -1,0 +1,46 @@
+;テキストビュアーから選択語を文字列検索(GREP)
+;---------------------------------------------------------------------------
+
+;テキストビュアーでなければ、警告して中断
+Test_ScrMode==TV
+IfFalse
+  Warn_テキストビュアーが開かれていません
+  Exit
+EndIf
+
+;--------------------------------------
+;拡張子からマスクを設定
+;  必要に応じて変更してください
+;--------------------------------------
+Repeat_1
+  ;Cプログラム
+  MatchExt_.cpp.c.h
+  IfTrue
+    GrepSetMask_*.cpp;*.c;*.h
+    Break
+  EndIf
+
+  ;コマンドファイル
+  MatchExt_.nbt
+  IfTrue
+    GrepSetMask_*.nbt
+    Break
+  EndIf
+
+  ;HTML
+  MatchExt_.htm.html.php.css
+  IfTrue
+    GrepSetMask_*.htm;*.html;*.php;*.css
+    Break
+  EndIf
+
+  ;その他のテキスト
+  GrepSetMask_*.txt
+EndRepeat
+
+;--------------------------------------
+;文字列検索(GREP)を開く
+Grep
+;検索開始
+GrepStart
+

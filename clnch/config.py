@@ -91,7 +91,7 @@ def configure(window):
         ( "chrome",    window.ShellExecuteCommand( None, "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe", "", "C:/Users/yukio.goto/AppData/Local/Google/Chrome/Application/" ) ),
         ( "ie32",        window.ShellExecuteCommand( None, "C:/Program Files (x86)/Internet Explorer/iexplore.exe", "", "C:/Program Files (x86)/Internet Explorer/" ) ),
         ( "ie64",        window.ShellExecuteCommand( None, "C:/Program Files/Internet Explorer/iexplore.exe", "", "C:/Program Files/Internet Explorer/" ) ),
-        ( "kf",        window.ShellExecuteCommand( None, "C:/goto/tools/kf/KF.exe", "", "C:/goto/tools/kf" ) ),
+        ( "nyanfi",        window.ShellExecuteCommand( None, "C:/goto/tools/nyanfi/NyanFi.exe", "", "C:/goto/tools/nyanfi" ) ),
         ( "df",        window.ShellExecuteCommand( None, "C:/goto/tools/DF/DF.exe", "", "C:/goto/tools/DF" ) ),
         ( "eyes",      window.ShellExecuteCommand( None, "C:/Program Files (x86)/MA-EYES/MA-EYES.exe", "", "C:/Program Files (x86)/MA-EYES" ) ),
         ( "vbox",      window.ShellExecuteCommand( None, "C:/goto/tools/Oracle/VirtualBox/VirtualBox.exe", "", "C:/goto/tools/Oracle/VirtualBox" ) ),
