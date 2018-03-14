@@ -1,0 +1,61 @@
+[alias]
+	co = checkout
+	br = branch
+	mg = merge
+	stat = status
+	st = status
+	ds = diff --stat
+	sm = submodule
+	ci = commit
+	cia = commit --amend
+	l = log
+	lo = log --oneline
+	lg = log --graph --pretty=format:'%C(yellow)%h%C(green)%d%Creset %s %Cblue[%ad]%C(bold blue)<%an>%Creset' --abbrev-commit --date=short --branches
+	dt = difftool
+	dc = diff --check
+	mt = mergetool
+	d = diff
+	dw = diff --color-words
+	top = rev-parse --show-toplevel
+[alias "r"]
+	s = remote show
+	p = remote prune
+	rb = remove-remote-branch
+[alias "r.s"]
+	o = remote show origin
+[alias "r.p"]
+	o = remote prune origin
+[alias "r.rb"]
+	o = remove-remote-branch origin
+[push]
+	default = simple
+[color]
+	branch = always
+	diff = always
+	interactive = always
+	status = always
+[credential]
+	helper = store
+[core]
+	whitespace = cr-at-eol
+	pager = less -x1,5
+[user]
+	name = Yukio Goto
+	email = yukio.goto@rakuten.com
+
+[pager]
+  log = diff-highlight | less
+  show = diff-highlight | less
+  diff = diff-highlight | less
+
+[diff]
+  tool = meld
+  compactionHeuristic = true
+
+[difftool]
+  prompt = false
+
+[merge]
+    tool = meld
+    keepBackup = false
+
