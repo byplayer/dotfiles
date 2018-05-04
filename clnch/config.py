@@ -109,7 +109,7 @@ def configure(window):
         ( "eclipse",window.ShellExecuteCommand( None, "C:/goto/tools/eclipse/eclipse.exe", "", "C:/goto/tools/eclipse/" ) ),
         ( "SublimeText",window.ShellExecuteCommand( None, "C:/goto/tools/SublimeText/sublime_text.exe", "", "C:/goto/tools/SublimeText/" ) ),
         ( "ADT",window.ShellExecuteCommand( None, "C:/goto/tools/adt-bundle-windows-x86_64/eclipse/eclipse.exe", "", "C:/goto/tools/adt-bundle-windows-x86_64/eclipse" ) ),
-        ( "vagrant up",window.ShellExecuteCommand( None, "vagrant", "up", "C:/Goto/vagrant-devenv" ) ),
+        ( "vagrant up",window.ShellExecuteCommand( None, "vagrant.exe", "up", "C:/Goto/vagrant-devenv" ) ),
     ]
 
 # リストウインドウの設定処理
