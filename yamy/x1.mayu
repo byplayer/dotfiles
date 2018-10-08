@@ -30,18 +30,20 @@ key *Up = &Ignore
 key *PageUp = &Ignore
 key *PageDown = &Ignore
 
-key M0-J            => Home
-key M0-M            => End
-key M0-P            => Up
-key M0-L            => Left
-key *C-*S-M0-J      => *C-*S-Home
-key *C-*S-M0-M      => *C-*S-End
-key *C-*S-M0-P      => *C-*S-Up
-key *C-*S-M0-L      => *C-*S-Left
-key *S-M0-Semicolon  => *S-Right
-key *C-*S-M0-FullStop => *C-*S-Down
-# key *C-*S-M0-K      => *C-*S-PageUp
-# key *C-*S-M0-Comma    => *C-*S-PageDown
+key M0-K                  => Home
+key M0-Comma              => End
+key M0-LeftSquareBracket  => Up
+key M0-Solidus            => Down
+key M0-Semicolon          => Left
+key M0-Apostrophe         => Right
+key *C-*S-M0-K            => *C-*S-Home
+key *C-*S-M0-Comma        => *C-*S-End
+key *C-*S-M0-LeftSquareBracket => *C-*S-Up
+key *C-*S-M0-Semicolon    => *C-*S-Left
+key *S-M0-Apostrophe      => *S-Right
+key *C-*S-M0-Solidus      => *C-*S-Down
+# key *C-*S-M0-K          => *C-*S-PageUp
+# key *C-*S-M0-Comma      => *C-*S-PageDown
 
 # swap left win and alt
 mod alt -= LeftAlt
