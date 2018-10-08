@@ -108,6 +108,7 @@ def configure(window):
         ( "tail",window.ShellExecuteCommand( None, "C:/Goto/tools/tail/tail.exe", "%param%", "C:/Goto/tools/tail/" ) ),
         ( "eclipse",window.ShellExecuteCommand( None, "C:/goto/tools/eclipse/eclipse.exe", "", "C:/goto/tools/eclipse/" ) ),
         ( "SublimeText",window.ShellExecuteCommand( None, "C:/goto/tools/SublimeText/sublime_text.exe", "", "C:/goto/tools/SublimeText/" ) ),
+        ( "Code", window.ShellExecuteCommand( None, "C:/Users/yukio.goto/AppData/Local/Programs/MicrosoftVSCode/Code.exe", "", "C:/Users/yukio.goto/AppData/Local/Programs/MicrosoftVSCode" )),
         ( "ADT",window.ShellExecuteCommand( None, "C:/goto/tools/adt-bundle-windows-x86_64/eclipse/eclipse.exe", "", "C:/goto/tools/adt-bundle-windows-x86_64/eclipse" ) ),
         ( "vagrant up",window.ShellExecuteCommand( None, "vagrant.exe", "up", "C:/Goto/vagrant-devenv" ) ),
     ]
