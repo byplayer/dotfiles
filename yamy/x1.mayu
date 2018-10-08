@@ -1,32 +1,34 @@
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# ‘‹Žg‚¢‚Ì—JŸT - dot.mayu
-# Ý’èƒtƒ@ƒCƒ‹
+# ï¿½ï¿½ï¿½gï¿½ï¿½ï¿½Ì—Jï¿½T - dot.mayu
+# ï¿½Ý’ï¿½tï¿½@ï¿½Cï¿½ï¿½
 #
-# capslock ‚Æ ctrl‚Ì’u‚«Š·‚¦‚Í
-# Ctrl2caps.exe ‚Å’u‚«Š·‚¦‚é‘O’ñ
+# capslock ï¿½ï¿½ ctrlï¿½Ì’uï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+# Ctrl2caps.exe ï¿½Å’uï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½ï¿½
 # http://technet.microsoft.com/en-us/sysinternals/bb897578.aspx
 
-# ‚Ü‚¸ƒL[ƒ{[ƒh’è‹`‚ð“Ç‚Ýž‚Þ
+# ï¿½Ü‚ï¿½ï¿½Lï¿½[ï¿½{ï¿½[ï¿½hï¿½ï¿½`ï¿½ï¿½Ç‚Ýï¿½ï¿½ï¿½
 if ( USE104 )
-  include "104.mayu"    # 104 ƒL[ƒ{[ƒhÝ’è
+  include "104.mayu"    # 104 ï¿½Lï¿½[ï¿½{ï¿½[ï¿½hï¿½Ý’ï¿½
   if ( USE109on104 )
-    include "109on104.mayu" # 104 ƒL[ƒ{[ƒh‚ð 109 ƒL[ƒ{[ƒh•—‚É
+    include "109on104.mayu" # 104 ï¿½Lï¿½[ï¿½{ï¿½[ï¿½hï¿½ï¿½ 109 ï¿½Lï¿½[ï¿½{ï¿½[ï¿½hï¿½ï¿½ï¿½ï¿½
   endif
 else
-  include "109.mayu"    # 109 ƒL[ƒ{[ƒhÝ’è
+  include "109.mayu"    # 109 ï¿½Lï¿½[ï¿½{ï¿½[ï¿½hï¿½Ý’ï¿½
   if ( USE104on109 )
-    include "104on109.mayu" # 109 ƒL[ƒ{[ƒh‚ð 104 ƒL[ƒ{[ƒh•—‚É
+    include "104on109.mayu" # 109 ï¿½Lï¿½[ï¿½{ï¿½[ï¿½hï¿½ï¿½ 104 ï¿½Lï¿½[ï¿½{ï¿½[ï¿½hï¿½ï¿½ï¿½ï¿½
   endif
 endif
 
 # if ( USEdefault )
-#   include "default.mayu"  # Emacs ƒ‰ƒCƒN‚È‚³‚Ü‚´‚Ü‚ÈÝ’è
+#   include "default.mayu"  # Emacs ï¿½ï¿½ï¿½Cï¿½Nï¿½È‚ï¿½ï¿½Ü‚ï¿½ï¿½Ü‚ÈÝ’ï¿½
 # endif
 
 # HHK like for think pad X1 Carbon
 keymap Global
-mod mod0 = PageUp
+mod mod0 = Up
+key *Up = &Ignore
 key *PageUp = &Ignore
+key *PageDown = &Ignore
 
 key M0-J            => Home
 key M0-M            => End
@@ -38,8 +40,8 @@ key *C-*S-M0-P      => *C-*S-Up
 key *C-*S-M0-L      => *C-*S-Left
 key *S-M0-Semicolon  => *S-Right
 key *C-*S-M0-FullStop => *C-*S-Down
-key *C-*S-M0-K      => *C-*S-PageUp
-key *C-*S-M0-Comma    => *C-*S-PageDown
+# key *C-*S-M0-K      => *C-*S-PageUp
+# key *C-*S-M0-Comma    => *C-*S-PageDown
 
 # swap left win and alt
 mod alt -= LeftAlt
